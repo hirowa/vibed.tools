@@ -1,6 +1,7 @@
-## 📂 Folder to CSV Exporter
+## 📂 Files to CSV Exporter
+![image](https://github.com/user-attachments/assets/701074e2-bf04-43c4-a859-4edf3c263394)
 
-**Folder to CSV Exporter** is a browser-based tool that allows users to scan a selected folder on their device for specific text-based file types (`.md`, `.txt`, `.srt`) and export their contents into a structured CSV file. The app is entirely client-side and does not require any server or external backend, making it lightweight and secure for personal data handling.
+**Files to CSV Exporter** is a browser-based tool that allows users to scan a selected folder on their device for specific text-based file types (`.md`, `.txt`, `.srt`) and export their contents into a structured CSV file. The app is entirely client-side and does not require any server or external backend, making it lightweight and secure for personal data handling.
 
 ### Features
 
