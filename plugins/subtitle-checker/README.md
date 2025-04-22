@@ -1,4 +1,5 @@
 ## 🎬 Subtitle Checker
+![image](https://github.com/user-attachments/assets/6919573c-ced0-410e-98e1-215e64ad2389)
 
 **Subtitle Checker** is a lightweight, user-friendly web app designed to scan directories for video files and identify those missing accompanying subtitle files (.srt). Built with simplicity in mind, it allows users to quickly ensure all their media content is accessible with proper subtitles, making it especially helpful for content creators, archivists, and media enthusiasts.
 
