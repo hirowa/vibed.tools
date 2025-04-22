@@ -1,4 +1,5 @@
 ## 📊CSV Merger
+![image](https://github.com/user-attachments/assets/88a069b8-5cc0-43dc-9c79-a4dba5235cc3)
 
 The **CSV Merger** is a simple, browser-based plugin that allows users to effortlessly combine multiple CSV files from a selected folder into a single, downloadable file. It's ideal for users who frequently work with scattered CSV data and want a quick, no-fuss solution to consolidate it in a few clicks. Built with a clean interface and practical utility in mind, this tool offers an efficient way to manage and preview merged data before download.
 
