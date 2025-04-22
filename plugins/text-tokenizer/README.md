@@ -1,4 +1,5 @@
 ## 🔤 Text Tokenizer
+![image](https://github.com/user-attachments/assets/df931bdc-d0eb-4b3b-987d-1db2d8d0aeb3)
 
 **Text Tokenizer** is a web-based tool designed to analyze any input text and display detailed metrics including word count, character count, and token count (using OpenAI’s `cl100k_base` tokenizer). Users can also strip HTML tags from their input and optionally split the text into smaller, token-limited chunks for better readability or model handling. It's a perfect utility for developers, writers, and AI prompt engineers needing precise text insights.
 
