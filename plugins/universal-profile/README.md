@@ -1,4 +1,5 @@
 ## 🌌 The Universal Profile
+![image](https://github.com/user-attachments/assets/eaaa769d-cff9-4703-96c1-1d20baea84dc)
 
 **The Universal Profile** is an interactive web plugin that provides users with an immersive experience to discover detailed astrological and metaphysical insights based on their birthdate and gender. It combines multiple cultural zodiac systems, numerology, and Feng Shui into a unified, elegant interface, transforming personal data into a multidimensional spiritual profile.
 
