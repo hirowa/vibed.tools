@@ -1,4 +1,5 @@
 ## 📄 SRT to TXT Converter
+![image](https://github.com/user-attachments/assets/9d257e6a-1af9-488a-9d3f-74148ef28910)
 
 The **SRT to TXT Converter** is a browser-based tool designed to effortlessly transform `.srt` subtitle files into clean, readable `.txt` dialogue files. With a modern UI and smooth folder-based processing, it’s ideal for users who frequently work with subtitle data and want a fast way to strip timestamps and formatting for pure text extraction.
 
