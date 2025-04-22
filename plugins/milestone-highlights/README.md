@@ -1,4 +1,5 @@
 ## 🏆 Milestone Highlighter
+![image](https://github.com/user-attachments/assets/462d142e-8ff0-41aa-b590-6982c249edc3)
 
 **Milestone Highlighter** is a browser-based tool that helps users identify special milestone anniversaries, where a recurring interval of days aligns with a calendar month, based on a chosen start date. Ideal for tracking recurring events like workouts, sobriety anniversaries, or journaling streaks, this plugin highlights specific monthly anniversaries and lets users export them as calendar events.
 
