@@ -1,138 +1,67 @@
-# Vibed Tools - Plugin System
+## Vibed Tools
 
-A modular web application framework that allows you to create and switch between different tools using a plugin architecture.
+**Vibed Tools** is a modular web application framework that allows developers to build and manage multiple tools via a plugin-based architecture. It's designed to provide a smooth user experience with dynamic loading, categorized navigation, and seamless integration of new tools through isolated plugin folders.
 
-## Features
+### Features
 
-- **Plugin Architecture**: Easily add new tools as plugins
-- **Dynamic Loading**: Plugins are loaded dynamically when selected
-- **Categorized Navigation**: Plugins are organized by category in the top navbar
-- **Shared Styling**: All plugins use the same base stylesheet for a consistent look and feel
-- **Isolated Plugin Code**: Each plugin's JavaScript is loaded dynamically when the plugin is selected
+- **Plugin Architecture**: Tools are created as plugins, making them easy to add, manage, and isolate.
+- **Dynamic Loading**: Tools are loaded on demand via an iframe, ensuring lightweight performance.
+- **Categorized Navigation**: Plugins are grouped by category for easy discovery using a tabbed UI.
+- **Shared Styling**: A global stylesheet ensures consistent appearance across all plugins.
+- **Debug Interface**: A built-in debug modal shows real-time log messages for developers.
+- **Readme Viewer**: Easily view Readme documentation for the dashboard or individual plugins via modal dialogs.
+- **Tool Selection Modal**: A searchable, categorized plugin selector with dynamic refresh.
 
-## Current Plugins
+---
 
-- **Stipple Effect Editor**: Create stipple effects from images using various dithering methods
-- **Example Plugin**: A simple example plugin to demonstrate how to create plugins
+### How to use?
 
-## Running the Application
+1. **Run a Local Web Server**:
+   This app needs to be served through a web server for dynamic file fetching.
 
-This application needs to be run from a web server to work properly. You can use one of these methods:
+   - Using Python: `python -m http.server`
+   - Using Node.js: `npx serve`
+   - Using PHP: `php -S localhost:8000`
+   - Or use **Live Server** in VS Code.
 
-- Python: `python -m http.server`
-- Node.js: `npx serve`
-- PHP: `php -S localhost:8000`
-- Or use the Live Server extension in VS Code
+2. **Navigate to the App**:
+   Open your browser and go to `http://localhost:8000` (or the correct port based on your server).
 
-## Project Structure
+3. **Select a Plugin**:
 
-```
-stipple.web/
-├── index.html           # Main container with navbar
-├── styles.css           # Core styles (shared across all plugins)
-├── script.js            # Plugin system functionality
-├── plugins/
-│   ├── stipple-editor/  # Stipple Effect Editor plugin
-│   │   ├── index.html   # With metadata
-│   │   └── script.js    # Plugin functionality
-│   └── example-plugin/  # Example plugin
-│       ├── index.html   # With metadata
-│       └── script.js    # Plugin functionality
-```
+   - Click the "Change Tool [T]" button to open the plugin selector.
+   - Choose a plugin from the grid, organized by category.
 
-## How to Add New Plugins
+4. **View Plugin Info**:
 
-1. Create a new folder in the `plugins` directory (e.g., `plugins/my-new-tool/`)
+   - Click the book icon 📖 to view the plugin's README.
+   - Click the info icon ℹ️ for the dashboard's general README.
 
-2. Create an `index.html` file with the required metadata:
+5. **Debug (optional)**:
 
-   ```html
-   <meta name="plugin-category" content="Your Category" />
-   <meta name="plugin-name" content="Your Tool Name" />
-   <meta name="plugin-description" content="Description of your tool" />
-   <meta name="plugin-version" content="1.0" />
-   ```
+   - Click the bug icon 🐞 to open the debug panel and see internal logs.
 
-3. Make sure to link to the shared stylesheet:
+6. **Refresh Plugins**:
+   - Use the refresh button 🔄 in the plugin selector to rescan for new plugins.
 
-   ```html
-   <link rel="stylesheet" href="../../styles.css" />
-   ```
+---
 
-4. Create a `script.js` file for your plugin's functionality
+### Special Requirements
 
-5. The plugin will automatically appear in the navigation bar under its specified category
+- **Plugins Folder**:
 
-## Plugin HTML Structure
+  - Place all plugin folders inside `/plugins/`.
+  - Each plugin must have:
+    - `index.html` with metadata:
+      ```html
+      <meta name="plugin-category" content="Category Name" />
+      <meta name="plugin-name" content="Plugin Name" />
+      <meta name="plugin-description" content="Plugin Description" />
+      <meta name="plugin-version" content="1.0" />
+      <meta name="plugin-url" content="https://github.com/link_example" />
+      ```
+    - `script.js` for plugin-specific logic.
+    - A link to `../../styles.css` for shared styling.
 
-Your plugin's HTML should follow this basic structure:
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Your Plugin Name</title>
-    <meta name="plugin-category" content="Your Category" />
-    <meta name="plugin-name" content="Your Plugin Name" />
-    <meta name="plugin-description" content="Description of your plugin" />
-    <meta name="plugin-version" content="1.0" />
-    <link rel="stylesheet" href="../../styles.css" />
-  </head>
-  <body>
-    <header>
-      <h1>Your Plugin Name</h1>
-      <div class="header-actions">
-        <!-- Optional header actions -->
-      </div>
-    </header>
-
-    <div class="app-container">
-      <div class="sidebar">
-        <!-- Sidebar controls -->
-      </div>
-
-      <div class="main-content">
-        <!-- Main content area -->
-      </div>
-    </div>
-
-    <script src="script.js"></script>
-  </body>
-</html>
-```
-
-## Plugin JavaScript
-
-Your plugin's JavaScript should be self-contained and not interfere with other plugins. It's recommended to wrap your code in a class or module to avoid global namespace pollution.
-
-Example:
-
-```javascript
-// My Plugin Script
-class MyPlugin {
-  constructor() {
-    // Initialize your plugin
-    this.init();
-  }
-
-  init() {
-    // Set up event listeners and initialize your plugin
-  }
-
-  // Add your plugin's functionality here
-}
-
-// Initialize the plugin when the script is loaded
-const myPlugin = new MyPlugin();
-```
-
-## Troubleshooting
-
-If you don't see any plugins in the navigation bar:
-
-1. Make sure you're running the application from a web server
-2. Check the browser console for any errors
-3. Verify that your plugin's HTML file has the correct metadata
-4. Ensure your plugin's folder is in the `plugins` directory
+- **Isolated Plugin Scripts**:
+  Each plugin should encapsulate its logic (e.g., inside a class) to avoid polluting the global namespace.

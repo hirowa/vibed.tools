@@ -1,65 +1,37 @@
-## The Universal Profile
+## 🌌 The Universal Profile
 
-### Script Overview
+**The Universal Profile** is an interactive web plugin that provides users with an immersive experience to discover detailed astrological and metaphysical insights based on their birthdate and gender. It combines multiple cultural zodiac systems, numerology, and Feng Shui into a unified, elegant interface, transforming personal data into a multidimensional spiritual profile.
 
-**The Universal Profile** is a user-interactive web application that dynamically generates a detailed astrological and numerological profile based on a user's birthdate and gender. Upon submitting their information, users receive insights from various cultural and metaphysical systems including zodiac signs, life path numbers, and elemental alignments. This tool is tailored for those interested in astrology, personal insight, or simply for fun exploration of personality traits and guidance themes.
+### Features
 
-## Detailed Use/Features
+- **Western Zodiac Sign**: Calculates your astrological sign based on traditional sun sign astrology.
+- **Chinese Zodiac Animal**: Determines your Chinese zodiac based on birth year using the 12-year animal cycle.
+- **Native American Zodiac**: Reveals your spirit animal within Native American traditions tied to date of birth.
+- **Mayan Zodiac**: Uses the Tzolk'in calendar to compute your Mayan day sign and meaning.
+- **Egyptian Zodiac**: Matches birthdates with deities from ancient Egyptian astrology.
+- **Celtic Tree Astrology**: Identifies your Druidic tree sign and archetype.
+- **Birthstone**: Displays the traditional birthstone linked to your birth month.
+- **Life Path Number**: Calculates your numerology-based life path number for spiritual insight.
+- **Tarot Birth Cards**: Identifies two Major Arcana cards representing your birth energy.
+- **Feng Shui Kua Number**: Calculates your Kua number and indicates auspicious/inauspicious directions based on Feng Shui.
+- **Gender-aware Calculations**: Adjusts calculations (e.g., Kua number) according to gender selection.
 
-1. **Input Interface**:
+---
 
-   - Accepts **birthdate** through a datepicker UI.
-   - Includes a **gender selector** to personalize certain calculations such as Feng Shui Kua Numbers.
+### How to use?
 
-2. **Calculation and Output**:
-   Once the user clicks the **“Calculate”** button:
+1. **Open the Plugin Page**: Launch the plugin in your browser.
+2. **Enter Your Birth Information**:
+   - Select your birthdate using the integrated Flowbite datepicker.
+   - Choose your gender from the dropdown menu.
+3. **Click “Calculate”**: Hit the button to generate your Universal Profile.
+4. **View Results**: A grid of detailed cards will appear, each showing one aspect of your profile with icons, descriptions, and images.
 
-   - **Western Zodiac Sign**: Displays associated astrological sign and image.
-   - **Chinese Zodiac Animal**: Based on lunar calendar year.
-   - **Native American Zodiac**: Linked to birthdate via animal representations.
-   - **Mayan Zodiac Sign**: Interprets using Mayan day signs.
-   - **Egyptian Zodiac**: Provides sign associated with ancient deities.
-   - **Celtic Tree Astrology**: Uses Druid zodiac aligned to birth cycles.
-   - **Birthstone**: Traditional gemstone based on the birth month.
-   - **Life Path Number**: Derived numerologically from the full birthdate.
-   - **Tarot Birth Cards**: Two-card pairing representing life themes.
-   - **Feng Shui Kua Number**: Determines auspicious/inauspicious directions.
-   - **Kua Group Info**: Further details to guide spiritual harmony.
+---
 
-3. **Design and Layout**:
-   - Built with **TailwindCSS + Flowbite** for responsive, modern UI components.
-   - Icons via **Font Awesome** to visually enhance each feature card.
-   - Structured in a clean **sidebar-main canvas** layout for intuitive navigation.
+### Special Requirements
 
-## Installation
-
-### Requirements
-
-- A modern web browser (Chrome, Firefox, Edge)
-- Internet connection (for loading external CDN libraries)
-- No server-side processing – completely client-side based
-
-### Installation Steps
-
-1. Clone or download the project folder to your local machine.
-2. Ensure the following file structure is maintained:
-   ```
-   /project-folder
-   ├── index.html
-   ├── readme.md
-   └── script.js
-   ```
-3. Open `index.html` in any modern browser.
-
-#### Usage
-
-1. On page load, a welcome message invites the user to input details.
-2. Enter your **birthdate** and **gender** in the left sidebar.
-3. Click **“Calculate”**.
-4. Scroll through the main panel to view your personalized Universal Profile.
-
-### Disclaimer
-
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-Additionally, the code presented here has been generated with the assistance of AI and may contain errors or require adjustments for specific use cases. This script has only been tested on Windows 11, and its compatibility with other operating systems is not guaranteed. Users are advised to back up their data before running the script to prevent any accidental loss of files.
+- **Modern Browser**: Requires a modern web browser (Chrome, Firefox, Edge, etc.) to render UI and handle JavaScript.
+- **Flowbite CSS/JS**: Uses the Flowbite UI library, which must be loaded via CDN.
+- **Image Assets**: Assumes availability of local SVG assets organized into specific folders (e.g., `assets/img/western_zodiac`, `assets/img/tarot_cards`, etc.) for visual results.
+- **Date Format**: Input date must be in `YYYY-MM-DD` format.

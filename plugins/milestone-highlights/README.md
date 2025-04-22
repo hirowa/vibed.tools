@@ -1,39 +1,31 @@
-# Milestone Highlights
+## 🏆 Milestone Highlighter
 
-## Script Overview
+**Milestone Highlighter** is a browser-based tool that helps users identify special milestone anniversaries, where a recurring interval of days aligns with a calendar month, based on a chosen start date. Ideal for tracking recurring events like workouts, sobriety anniversaries, or journaling streaks, this plugin highlights specific monthly anniversaries and lets users export them as calendar events.
 
-The **Milestone Highlights** plugin is a JavaScript-based web tool that calculates and displays special milestone dates based on a user-defined anniversary. By combining monthly anniversaries with milestone intervals (in days), this plugin identifies and highlights dates when both criteria align. The tool is helpful for tracking and celebrating significant recurring moments such as work anniversaries, relationship milestones, or project progress.
+### Features
 
-## Detailed Use/Features
+- **Milestone Alignment Detection**: Identifies dates where a specific day-based interval (e.g., every 100 days) aligns with a calendar month from a given anniversary date.
+- **Custom Evaluation Range**: Users can define how many years into the future to search for aligned milestones.
+- **Calendar Export**: Matched milestones can be exported as a downloadable `.ics` file compatible with calendar apps.
+- **Responsive UI with Date Picker**: Includes an intuitive UI with modern design and a datepicker for easy input.
+- **Progress Tracking**: Clearly shows how many days and months have passed for each matched milestone.
 
-1. **Date Input**: Users provide an initial anniversary date as the starting point.
-2. **Milestone Interval**: Users input a milestone interval (in days) to evaluate recurring significant milestones.
-3. **Evaluation Period**: Users specify the number of years over which the milestones should be computed.
-4. **Calculation Logic**:
-   - Generates monthly anniversaries over the specified time span.
-   - Computes milestone dates by repeatedly adding the milestone interval to the anniversary date.
-   - Identifies and highlights dates that are both monthly anniversaries and milestone intervals.
-5. **Interactive UI**: Features a user-friendly interface using Bootstrap components.
-6. **Toast Notifications**: Custom toast messages are shown for actions such as initialization, errors, and results using icon-coded alerts.
+---
 
-## Requirements
+### How to use?
 
-- A modern web browser (Chrome, Firefox, Edge, Safari)
-- Local or hosted web server (if accessing via file path restrictions)
-- Internet connection (if external libraries like Bootstrap or Font Awesome are CDN-based)
+1. **Open the App**: Load the HTML file (`index.html`) in any modern browser.
+2. **Enter Details**:
+   - **Anniversary Date**: Pick a starting date.
+   - **Milestone Interval**: Set the number of days between each milestone (e.g., every 100 days).
+   - **Years to Evaluate**: Choose how many years into the future to calculate.
+3. **Highlight Milestones**: Click the “Highlight Milestones” button to generate results.
+4. **View & Export**: View the list of aligned milestones. If matches are found, click the **Export ICS** link to download calendar events.
 
-## Usage
+---
 
-1. Open the plugin interface in your browser.
-2. Enter:
-   - An **Anniversary Date**
-   - A **Milestone Interval** (e.g., 100 days)
-   - A **Number of Years** to evaluate (e.g., 5)
-3. Click **Calculate**.
-4. View the output section for matched milestone dates where monthlyversaries align with milestone intervals.
+### Special Requirements
 
-## Disclaimer
-
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-Additionally, the code presented here has been generated with the assistance of AI and may contain errors or require adjustments for specific use cases. This script has only been tested on Windows 11, and its compatibility with other operating systems is not guaranteed. Users are advised to back up their data before running the script to prevent any accidental loss of files.
+- **JavaScript Enabled**: The app relies on client-side JavaScript; ensure your browser supports and allows JS.
+- **Flowbite and Font Awesome**: The interface depends on Flowbite for components and Font Awesome for icons (CDNs are already linked).
+- **No Server Needed**: Everything runs locally in the browser, no backend or server setup required.

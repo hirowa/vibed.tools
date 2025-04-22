@@ -1,39 +1,31 @@
-# Milestone Highlights
+## 🗂️Extension Organizer
 
-## Script Overview
+**Extension Organizer** is a simple, intuitive web-based utility that allows users to organize files within a selected folder based on file extensions. Designed for efficient digital housekeeping, the tool supports both copying and moving files into designated folders, helping users quickly declutter or restructure their directories based on file types.
 
-The **Milestone Highlights** plugin is a JavaScript-based web tool that calculates and displays special milestone dates based on a user-defined anniversary. By combining monthly anniversaries with milestone intervals (in days), this plugin identifies and highlights dates when both criteria align. The tool is helpful for tracking and celebrating significant recurring moments such as work anniversaries, relationship milestones, or project progress.
+### Features
 
-## Detailed Use/Features
+- **Extension-Based Sorting**: Automatically filters and organizes files by their extensions, including `.jpg`, `.pdf`, `.txt`, `.mp3`, `.md`, and more.
+- **Custom Extensions**: Users can define custom file extensions beyond the provided list for specialized use cases.
+- **Copy or Move Actions**: Offers the flexibility to either duplicate or relocate matching files into a specified folder.
+- **Folder Picker Integration**: Utilizes the native folder picker interface, allowing users to choose the root directory easily.
+- **Responsive UI**: Built with Flowbite and Tailwind CSS for a modern, mobile-friendly interface.
 
-1. **Date Input**: Users provide an initial anniversary date as the starting point.
-2. **Milestone Interval**: Users input a milestone interval (in days) to evaluate recurring significant milestones.
-3. **Evaluation Period**: Users specify the number of years over which the milestones should be computed.
-4. **Calculation Logic**:
-   - Generates monthly anniversaries over the specified time span.
-   - Computes milestone dates by repeatedly adding the milestone interval to the anniversary date.
-   - Identifies and highlights dates that are both monthly anniversaries and milestone intervals.
-5. **Interactive UI**: Features a user-friendly interface using Bootstrap components.
-6. **Toast Notifications**: Custom toast messages are shown for actions such as initialization, errors, and results using icon-coded alerts.
+---
 
-## Requirements
+### How to use?
 
-- A modern web browser (Chrome, Firefox, Edge, Safari)
-- Local or hosted web server (if accessing via file path restrictions)
-- Internet connection (if external libraries like Bootstrap or Font Awesome are CDN-based)
+1. **Open the Web App**: Load the HTML file in a modern browser (supporting the File System Access API).
+2. **Select File Type**: Use the dropdown to choose a file extension or define a custom one.
+3. **Choose Action**: Select whether you want to copy or move the files.
+4. **Name Target Folder**: Enter a name for the destination folder (it will be created if it doesn’t exist).
+5. **Pick Root Folder**: Click the “Select Root Folder” button to choose the directory to scan.
+6. **Organize Files**: Click “Organize Files” to start the process.
+7. **View Results**: Check the results preview for a list of moved/copied files.
 
-## Usage
+---
 
-1. Open the plugin interface in your browser.
-2. Enter:
-   - An **Anniversary Date**
-   - A **Milestone Interval** (e.g., 100 days)
-   - A **Number of Years** to evaluate (e.g., 5)
-3. Click **Calculate**.
-4. View the output section for matched milestone dates where monthlyversaries align with milestone intervals.
+### Special Requirements
 
-## Disclaimer
-
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-Additionally, the code presented here has been generated with the assistance of AI and may contain errors or require adjustments for specific use cases. This script has only been tested on Windows 11, and its compatibility with other operating systems is not guaranteed. Users are advised to back up their data before running the script to prevent any accidental loss of files.
+- **Modern Browser Support**: The tool relies on the [File System Access API](https://developer.mozilla.org/en-US/docs/Web/API/File_System_Access_API), which is supported in Chromium-based browsers (e.g., Chrome, Edge).
+- **User Permissions**: Browser must be granted permission to access local directories.
+- **No Backend Needed**: Entirely client-side; works offline after loading.

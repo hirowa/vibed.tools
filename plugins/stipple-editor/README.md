@@ -1,61 +1,37 @@
-# Advanced Stipple Effect Editor
+## ⏺️Stipple Effect Editor
 
-## Script Overview
+The **Stipple Effect Editor** is an advanced, web-based visual plugin that enables users to transform images into artistic stipple-style renderings. By applying various dithering algorithms and customizable settings, it provides high-precision control over dot shapes, sizes, and colors for creative or analytical purposes. The interface is interactive and supports drag-and-drop image uploads, real-time previews, and flexible export options.
 
-The **Advanced Stipple Effect Editor** is a web-based image processing tool designed for artists, designers, and creative developers to generate **stippled imagery** from uploaded photos using advanced dithering algorithms. It provides a user-friendly interface for transforming raster images into artistic stippled outputs with detailed control over dither method, dot configuration, color settings, and export formats.
+### Features
 
-## Detailed Use/Features
+- **Multiple Dithering Algorithms**: Supports Atkinson, Bayer, Floyd-Steinberg, and Manual dithering for various artistic effects.
+- **Custom Dot Rendering**: Choose from dot shapes like square, circle, triangle, or use custom characters for ASCII-style visuals.
+- **Advanced Manual Controls**: Fine-tune threshold, dot size, spacing, contrast, and brightness when in manual mode.
+- **Real-Time Preview**: Instantly visualize the effect changes on the canvas and toggle between original and processed views.
+- **Flexible Color Settings**: Adjust background and dot colors, reverse colors, or enable color mode for vibrant output.
+- **Export Options**: Export current or all images in PNG, SVG, or both formats with optional background inclusion.
+- **Zoom & Pan Controls**: Navigate large images with intuitive zoom and drag features.
+- **Status & Log View**: Track processing history and actions using a built-in status log viewer.
+- **Responsive UI**: Organized with accordions, tooltips, and modals for a smooth editing experience.
 
-This editor enables users to:
+---
 
-1. **Upload and preview images** in a canvas environment.
-2. **Apply various dithering algorithms**:
-   - Atkinson
-   - Bayer
-   - Floyd-Steinberg
-   - Manual control (with custom dot settings)
-3. **Fine-tune stippling appearance**:
-   - Adjustable threshold for pixel-level processing.
-   - Dot customization (shape, size, spacing, contrast, brightness).
-   - Shape selection: square, circle, triangle, or a custom character.
-4. **Full color configuration**:
-   - Set dot and background colors.
-   - Toggle reverse color and color mode.
-   - Choose to export with/without background.
-5. **Export processed images**:
-   - Format options: PNG, SVG, or both.
-   - Export single or multiple image outputs.
-6. **Built-in tools**:
-   - Original vs processed image comparison.
-   - Zoom reset.
-   - View log of operations for review/debugging.
+### How to use?
 
-## Installation
+1. **Upload Images**: Click the upload area or use the "Upload Images" button to add one or more images.
+2. **Choose Dithering Method**: Select a method from the dropdown (e.g., Atkinson, Bayer, Manual).
+3. **Adjust Settings**:
+   - In _Manual Mode_, fine-tune threshold, dot size, spacing, contrast, and brightness.
+   - Choose dot shapes and enable character input if applicable.
+   - Modify color preferences, toggle color mode or reverse colors.
+4. **Preview & Compare**: Use the preview area or enable comparison mode to view original vs processed image.
+5. **Zoom & Pan**: Use the mouse wheel or zoom buttons to inspect details. Reset zoom when needed.
+6. **Export Image(s)**: Click the "Export" button to save the processed output in your preferred format.
 
-### Requirements
+---
 
-- A modern web browser (Chrome, Firefox, Safari, Edge).
-- Internet connection for CDN resources (Bootstrap & Font Awesome).
-- No server-side component required (purely client-side).
+### Special Requirements
 
-### Installation Steps
-
-1. **Clone or download** the project folder.
-2. Ensure all linked assets (`styles.css`, `script.js`) are located correctly in their relative directories.
-3. Open the `index.html` in any supported web browser.
-
-### Usage
-
-1. Launch the `index.html` file in a browser.
-2. Use the **Upload** button or drag & drop to select images.
-3. Choose a **dithering method** from the dropdown.
-4. Adjust **threshold** and other image parameters via sliders.
-5. Optionally tweak manual settings if "Manual" dithering is selected.
-6. Customize dot and background colors, shapes, and toggle effects.
-7. Click **Export** to save the processed image in desired format(s).
-
-## Disclaimer
-
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-Additionally, the code presented here has been generated with the assistance of AI and may contain errors or require adjustments for specific use cases. This script has only been tested on Windows 11, and its compatibility with other operating systems is not guaranteed. Users are advised to back up their data before running the script to prevent any accidental loss of files.
+- **Modern Web Browser**: Optimized for use in Chrome, Firefox, or Edge with JavaScript enabled.
+- **Canvas Support**: Requires HTML5 canvas capabilities.
+- **Local File Access**: Must allow local file reading for image processing (no server upload required).
