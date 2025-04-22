@@ -1,4 +1,5 @@
 ## 🎶 Audio/Video Merger
+![image](https://github.com/user-attachments/assets/da789fe3-8b18-4b18-a490-842ebf4bfc51)
 
 The **Audio/Video Merger** is a lightweight, browser-based plugin designed to let users merge video and audio files directly on their device, no uploads or server processing needed. Powered by FFmpeg compiled to WebAssembly (WASM), this tool provides a fast and private media processing experience within a clean and responsive interface.
 
