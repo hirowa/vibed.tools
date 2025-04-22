@@ -1,4 +1,5 @@
 ## 🎬 Video Duration Calculator
+![image](https://github.com/user-attachments/assets/e85ebac2-e67c-4463-9631-f08fe36ba21f)
 
 **Video Duration Calculator** is a lightweight, browser-based tool designed to calculate the total playtime of multiple video files stored in a selected folder. With a sleek interface and real-time processing, it’s perfect for content creators, editors, or educators who need to quickly assess the total length of video content without uploading or processing the files in external apps.
 
