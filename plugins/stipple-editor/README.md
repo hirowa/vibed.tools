@@ -1,4 +1,5 @@
 ## ⏺️Stipple Effect Editor
+![image](https://github.com/user-attachments/assets/9fa0d11e-3af1-406d-bc98-4f4d46f06f31)
 
 The **Stipple Effect Editor** is an advanced, web-based visual plugin that enables users to transform images into artistic stipple-style renderings. By applying various dithering algorithms and customizable settings, it provides high-precision control over dot shapes, sizes, and colors for creative or analytical purposes. The interface is interactive and supports drag-and-drop image uploads, real-time previews, and flexible export options.
 
