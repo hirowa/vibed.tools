@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Text Tokenizer</title>
+    <meta name="plugin-category" content="Text" />
+    <meta name="plugin-name" content="🔤Text Tokenizer" />
+    <meta
+      name="plugin-description"
+      content="Count words, characters, and tokens. Optional HTML stripping and token chunking." />
+    <meta name="plugin-version" content="1.2" />
+    <meta
+      name="plugin-url"
+      content="https://github.com/hirowa/vibed.tools/tree/main/plugins/text-tokenizer" />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50">
+    <div class="flex h-screen">
+      <!-- Sidebar -->
+      <aside class="w-full max-w-[400px] border-r border-gray-200 py-4 px-6">
+        <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+          <h2 class="text-xl font-bold mb-4 flex items-center">
+            <i class="fas fa-pen-nib me-2"></i>Text Input
+          </h2>
+
+          <textarea
+            id="text-input"
+            rows="10"
+            placeholder="Enter your text here..."
+            class="w-full p-2.5 border border-gray-300 rounded-lg mb-4 text-gray-900 text-base focus:ring-blue-500 focus:border-blue-500"></textarea>
+
+          <div class="mb-2">
+            <input id="strip-html" type="checkbox" class="me-2" />
+            <label for="strip-html" class="text-gray-700"
+              >Strip HTML tags</label
+            >
+          </div>
+
+          <div class="mb-2 pb-4">
+            <input id="enable-chunking" type="checkbox" class="me-2" />
+            <label for="enable-chunking" class="text-gray-700"
+              >Split into chunks</label
+            >
+          </div>
+
+          <div class="mb-4 hidden" id="chunk-size-container">
+            <label for="chunk-size" class="block text-gray-700 mb-1"
+              >Chunk size (tokens)</label
+            >
+            <select
+              id="chunk-size"
+              class="w-full p-2.5 border border-gray-300 rounded-lg text-base text-gray-900 focus:ring-blue-500 focus:border-blue-500">
+              <option value="1024">1,024</option>
+              <option value="2048">2,048</option>
+              <option value="4096">4,096</option>
+              <option value="8192">8,192</option>
+              <option value="16385">16,385</option>
+              <option value="32768">32,768</option>
+              <option value="65536">65,536</option>
+              <option value="100000">100,000</option>
+              <option value="128000">128,000</option>
+              <option value="200000">200,000</option>
+              <option value="1000000">1,000,000</option>
+            </select>
+            <div class="mb-4 pt-4">
+              <label
+                for="chunk-preview-length"
+                class="block text-gray-700 mb-1">
+                Visible characters per chunk
+              </label>
+              <input
+                id="chunk-preview-length"
+                type="number"
+                min="10"
+                max="100000000"
+                value="300"
+                class="w-full p-2.5 border border-gray-300 rounded-lg text-base text-gray-900 focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+          </div>
+
+          <button
+            id="analyze-btn"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded focus:ring-2 focus:ring-blue-500">
+            <i class="fas fa-chart-bar me-2"></i>Process Text
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Results -->
+      <main class="flex-grow py-4 pl-8 overflow-y-auto w-full">
+        <section id="results-container" class="w-full max-w-[640px] mx-auto">
+          <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+            <h3 class="text-xl font-bold mb-4">
+              <i class="fas fa-chart-pie me-2 text-blue-600"></i>Analysis
+              Results
+            </h3>
+            <ul class="flex flex-wrap gap-6 text-gray-800 text-base">
+              <li><strong>Words:</strong> <span id="word-count"></span></li>
+              <li><strong>Tokens:</strong> <span id="token-count"></span></li>
+              <li>
+                <strong>Characters:</strong> <span id="char-count"></span>
+              </li>
+              <li id="chunk-count-item" class="hidden">
+                <strong>Total Chunks:</strong> <span id="chunk-count"></span>
+              </li>
+            </ul>
+          </div>
+
+          <div id="chunks-container" class="mt-6 hidden">
+            <h4 class="text-lg font-bold mb-2">
+              <i class="fas fa-code-branch me-2 text-purple-600"></i>Chunks
+            </h4>
+            <div
+              id="chunks-output"
+              class="space-y-4 flex flex-col items-center"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
