@@ -1,4 +1,5 @@
 ## Vibed Tools
+![image](https://github.com/user-attachments/assets/25100601-fbca-4408-a966-cfecc9709b3f)
 
 **Vibed Tools** is a modular web application framework that allows developers to build and manage multiple tools via a plugin-based architecture. It's designed to provide a smooth user experience with dynamic loading, categorized navigation, and seamless integration of new tools through isolated plugin folders.
 
