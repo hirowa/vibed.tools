@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Extension Organizer</title>
+
+    <meta name="plugin-category" content="Files" />
+    <meta name="plugin-name" content="🗂️Extension Organizer" />
+    <meta
+      name="plugin-description"
+      content="Organize and sort files by extension." />
+    <meta name="plugin-version" content="1.2" />
+    <meta name="plugin-url" content="github.com/your‑repo/file-organizer" />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50">
+    <div class="flex h-screen">
+      <!-- Sidebar -->
+      <aside class="w-full max-w-[400px] border-r border-gray-200 py-4 pr-8">
+        <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+          <h2 class="text-xl font-bold mb-4 flex items-center">
+            <i class="fas fa-folder-tree me-2"></i>Organize Files
+          </h2>
+
+          <!-- Extension Dropdown -->
+          <div class="mb-4">
+            <label for="extensionSelect" class="block text-gray-700 mb-1"
+              >File Type</label
+            >
+            <select
+              id="extensionSelect"
+              class="border border-gray-300 rounded-lg text-base block w-full p-2.5">
+              <option value=".jpg">.jpg</option>
+              <option value=".png">.png</option>
+              <option value=".pdf">.pdf</option>
+              <option value=".docx">.docx</option>
+              <option value=".xlsx">.xlsx</option>
+              <option value=".pptx">.pptx</option>
+              <option value=".txt">.txt</option>
+              <option value=".csv">.csv</option>
+              <option value=".mp3">.mp3</option>
+              <option value=".mp4">.mp4</option>
+              <option value=".zip">.zip</option>
+              <option value=".json">.json</option>
+              <option value=".html">.html</option>
+              <option value=".md">.md</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <!-- Custom Extension Input -->
+          <div class="mb-4 hidden" id="customExtGroup">
+            <label for="customExtension" class="block text-gray-700 mb-1"
+              >Custom Extension (e.g. .md)</label
+            >
+            <input
+              type="text"
+              id="customExtension"
+              class="border border-gray-300 rounded-lg block w-full p-2.5"
+              placeholder=".yourExt" />
+          </div>
+
+          <!-- Copy/Move -->
+          <div class="mb-4">
+            <label for="actionType" class="block text-gray-700 mb-1"
+              >Action</label
+            >
+            <select
+              id="actionType"
+              class="border border-gray-300 rounded-lg text-base block w-full p-2.5">
+              <option value="copy">Copy</option>
+              <option value="move">Move</option>
+            </select>
+          </div>
+
+          <!-- Target Folder Name -->
+          <div class="mb-4">
+            <label for="targetFolder" class="block text-gray-700 mb-1"
+              >Target Folder Name</label
+            >
+            <input
+              type="text"
+              id="targetFolder"
+              class="border border-gray-300 rounded-lg block w-full p-2.5"
+              placeholder="e.g. pdf_files" />
+          </div>
+
+          <!-- Folder Picker -->
+          <button
+            id="pickFolderBtn"
+            class="w-full mt-4 inline-flex items-center justify-center px-4 py-2 bg-gray-200 text-black font-medium rounded hover:bg-gray-300 focus:ring-2 focus:ring-blue-500">
+            <i class="fas fa-folder-open me-2"></i>Select Root Folder
+          </button>
+          <p id="folderPath" class="mt-2 text-sm text-gray-600 truncate"></p>
+
+          <!-- Go Button -->
+          <button
+            id="organizeBtn"
+            class="w-full mt-4 inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 focus:ring-2 focus:ring-blue-500">
+            <i class="fas fa-play me-2"></i>Organize Files
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main -->
+      <main class="flex-grow py-4 pl-8 overflow-y-auto w-full">
+        <section id="results" class="hidden flex justify-center mt-6">
+          <div
+            class="w-full max-w-[640px] p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-8">
+            <div class="mb-4">
+              <h5 class="text-xl font-bold text-gray-900">
+                Files Moved/Copied
+              </h5>
+            </div>
+            <!-- Progress Bar -->
+            <div id="progressWrapper" class="mb-6 hidden">
+              <label
+                for="progressBar"
+                class="block mb-1 font-medium text-gray-700"
+                >Progress</label
+              >
+              <div class="w-full bg-gray-200 rounded-full h-4">
+                <div
+                  id="progressBar"
+                  class="bg-blue-600 h-4 rounded-full w-0 transition-all duration-300"></div>
+              </div>
+            </div>
+
+            <div
+              id="preview"
+              class="overflow-hidden text-sm text-gray-700 whitespace-pre-wrap font-mono max-h-[500px] truncate"></div>
+          </div>
+        </section>
+
+        <!-- Welcome -->
+        <div
+          id="initialMessage"
+          class="bg-white rounded-lg shadow-md py-8 px-16 text-center max-w-[500px] mx-auto">
+          <i class="fas fa-box-open fa-4x mb-4 text-blue-600"></i>
+          <h4 class="text-2xl font-bold mb-3">Organize by Extension</h4>
+          <p class="text-lg text-gray-700">
+            Pick a folder, choose extension and action (copy/move), and organize
+            your files!
+          </p>
+        </div>
+      </main>
+    </div>
+
+    <script src="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

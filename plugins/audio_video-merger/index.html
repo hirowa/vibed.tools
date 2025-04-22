@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- ——— Metadata for Audio/Video Merger Plugin ——— -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Audio/Video Merger</title>
+    <meta name="plugin-category" content="Media" />
+    <meta name="plugin-name" content="🎶Audio/Video Merger" />
+    <meta
+      name="plugin-description"
+      content="Merge audio and video files right in your browser using FFmpeg WASM." />
+    <meta name="plugin-version" content="2.2" />
+    <meta name="plugin-url" content="github.com/your-repo/audio-video-merger" />
+
+    <!-- ——— Stylesheets ——— -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+
+  <body class="bg-gray-50">
+    <div class="flex h-screen">
+      <!-- ——— Sidebar ——— -->
+      <aside class="w-full max-w-[400px] border-r border-gray-200 py-4 px-6">
+        <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+          <h2 class="text-xl font-bold mb-4 flex items-center">
+            <i class="fas fa-file-import me-2"></i>Upload Media
+          </h2>
+
+          <!-- Video File Input -->
+          <div class="mb-6">
+            <label
+              for="video-input"
+              class="block mb-2 text-sm font-medium text-gray-700">
+              Video File
+            </label>
+            <input
+              id="video-input"
+              type="file"
+              accept="video/mp4,video/webm,video/avi,video/mkv"
+              class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-blue-500 focus:border-blue-500 p-2.5" />
+          </div>
+
+          <!-- Audio File Input -->
+          <div class="mb-6">
+            <label
+              for="audio-input"
+              class="block mb-2 text-sm font-medium text-gray-700">
+              Audio File
+            </label>
+            <input
+              id="audio-input"
+              type="file"
+              accept="audio/mpeg,audio/wav,audio/flac"
+              class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-blue-500 focus:border-blue-500 p-2.5" />
+          </div>
+
+          <!-- Merge Button -->
+          <button
+            id="merge-btn"
+            class="w-full inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <i class="fas fa-compress-arrows-alt me-2"></i>Merge Audio & Video
+          </button>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div id="progress-container" class="px-4 hidden">
+          <label class="block text-gray-700 mb-2">Progress</label>
+          <div class="w-full bg-gray-200 rounded-full h-4">
+            <div
+              id="progress-bar"
+              class="bg-blue-600 h-4 rounded-full"
+              style="width: 0%"></div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ——— Main Area ——— -->
+      <main class="flex-grow w-full py-4 px-8 overflow-y-auto">
+        <!-- Result Preview -->
+        <section
+          id="result-section"
+          class="flex justify-center w-full px-4 lg:px-0">
+          <div
+            class="w-full bg-white border border-gray-200 rounded-lg shadow-md p-4">
+            <div class="flex items-center justify-between mb-4">
+              <h5
+                class="text-xl font-bold leading-none text-gray-900 flex items-center">
+                <i class="fas fa-play me-2"></i>Merged Preview
+              </h5>
+              <a
+                id="download-btn"
+                href="#"
+                download="merged_video.mp4"
+                class="text-sm font-medium text-green-600 hover:underline hidden">
+                <i class="fas fa-download me-1"></i>Download
+              </a>
+            </div>
+            <div class="aspect-video">
+              <video
+                id="merged-video"
+                controls
+                class="rounded-lg w-full h-full">
+                <source src="" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- ——— Scripts ——— -->
+    <script src="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.10.0/dist/ffmpeg.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

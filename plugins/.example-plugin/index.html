@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Metadata -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Template Showcase</title>
+    <meta name="plugin-category" content="Template" />
+    <meta name="plugin-name" content="Plugin Example" />
+    <meta
+      name="plugin-description"
+      content="A demonstration template that showcases a plugin example." />
+    <meta name="plugin-version" content="1.0" />
+    <meta name="plugin-url" content="github.com/test-example" />
+
+    <!-- Style Links -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="bg-gray-50">
+    <div class="flex h-screen">
+      <!-- Sidebar: All input elements go here -->
+      <aside
+        class="w-full max-w-[400px] border-r border-gray-200 py-4"
+        style="padding-right: calc(var(--spacing) * 8)">
+        <!-- Input Card: Enter your data here -->
+        <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+          <h2 class="text-xl font-bold mb-4">
+            <i class="fas fa-edit me-2"></i>Input Panel
+          </h2>
+          <p class="text-gray-600 mb-4">
+            Use this panel to add all your necessary data. Every input card
+            should be placed here.
+          </p>
+          <!-- Input Field Example -->
+          <div class="mb-4">
+            <label for="data-input" class="block text-gray-700 mb-1"
+              >Data Input</label
+            >
+            <input
+              id="data-input"
+              type="text"
+              placeholder="Enter your data here"
+              class="border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+          </div>
+          <!-- Dropdown Example -->
+          <div class="mb-4">
+            <label for="option-select" class="block text-gray-700 mb-1"
+              >Select Option</label
+            >
+            <select
+              id="option-select"
+              class="block w-full p-2.5 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+              <option value="">Choose an option</option>
+              <option value="option1">Option One</option>
+              <option value="option2">Option Two</option>
+              <option value="option3">Option Three</option>
+            </select>
+          </div>
+          <!-- Action Button -->
+          <button
+            class="w-full inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <i class="fas fa-arrow-right me-2"></i>Submit Input
+          </button>
+        </div>
+      </aside>
+
+      <!-- Canvas: Main content -->
+      <main class="flex-grow py-4 px-8 overflow-y-auto w-full">
+        <!-- Welcome Header -->
+        <header class="mb-6">
+          <h1 class="text-3xl font-bold text-blue-600 mb-2">
+            Welcome to the Dashboard
+          </h1>
+          <p class="text-gray-700">
+            This canvas is designed to display the primary content. Below you'll
+            find various sections that demonstrate creative layouts and detailed
+            instructions.
+          </p>
+        </header>
+
+        <!-- Content Options Section -->
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-3">
+            Content Options
+          </h2>
+          <p class="text-gray-600 mb-4">
+            Use the options below to navigate or filter through your data. Each
+            option represents a different view mode to help you customize the
+            display.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Option Card 1 -->
+            <div class="bg-white rounded-lg shadow-md p-4 w-full">
+              <h3 class="text-xl font-bold mb-2">
+                <i class="fas fa-chart-line me-2"></i>Analytics View
+              </h3>
+              <p class="text-gray-600">
+                View your detailed analytics with graphs and charts. Ideal for
+                tracking and trends.
+              </p>
+            </div>
+            <!-- Option Card 2 -->
+            <div class="bg-white rounded-lg shadow-md p-4 w-full">
+              <h3 class="text-xl font-bold mb-2">
+                <i class="fas fa-table me-2"></i>Data Table
+              </h3>
+              <p class="text-gray-600">
+                Explore data in a structured table format for clear comparisons
+                and analysis.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Detailed Instructions Section -->
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-3">
+            Detailed Instructions
+          </h2>
+          <p class="text-gray-600 mb-4">
+            Follow these steps to make full use of the dashboard:
+          </p>
+          <ol class="list-decimal list-inside text-gray-700 space-y-2">
+            <li>Enter your data in the Sidebar Input Panel.</li>
+            <li>
+              Select your viewing option or data filter from the available
+              dropdown.
+            </li>
+            <li>Click the "Submit Input" button to apply your changes.</li>
+            <li>
+              Review the updated display and explore various content sections
+              like Analytics or Data Table.
+            </li>
+            <li>
+              Adjust settings or refresh content as needed using the provided
+              controls.
+            </li>
+          </ol>
+          <p class="mt-4 text-sm text-gray-500">
+            Note: This is a demo setup; integrate your own logic to connect
+            inputs with dynamic content.
+          </p>
+        </section>
+
+        <!-- Additional Content Section: Extra creative options can be added here -->
+        <section>
+          <h2 class="text-2xl font-semibold text-gray-800 mb-3">
+            Extra Features
+          </h2>
+          <p class="text-gray-600 mb-4">
+            Enhance your experience by exploring additional features:
+          </p>
+          <ul class="list-disc list-inside text-gray-700 space-y-2">
+            <li>Live data updates with auto-refresh.</li>
+            <li>Interactive charts powered by JavaScript libraries.</li>
+            <li>Customizable themes and layout configurations.</li>
+            <li>Detailed reports and export options for data analysis.</li>
+          </ul>
+        </section>
+      </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Folder to CSV Exporter</title>
+
+    <meta name="plugin-category" content="Text" />
+    <meta name="plugin-name" content="📂Files to CSV Exporter" />
+    <meta
+      name="plugin-description"
+      content="Scan folders for .md/.txt/.srt and export to CSV." />
+    <meta name="plugin-version" content="2.3" />
+    <meta
+      name="plugin-url"
+      content="github.com/your‑repo/folder-csv-exporter" />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50">
+    <div class="flex h-screen">
+      <!-- Sidebar -->
+      <aside class="w-full max-w-[400px] border-r border-gray-200 py-4 pr-8">
+        <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+          <h2 class="text-xl font-bold mb-4 flex items-center">
+            <i class="fas fa-folder-open me-2"></i>Select Folder
+          </h2>
+
+          <!-- File Type Dropdown -->
+          <div class="mb-4">
+            <label for="fileType" class="block text-gray-700 mb-1"
+              >File Type</label
+            >
+            <select
+              id="fileType"
+              class="border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+              <option value=".md">Markdown (.md)</option>
+              <option value=".srt">Subtitle (.srt)</option>
+              <option value=".txt">Text (.txt)</option>
+            </select>
+          </div>
+
+          <!-- Folder Picker -->
+          <div class="mb-4">
+            <button
+              id="pickFolderBtn"
+              class="w-full inline-flex items-center justify-center px-4 py-2 bg-gray-200 text-black font-medium rounded hover:bg-gray-300 focus:ring-2 focus:ring-blue-500">
+              <i class="fas fa-folder me-2"></i>Choose Folder
+            </button>
+            <p id="folderPath" class="mt-2 text-sm text-gray-600 truncate"></p>
+          </div>
+
+          <!-- Convert Button -->
+          <button
+            id="convertBtn"
+            class="w-full inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 mt-4">
+            <i class="fas fa-file-csv me-2"></i>Convert to CSV
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Display -->
+      <main class="flex-grow py-4 pl-8 overflow-y-auto w-full">
+        <section id="results" class="hidden flex justify-center mt-6">
+          <div
+            class="w-full max-w-[640px] p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-8">
+            <div class="flex items-center justify-between mb-4">
+              <h5 class="text-xl font-bold text-gray-900">Result</h5>
+              <a
+                id="downloadBtn"
+                class="text-sm text-blue-600 hover:underline hidden"
+                download="files.csv"
+                >Download CSV</a
+              >
+            </div>
+            <div
+              id="preview"
+              class="overflow-x-auto text-sm text-gray-700 whitespace-pre-wrap font-mono max-h-[400px]"></div>
+          </div>
+        </section>
+
+        <div
+          id="initialMessage"
+          class="bg-white rounded-lg shadow-md py-8 px-16 text-center max-w-[500px] mx-auto">
+          <i class="fas fa-magic fa-4x mb-4 text-blue-600"></i>
+          <h4 class="text-2xl font-bold mb-3">Folder to CSV Exporter</h4>
+          <p class="text-lg text-gray-700">
+            Select a folder and file type, then click "Convert to CSV" to merge
+            contents into a CSV file.
+          </p>
+        </div>
+      </main>
+    </div>
+
+    <script src="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
