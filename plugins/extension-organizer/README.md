@@ -1,4 +1,5 @@
 ## 🗂️Extension Organizer
+![image](https://github.com/user-attachments/assets/2564237b-dbf4-42e1-9ebd-961946230cb6)
 
 **Extension Organizer** is a simple, intuitive web-based utility that allows users to organize files within a selected folder based on file extensions. Designed for efficient digital housekeeping, the tool supports both copying and moving files into designated folders, helping users quickly declutter or restructure their directories based on file types.
 
