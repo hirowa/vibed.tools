@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Waveform Visualizer</title>
+
+    <meta name="plugin-category" content="Media" />
+    <meta name="plugin-name" content="〰️Waveform Visualizer" />
+    <meta
+      name="plugin-description"
+      content="Create stunning waveform animations from audio." />
+    <meta name="plugin-version" content="1.0" />
+    <meta
+      name="plugin-url"
+      content="https://github.com/hirowa/vibed.tools/tree/main/plugins/waveform-visualizer" />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+
+  <body class="bg-gray-50">
+    <div class="flex h-screen">
+      <!-- Sidebar -->
+      <aside class="w-full max-w-[400px] border-r border-gray-200 py-4 px-6">
+        <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+          <h2 class="text-xl font-bold mb-4 flex items-center">
+            <i class="fas fa-music me-2"></i>Audio Settings
+          </h2>
+
+          <!-- File Upload -->
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-1" for="audio-upload"
+              >Upload Audio Files</label
+            >
+            <input
+              type="file"
+              id="audio-upload"
+              accept=".mp3,.wav,.ogg,.flac,.aac,.m4a,.aiff"
+              class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer focus:outline-none" />
+          </div>
+
+          <!-- Waveform Type -->
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-1" for="waveform-style"
+              >Waveform Style</label
+            >
+            <select
+              id="waveform-style"
+              class="w-full p-2 border border-gray-300 rounded-lg text-base">
+              <option value="linear">Linear</option>
+              <option value="polar">Polar (Circular)</option>
+              <option value="spectrogram">Spectrogram</option>
+              <option value="blob">Blob (Siri)</option>
+            </select>
+          </div>
+
+          <!-- Color Pickers -->
+          <!-- Waveform Color -->
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Waveform Color</label>
+            <div class="flex items-center gap-2">
+              <input
+                type="color"
+                id="waveform-color"
+                class="h-[46px] w-[48px]"
+                value="#3498db" />
+              <input
+                type="text"
+                id="waveform-hex"
+                maxlength="7"
+                class="flex-grow p-2 border border-gray-300 rounded-lg text-base w-full"
+                value="#3498db"
+                placeholder="#3498db" />
+            </div>
+          </div>
+
+          <!-- Background Color -->
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Background Color</label>
+            <div class="flex items-center gap-2">
+              <input
+                type="color"
+                id="background-color"
+                class="h-[46px] w-[48px]"
+                value="#ffffff" />
+              <input
+                type="text"
+                id="background-hex"
+                maxlength="7"
+                class="flex-grow p-2 border border-gray-300 rounded-lg text-base w-full"
+                value="#ffffff"
+                placeholder="#ffffff" />
+            </div>
+          </div>
+
+          <!-- Aspect Ratio -->
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Aspect Ratio</label>
+            <select
+              id="aspect-ratio"
+              class="w-full p-2 border border-gray-300 rounded-lg text-base">
+              <option value="1:1">1:1 (Square)</option>
+              <option value="3:2">3:2 (Landscape)</option>
+              <option value="2:3">2:3 (Portrait)</option>
+            </select>
+          </div>
+          <!-- Sensibility Slider -->
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-1" for="sensibility"
+              >Sensibility</label
+            >
+            <div class="flex items-center gap-3">
+              <input
+                type="range"
+                id="sensibility"
+                min="0.1"
+                max="2"
+                step="0.1"
+                value="0.3"
+                class="w-full h-2 bg-gray-200 rounded-lg cursor-pointer" />
+              <span id="sensibility-value" class="text-sm text-gray-800"
+                >0.3</span
+              >
+            </div>
+          </div>
+
+          <!-- Render Button -->
+          <button
+            id="render-btn"
+            class="w-full inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 focus:outline-none">
+            <i class="fas fa-play me-2"></i>Render Waveform
+          </button>
+          <!-- FFmpeg Export Progress Bar -->
+          <div
+            id="progress-container"
+            class="hidden w-full max-w-xl mx-auto mt-6">
+            <label class="block text-gray-700 mb-2">Export Progress</label>
+            <div class="w-full bg-gray-200 rounded-full h-4 relative">
+              <div
+                id="progress-bar"
+                class="bg-blue-600 h-4 rounded-full text-white text-xs flex items-center justify-center transition-all duration-200 ease-in-out"
+                style="width: 0%">
+                <span
+                  id="progress-text"
+                  class="absolute w-full text-center"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <audio id="audio-player" hidden></audio>
+
+      <main class="flex-grow py-4 pl-8 overflow-y-auto w-full">
+        <section id="canvas-wrapper" class="flex justify-center">
+          <canvas
+            id="waveform-canvas"
+            class="rounded shadow-md bg-white"></canvas>
+        </section>
+        <!-- Controls -->
+        <div class="flex justify-center items-center gap-4 mt-6 flex-wrap">
+          <button
+            id="play-btn"
+            class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-800">
+            <i class="fas fa-play"></i>
+          </button>
+
+          <button
+            id="pause-btn"
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800">
+            <i class="fas fa-pause"></i>
+          </button>
+
+          <button
+            id="export-btn"
+            class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-800">
+            <i class="fas fa-download me-2"></i>Export as Video
+          </button>
+        </div>
+      </main>
+    </div>
+
+    <script src="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mp4-muxer@5.2.1/build/mp4-muxer.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
