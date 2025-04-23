@@ -1,4 +1,5 @@
 ## 〰️Waveform Visualizer
+![image](https://github.com/user-attachments/assets/0c1949b8-5549-42df-ac1a-b3f939e253d3)
 
 **Waveform Visualizer** is an interactive media plugin that transforms audio into mesmerizing waveform animations, offering users a customizable experience to generate and export visually engaging audio-reactive content. It’s ideal for content creators, musicians, and developers looking to visualize sound as high-quality MP4 video clips.
 
