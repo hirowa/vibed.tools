@@ -70,6 +70,21 @@ window.addEventListener("DOMContentLoaded", () => {
   syncColor(bgColor, bgHex);
   setCanvasAspect();
   aspectRatio.addEventListener("change", setCanvasAspect);
+
+  // SHOW POLAR FILL CHECKBOX ONLY IF 'POLAR' IS SELECTED
+  const waveformStyle = document.getElementById("waveform-style");
+  const polarFillContainer = document.getElementById("polar-fill-container");
+
+  function togglePolarFillVisibility() {
+    if (waveformStyle.value === "polar") {
+      polarFillContainer.style.display = "block";
+    } else {
+      polarFillContainer.style.display = "none";
+    }
+  }
+
+  waveformStyle.addEventListener("change", togglePolarFillVisibility);
+  togglePolarFillVisibility(); // Call once on load in case "polar" is already selected
 });
 
 // ——— Drawing Functions ———
@@ -118,6 +133,14 @@ function drawPolar(data, sens) {
       : currentCtx.quadraticCurveTo(p.x, p.y, mx, my);
   });
   currentCtx.closePath();
+
+  const fillEnabled = document.getElementById("polar-fill")?.checked;
+  if (fillEnabled) {
+    currentCtx.fillStyle = waveColor.value;
+    currentCtx.fill();
+  }
+
+  currentCtx.stroke();
 }
 
 function drawSpectrogram(data, sens) {
