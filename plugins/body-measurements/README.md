@@ -1,4 +1,5 @@
 ## 📏 Body Measurements
+![image](https://github.com/user-attachments/assets/989fa7e2-a70b-4a61-b1fe-07bc85b4fb74)
 
 This plugin provides an intuitive interface to calculate real-world body dimensions from a single image by leveraging a height reference. It allows users to upload a full-body photo, mark reference points, and draw lines corresponding to various body parts. Once the user's height is known, it automatically calculates other measurements in centimeters or inches.
 
