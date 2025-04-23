@@ -1,4 +1,5 @@
 ## 🌌 The Universal Profile
+
 ![image](https://github.com/user-attachments/assets/eaaa769d-cff9-4703-96c1-1d20baea84dc)
 
 **The Universal Profile** is an interactive web plugin that provides users with an immersive experience to discover detailed astrological and metaphysical insights based on their birthdate and gender. It combines multiple cultural zodiac systems, numerology, and Feng Shui into a unified, elegant interface, transforming personal data into a multidimensional spiritual profile.
@@ -34,5 +35,5 @@
 
 - **Modern Browser**: Requires a modern web browser (Chrome, Firefox, Edge, etc.) to render UI and handle JavaScript.
 - **Flowbite CSS/JS**: Uses the Flowbite UI library, which must be loaded via CDN.
-- **Image Assets**: Assumes availability of local SVG assets organized into specific folders (e.g., `assets/img/western_zodiac`, `assets/img/tarot_cards`, etc.) for visual results.
+- **Image Assets**: Assumes availability of local SVG assets organized into specific folders (e.g., `assets/img/western_zodiac`, `assets/img/tarot_cards`, etc.) for visual results. (Not included)
 - **Date Format**: Input date must be in `YYYY-MM-DD` format.
