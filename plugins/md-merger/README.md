@@ -1,4 +1,5 @@
 ## 📘Markdown Merger
+![image](https://github.com/user-attachments/assets/8d4f1aee-5175-42ac-90f8-aac388423705)
 
 **Markdown Merger** is a simple web-based tool that lets users select a local folder of `.md` (Markdown) files, merge their contents, and optionally preserve specific frontmatter metadata. It's designed for writers, developers, or content managers who want to consolidate Markdown documentation quickly and cleanly.
 
