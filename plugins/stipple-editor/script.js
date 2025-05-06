@@ -426,7 +426,7 @@ class StippleApp {
 
     this.dotColor.addEventListener("input", (e) => {
       e.stopPropagation();
-      const color = this.safeHexColor(e.target.value, "#000000");
+      const color = this.safeHexColor(e.target.value, "#2c383a");
       this.dotColorPreview.style.backgroundColor = color;
       this.dotColorPicker.value = color;
       this.processImage();
@@ -824,7 +824,7 @@ class StippleApp {
     const dotShape = this.dotShape.value;
     const dotChar = this.dotChar.value || "*";
     let bgColor = this.safeHexColor(this.bgColor.value, "#FFFFFF");
-    let dotColor = this.safeHexColor(this.dotColor.value, "#000000");
+    let dotColor = this.safeHexColor(this.dotColor.value, "#2c383a");
 
     // Process the image based on the selected method
     let processedData;
@@ -1497,7 +1497,7 @@ class StippleApp {
     const dotShape = this.dotShape.value;
     const dotChar = this.dotChar.value || "*";
     let bgColor = this.safeHexColor(this.bgColor.value, "#FFFFFF");
-    let dotColor = this.safeHexColor(this.dotColor.value, "#000000");
+    let dotColor = this.safeHexColor(this.dotColor.value, "#2c383a");
 
     // When reverse colors is checked, we don't swap colors, we just invert dot placement
 
@@ -1620,28 +1620,41 @@ class StippleApp {
 
   // Export as PNG
   exportPNG(image, filename) {
-    // Create a canvas for the PNG export
     const canvas = document.createElement("canvas");
     canvas.width = image.original.width;
     canvas.height = image.original.height;
     const ctx = canvas.getContext("2d");
 
-    // Draw the preview image to the canvas
+    // Draw what the user sees
     ctx.drawImage(this.previewCanvas, 0, 0);
 
-    // Create download link
+    // If the user DOESN’T want the background, punch it out
+    if (!this.exportWithBg.checked) {
+      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const [br, bg, bb] = this.hexToRgb(
+        this.safeHexColor(this.bgColor.value, "#FFFFFF")
+      );
+
+      for (let i = 0; i < imgData.data.length; i += 4) {
+        if (
+          imgData.data[i] === br &&
+          imgData.data[i + 1] === bg &&
+          imgData.data[i + 2] === bb
+        ) {
+          imgData.data[i + 3] = 0; // make that pixel transparent
+        }
+      }
+      ctx.putImageData(imgData, 0, 0);
+    }
+
+    // Download
     canvas.toBlob((blob) => {
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
       link.download = `${filename}_stipple.png`;
       link.click();
-
-      // Clean up
       URL.revokeObjectURL(url);
-
-      this.addStatusMessage(`Exported "${filename}_stipple.png"`);
-      this.showToast("Success", `Exported PNG file.`, "success");
     });
   }
 
@@ -1658,9 +1671,9 @@ class StippleApp {
     this.bgColor.value = "#FFFFFF";
     this.bgColorPreview.style.backgroundColor = "#FFFFFF";
     this.bgColorPicker.value = "#FFFFFF";
-    this.dotColor.value = "#000000";
-    this.dotColorPreview.style.backgroundColor = "#000000";
-    this.dotColorPicker.value = "#000000";
+    this.dotColor.value = "#2c383a";
+    this.dotColorPreview.style.backgroundColor = "#2c383a";
+    this.dotColorPicker.value = "#2c383a";
     this.exportWithBg.checked = true;
     this.reverseColors.checked = false;
     this.colorMode.checked = false;
@@ -1806,7 +1819,7 @@ class StippleApp {
 
   // Utility function to convert hex color to RGB
   hexToRgb(hexColor) {
-    const hex = this.safeHexColor(hexColor, "#000000").substring(1);
+    const hex = this.safeHexColor(hexColor, "#2c383a").substring(1);
     const r = parseInt(hex.substring(0, 2), 16);
     const g = parseInt(hex.substring(2, 4), 16);
     const b = parseInt(hex.substring(4, 6), 16);
@@ -1815,7 +1828,7 @@ class StippleApp {
 
   // Utility function to invert a hex color
   invertHexColor(hexColor) {
-    const hex = this.safeHexColor(hexColor, "#000000").substring(1);
+    const hex = this.safeHexColor(hexColor, "#2c383a").substring(1);
     const r = 255 - parseInt(hex.substring(0, 2), 16);
     const g = 255 - parseInt(hex.substring(2, 4), 16);
     const b = 255 - parseInt(hex.substring(4, 6), 16);
