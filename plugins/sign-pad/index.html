@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Meta -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Pad</title>
+
+    <meta name="plugin-category" content="Media" />
+    <meta name="plugin-name" content="✍️ Sign Pad" />
+    <meta
+      name="plugin-description"
+      content="Signature, sketch, alphabet pad animator." />
+    <meta name="plugin-version" content="1.2" />
+    <meta
+      name="plugin-url"
+      content="https://github.com/hirowa/vibed.tools/tree/main/plugins/sign-pad" />
+
+    <!-- Flowbite (includes Tailwind utilities) -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <!-- FontAwesome icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+      #app {
+        display: flex;
+        height: 100%;
+      }
+      #sidebar {
+        width: 400px;
+        max-width: 100%;
+        border-right: 1px solid #e5e7eb;
+      }
+      #main-panel {
+        flex: 1 1 0%;
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        min-width: 0;
+      }
+      #wrapper {
+        flex: 1 1 0%;
+        position: relative;
+        min-height: 0;
+        min-width: 0;
+      }
+
+      #sign-pad {
+        width: 100%;
+        height: 100%;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        background: #fff;
+        touch-action: none;
+        cursor: crosshair;
+        display: block;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <div id="pad-root" class="flex h-full">
+      <!-- Sidebar -->
+      <aside
+        class="w-full max-w-[400px] border-r border-gray-200 py-4 px-6 space-y-6 overflow-y-auto">
+        <div class="bg-white rounded-lg shadow-md p-4">
+          <h2 class="text-xl font-bold mb-4 flex items-center">
+            <i class="fas fa-pen-fancy me-2"></i>Sign Pad Controls
+          </h2>
+
+          <!-- Buttons (Flowbite styles) -->
+          <div class="grid grid-cols-2 gap-3 mb-6">
+            <button
+              id="clear-btn"
+              class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 w-full inline-flex items-center justify-center">
+              <i class="fas fa-trash-alt me-2"></i>Clear
+            </button>
+            <button
+              id="undo-btn"
+              class="text-white bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 w-full inline-flex items-center justify-center">
+              <i class="fas fa-undo me-2"></i>Undo
+            </button>
+            <button
+              id="play-btn"
+              class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 w-full inline-flex items-center justify-center col-span-2">
+              <i class="fas fa-play me-2"></i>Play Animation
+            </button>
+            <button
+              id="save-png-btn"
+              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 w-full inline-flex items-center justify-center">
+              <i class="fas fa-file-image me-2"></i>Save PNG
+            </button>
+            <button
+              id="save-svg-btn"
+              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 w-full inline-flex items-center justify-center">
+              <i class="fas fa-object-group me-2"></i>Save&nbsp;SVG
+            </button>
+            <button
+              id="save-json-btn"
+              class="text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 w-full inline-flex items-center justify-center">
+              <i class="fas fa-file-code me-2"></i>Save JSON
+            </button>
+            <label
+              for="load-json-input"
+              class="text-white bg-gray-600 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 w-full inline-flex items-center justify-center cursor-pointer">
+              <i class="fas fa-file-import me-2"></i>Load JSON
+              <input
+                id="load-json-input"
+                type="file"
+                accept=".json"
+                class="hidden" />
+            </label>
+            <button
+              id="save-anims-svg-btn"
+              class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 w-full inline-flex items-center justify-center col-span-2">
+              <i class="fas fa-film me-2"></i>Save&nbsp;Animated SVG
+            </button>
+            <button
+              id="save-video-btn"
+              class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 w-full inline-flex items-center justify-center col-span-2">
+              <i class="fas fa-film me-2"></i>Save Video
+            </button>
+            <label
+              for="bg-image-input"
+              class="col-span-2 text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 w-full inline-flex items-center justify-center cursor-pointer">
+              <i class="fas fa-image me-2"></i>Upload Image
+              <input
+                id="bg-image-input"
+                type="file"
+                accept="image/*"
+                class="hidden" />
+            </label>
+          </div>
+
+          <!-- Settings -->
+          <div class="space-y-4">
+            <!-- include background toggle -->
+            <div class="flex items-center gap-3">
+              <input
+                id="bg-export-toggle"
+                type="checkbox"
+                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2" />
+              <label
+                for="bg-export-toggle"
+                class="text-sm text-gray-700 select-none">
+                Include background in export
+              </label>
+            </div>
+            <!-- colour -->
+            <div>
+              <label
+                for="color-picker"
+                class="block mb-1 text-sm font-medium text-gray-700"
+                >Stroke Color</label
+              >
+              <input
+                id="color-picker"
+                type="color"
+                value="#000000"
+                class="w-full h-10 rounded-lg border border-gray-300 p-1" />
+            </div>
+
+            <!-- width -->
+            <div>
+              <label
+                for="stroke-width"
+                class="block mb-1 text-sm font-medium text-gray-700"
+                >Stroke Width (px)</label
+              >
+              <input
+                id="stroke-width"
+                type="range"
+                min="1"
+                max="30"
+                value="2"
+                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+              <p id="width-label" class="text-xs text-gray-600 mt-1 text-right">
+                2 px
+              </p>
+            </div>
+
+            <!-- speed -->
+            <div>
+              <label
+                for="anim-speed"
+                class="block mb-1 text-sm font-medium text-gray-700"
+                >Animation Speed ×</label
+              >
+              <input
+                id="anim-speed"
+                type="range"
+                min="0.5"
+                max="5"
+                step="0.1"
+                value="1"
+                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+              <p id="speed-label" class="text-xs text-gray-600 mt-1 text-right">
+                1×
+              </p>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Canvas -->
+      <main id="main-panel">
+        <div id="wrapper">
+          <canvas id="sign-pad"></canvas>
+        </div>
+      </main>
+    </div>
+
+    <!-- Flowbite JS -->
+    <script src="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <!-- Load Canvg v4 as an ES-module and expose it for the rest of the page -->
+    <script type="module">
+      import { Canvg } from "https://cdn.skypack.dev/canvg@4.0.3"; // latest v4 on Skypack
+      window.Canvg = Canvg; // make it visible to any non-module scripts
+    </script>
+
+    <script src="script.js"></script>
+  </body>
+</html>
