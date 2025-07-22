@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="💰 AdSense Calculator" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="💵 Financial" />
+    <title>AdSense Calculator</title>
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">AdSense Calculator</h2>
+      <p class="mb-6 text-gray-700">
+        Calculate estimated AdSense earnings: daily, monthly, and yearly.
+      </p>
+
+      <!-- Input Fields -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block mb-1 text-gray-700">Page Views</label>
+          <input
+            id="ads-pv"
+            type="text"
+            placeholder="1,000"
+            value="1,000"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Period</label>
+          <select
+            id="ads-period"
+            class="w-full border border-gray-300 rounded-lg p-2.5">
+            <option value="1">Daily</option>
+            <option value="30" selected>Monthly</option>
+            <option value="365">Yearly</option>
+          </select>
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Cost Per Click ($)</label>
+          <input
+            id="ads-cpc"
+            type="text"
+            placeholder="1"
+            value="1"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Website CTR (%)</label>
+          <input
+            id="ads-ctr"
+            type="text"
+            placeholder="1"
+            value="1"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-4 mb-6">
+        <button
+          id="ads-btn-calc"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <i class="fas fa-calculator me-2"></i>Calculate
+        </button>
+        <button
+          id="ads-btn-clear"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+          <i class="fas fa-eraser me-2"></i>Clear
+        </button>
+      </div>
+
+      <!-- Result Output -->
+      <div id="ads-result" class="text-gray-800"></div>
+    </div>
+
+    <!-- Description Section -->
+    <div
+      class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto mt-8 text-gray-800">
+      <h3 class="text-xl font-semibold mb-3">
+        Why use this AdSense Calculator?
+      </h3>
+      <p class="mb-4">
+        This calculator helps estimate your potential AdSense earnings based on
+        page views, CPC, and CTR. It is a valuable tool for website owners and
+        content creators to understand the earning potential from Google AdSense
+        ads.
+      </p>
+
+      <h4 class="text-lg font-medium mb-2">How does it work?</h4>
+      <ul class="list-disc list-inside mb-4 space-y-1">
+        <li>Enter your average number of page views.</li>
+        <li>Select the period: daily, monthly, or yearly.</li>
+        <li>Input your average CPC and CTR values.</li>
+        <li>Click <strong>Calculate</strong> to see estimated earnings.</li>
+      </ul>
+
+      <h4 class="text-lg font-medium mb-2">Formula:</h4>
+      <p class="mb-2">
+        Daily Earnings = (Page Views × CPC × CTR%) / Period<br />
+        Monthly = Daily × 30<br />
+        Annually = Daily × 365
+      </p>
+
+      <h4 class="text-lg font-medium mb-2">Example:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-2">
+Page Views: 20,000/month | CPC: $0.75 | CTR: 1.5%
+Daily Earnings = (20,000 × 0.75 × 0.015) ÷ 30 = $7.50
+Monthly = $7.50 × 30 = $225
+Annual = $7.50 × 365 = $2,737.50
+      </pre>
+    </div>
+
+    <script>
+      function parseFormattedNumber(value) {
+        return parseFloat(value.replace(/,/g, ""));
+      }
+
+      function formatNumber(value) {
+        return value.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+      }
+
+      function formatInputWithCommas(input) {
+        input.value = input.value.replace(/[^\d.]/g, "");
+        const parts = input.value.split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        input.value = parts.join(".");
+      }
+
+      ["ads-pv", "ads-cpc", "ads-ctr"].forEach((id) => {
+        const el = document.getElementById(id);
+        el.addEventListener("blur", () => formatInputWithCommas(el));
+      });
+
+      function calculateAdSense() {
+        const pv = parseFormattedNumber(
+          document.getElementById("ads-pv").value
+        );
+        const cpc = parseFormattedNumber(
+          document.getElementById("ads-cpc").value
+        );
+        const ctr = parseFormattedNumber(
+          document.getElementById("ads-ctr").value
+        );
+        const period = parseFloat(document.getElementById("ads-period").value);
+        const resultEl = document.getElementById("ads-result");
+
+        if (
+          isNaN(pv) ||
+          isNaN(cpc) ||
+          isNaN(ctr) ||
+          isNaN(period) ||
+          pv <= 0 ||
+          cpc < 0 ||
+          ctr < 0
+        ) {
+          resultEl.innerHTML =
+            '<div class="text-red-600 bg-red-50 p-3 rounded">Please enter valid values.</div>';
+          return;
+        }
+
+        const daily = (pv * cpc * (ctr / 100)) / period;
+        const monthly = daily * 30;
+        const annual = daily * 365;
+
+        resultEl.innerHTML = `
+          <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <h4 class="text-lg font-semibold text-gray-700 mb-4">Estimated Earnings</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Daily</label>
+                <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">$${formatNumber(
+                  daily
+                )}</div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Monthly</label>
+                <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">$${formatNumber(
+                  monthly
+                )}</div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Annually</label>
+                <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">$${formatNumber(
+                  annual
+                )}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function clearAdSenseForm() {
+        document.getElementById("ads-pv").value = "";
+        document.getElementById("ads-cpc").value = "";
+        document.getElementById("ads-ctr").value = "";
+        document.getElementById("ads-result").innerHTML = "";
+      }
+
+      document
+        .getElementById("ads-btn-calc")
+        .addEventListener("click", calculateAdSense);
+      document
+        .getElementById("ads-btn-clear")
+        .addEventListener("click", clearAdSenseForm);
+    </script>
+  </body>
+</html>

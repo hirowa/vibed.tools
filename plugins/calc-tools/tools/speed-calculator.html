@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="🏎️ Speed Calculator" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="➗ Math" />
+    <title>Speed Calculator</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Speed Calculator</h2>
+      <p class="mb-6 text-gray-700">
+        Calculate the average speed in your chosen unit based on the distance
+        traveled in a given time.
+      </p>
+
+      <div class="flex flex-wrap gap-4 items-end mb-6">
+        <div>
+          <label class="block mb-1 text-gray-700">Distance</label>
+          <input
+            id="distance"
+            type="number"
+            value="100"
+            class="w-32 border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Unit</label>
+          <select
+            id="unitDistance"
+            class="w-48 border border-gray-300 rounded-lg p-2.5">
+            <option value="1609.344">miles (mi)</option>
+            <option value="1000">kilometers (km)</option>
+            <option value="1" selected>meters (m)</option>
+            <option value="0.9144">yards (yd)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Total Time</label>
+          <input
+            id="time"
+            type="time"
+            step="1"
+            value="01:30:00"
+            class="w-40 border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <button
+          onclick="calculate()"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <i class="fas fa-calculator me-2"></i>Calculate
+        </button>
+        <button
+          onclick="clearForm()"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+          <i class="fas fa-eraser me-2"></i>Clear
+        </button>
+      </div>
+
+      <div id="result" class="text-gray-800"></div>
+    </div>
+
+    <script>
+      function formatNumber(num) {
+        return num.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+      }
+
+      function calculate() {
+        const distance = parseFloat(document.getElementById("distance").value);
+        const unitDistance = parseFloat(
+          document.getElementById("unitDistance").value
+        );
+        const timeStr = document.getElementById("time").value;
+
+        const [hh, mm, ss] = timeStr.split(":").map(Number);
+        const totalSeconds = hh * 3600 + mm * 60 + ss;
+
+        const totalMeters = distance * unitDistance;
+        const speedMps = totalMeters / totalSeconds;
+
+        const results = {
+          "Meters per second (m/s)": speedMps,
+          "Meters per minute": speedMps * 60,
+          "Kilometers per hour (km/h)": speedMps * 3.6,
+          "Miles per hour (mph)": speedMps * 2.2369362921,
+        };
+
+        let output = `
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+          <h4 class="text-lg font-semibold text-gray-700 mb-4">Average Speed</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">`;
+
+        for (const [label, val] of Object.entries(results)) {
+          output += `
+          <div>
+            <label class="block text-sm font-medium text-gray-600 mb-1">${label}</label>
+            <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">${formatNumber(
+              val
+            )}</div>
+          </div>`;
+        }
+
+        output += `</div></div>`;
+        document.getElementById("result").innerHTML = output;
+      }
+
+      function clearForm() {
+        document.getElementById("distance").value = "100";
+        document.getElementById("time").value = "01:30:00";
+        document.getElementById("result").innerHTML = "";
+      }
+    </script>
+  </body>
+</html>

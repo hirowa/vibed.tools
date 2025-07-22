@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="💡 Lighting Calculator" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="🔧 Other Calculators" />
+    <title>Lighting Calculator</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">💡 Lighting Calculator</h2>
+      <p class="mb-6 text-gray-700">
+        Select a lighting calculation to convert between lumens, lux, candela,
+        watts, and more.
+      </p>
+
+      <div class="mb-4">
+        <label class="block mb-1 text-gray-700">Select Calculator</label>
+        <select
+          id="calc-selector"
+          class="w-full border border-gray-300 rounded-lg p-2.5">
+          <option value="">-- Choose Calculation --</option>
+          <option value="intensity">Candela ⇄ Lumens / Lux</option>
+          <option value="illuminance">Lux ⇄ Footcandles</option>
+          <option value="power">Lumens ⇄ Watts / Lux ⇄ Watts</option>
+          <option value="mcd">Lumens ⇄ Millicandela</option>
+        </select>
+      </div>
+
+      <div id="calc-forms">
+        <!-- Intensity Conversion -->
+        <div id="intensity" class="hidden">
+          <h3 class="text-lg font-semibold mb-2">Candela ⇄ Lumens / Lux</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-gray-700 mb-1">Value</label
+              ><input
+                id="i-val"
+                type="number"
+                class="border p-2.5 rounded w-full"
+                value="100" />
+            </div>
+            <div>
+              <label class="block text-gray-700 mb-1">Distance (m)</label
+              ><input
+                id="i-dist"
+                type="number"
+                class="border p-2.5 rounded w-full"
+                value="1" />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-gray-700 mb-1">Conversion Type</label>
+              <select id="i-type" class="border p-2.5 rounded w-full">
+                <option value="candelaToLumens">Candela to Lumens</option>
+                <option value="candelaToLux">Candela to Lux</option>
+                <option value="lumensToCandela">Lumens to Candela</option>
+                <option value="lumensToLux">Lumens to Lux</option>
+                <option value="luxToCandela">Lux to Candela</option>
+                <option value="luxToLumens">Lux to Lumens</option>
+              </select>
+            </div>
+          </div>
+          <div class="flex gap-4 mb-6">
+            <button
+              onclick="calcIntensity()"
+              class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+              Calculate
+            </button>
+            <button
+              onclick="clearForm('intensity')"
+              class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+              Clear
+            </button>
+          </div>
+          <div id="intensity-result" class="text-gray-800"></div>
+        </div>
+
+        <!-- Illuminance -->
+        <div id="illuminance" class="hidden">
+          <h3 class="text-lg font-semibold mb-2">Lux ⇄ Footcandles</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-gray-700 mb-1">Value</label
+              ><input
+                id="ill-val"
+                type="number"
+                class="border p-2.5 rounded w-full"
+                value="100" />
+            </div>
+            <div>
+              <label class="block text-gray-700 mb-1">Conversion Type</label>
+              <select id="ill-type" class="border p-2.5 rounded w-full">
+                <option value="luxToFc">Lux to Footcandles</option>
+                <option value="fcToLux">Footcandles to Lux</option>
+              </select>
+            </div>
+          </div>
+          <div class="flex gap-4 mb-6">
+            <button
+              onclick="calcIlluminance()"
+              class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+              Calculate
+            </button>
+            <button
+              onclick="clearForm('illuminance')"
+              class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+              Clear
+            </button>
+          </div>
+          <div id="illuminance-result" class="text-gray-800"></div>
+        </div>
+
+        <!-- Power -->
+        <div id="power" class="hidden">
+          <h3 class="text-lg font-semibold mb-2">
+            Lumens ⇄ Watts / Lux ⇄ Watts
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-gray-700 mb-1">Value</label
+              ><input
+                id="p-val"
+                type="number"
+                class="border p-2.5 rounded w-full"
+                value="800" />
+            </div>
+            <div>
+              <label class="block text-gray-700 mb-1">Conversion Type</label>
+              <select id="p-type" class="border p-2.5 rounded w-full">
+                <option value="lumensToWatts">Lumens to Watts</option>
+                <option value="wattsToLumens">Watts to Lumens</option>
+                <option value="luxToWatts">Lux to Watts</option>
+                <option value="wattsToLux">Watts to Lux</option>
+              </select>
+            </div>
+          </div>
+          <div class="flex gap-4 mb-6">
+            <button
+              onclick="calcPower()"
+              class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+              Calculate
+            </button>
+            <button
+              onclick="clearForm('power')"
+              class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+              Clear
+            </button>
+          </div>
+          <div id="power-result" class="text-gray-800"></div>
+        </div>
+
+        <!-- Millicandela -->
+        <div id="mcd" class="hidden">
+          <h3 class="text-lg font-semibold mb-2">Lumens ⇄ Millicandela</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-gray-700 mb-1">Value</label
+              ><input
+                id="m-val"
+                type="number"
+                class="border p-2.5 rounded w-full"
+                value="1000" />
+            </div>
+            <div>
+              <label class="block text-gray-700 mb-1">Conversion Type</label>
+              <select id="m-type" class="border p-2.5 rounded w-full">
+                <option value="lumensToMcd">Lumens to mcd</option>
+                <option value="mcdToLumens">mcd to Lumens</option>
+              </select>
+            </div>
+          </div>
+          <div class="flex gap-4 mb-6">
+            <button
+              onclick="calcMcd()"
+              class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+              Calculate
+            </button>
+            <button
+              onclick="clearForm('mcd')"
+              class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+              Clear
+            </button>
+          </div>
+          <div id="mcd-result" class="text-gray-800"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const format = (v) =>
+        parseFloat(v).toLocaleString("en-US", {
+          minimumFractionDigits: 4,
+          maximumFractionDigits: 4,
+        });
+      const val = (id) => parseFloat(document.getElementById(id).value) || 0;
+      const styledResult = (obj) =>
+        `<div class="bg-gray-50 border border-gray-200 rounded-lg p-4"><h4 class="text-lg font-semibold text-gray-700 mb-4">Result</h4><div class="grid grid-cols-1 sm:grid-cols-2 gap-4">${Object.entries(
+          obj
+        )
+          .map(
+            ([l, v]) =>
+              `<div><label class="block text-sm font-medium text-gray-600 mb-1">${l}</label><div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">${v}</div></div>`
+          )
+          .join("")}</div></div>`;
+
+      document
+        .getElementById("calc-selector")
+        .addEventListener("change", function () {
+          document
+            .querySelectorAll("#calc-forms > div")
+            .forEach((d) => d.classList.add("hidden"));
+          if (this.value)
+            document.getElementById(this.value).classList.remove("hidden");
+        });
+
+      function clearForm(id) {
+        document
+          .querySelectorAll(`#${id} input`)
+          .forEach((i) => (i.value = ""));
+        document.querySelector(`#${id}-result`).innerHTML = "";
+      }
+
+      function calcIntensity() {
+        const val1 = val("i-val"),
+          dist = val("i-dist"),
+          type = document.getElementById("i-type").value;
+        const pi = Math.PI;
+        let result = 0;
+        switch (type) {
+          case "candelaToLumens":
+            result = val1 * 4 * pi;
+            break;
+          case "candelaToLux":
+            result = val1 / dist ** 2;
+            break;
+          case "lumensToCandela":
+            result = val1 / (4 * pi);
+            break;
+          case "lumensToLux":
+            result = val1 / (4 * pi * dist ** 2);
+            break;
+          case "luxToCandela":
+            result = val1 * dist ** 2;
+            break;
+          case "luxToLumens":
+            result = val1 * (4 * pi * dist ** 2);
+            break;
+        }
+        document.getElementById("intensity-result").innerHTML = styledResult({
+          "Converted Value": format(result),
+        });
+      }
+
+      function calcIlluminance() {
+        const v = val("ill-val"),
+          type = document.getElementById("ill-type").value;
+        const res = type === "luxToFc" ? v / 10.764 : v * 10.764;
+        document.getElementById("illuminance-result").innerHTML = styledResult({
+          "Converted Value": format(res),
+        });
+      }
+
+      function calcPower() {
+        const v = val("p-val"),
+          type = document.getElementById("p-type").value;
+        let res = 0;
+        switch (type) {
+          case "lumensToWatts":
+            res = v / 15;
+            break;
+          case "wattsToLumens":
+            res = v * 15;
+            break;
+          case "luxToWatts":
+            res = v / 683;
+            break;
+          case "wattsToLux":
+            res = v * 683;
+            break;
+        }
+        document.getElementById("power-result").innerHTML = styledResult({
+          "Converted Value": format(res),
+        });
+      }
+
+      function calcMcd() {
+        const v = val("m-val"),
+          type = document.getElementById("m-type").value;
+        const res = type === "lumensToMcd" ? v * 1000 : v / 1000;
+        document.getElementById("mcd-result").innerHTML = styledResult({
+          "Converted Value": format(res),
+        });
+      }
+    </script>
+  </body>
+</html>

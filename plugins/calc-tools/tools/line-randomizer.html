@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="🔀 Line Randomizer" />
+    <meta name="plugin-type" content="✍️ Text Tools" />
+    <title>Line Randomizer</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Line Randomizer</h2>
+      <p class="mb-6 text-gray-700">
+        This tool allows you to randomize lines of text—useful for shuffling
+        names, tasks, questions, etc. It supports optional skipping of empty
+        lines and produces a new order every time.
+      </p>
+
+      <div class="mb-4">
+        <label class="block mb-1 text-gray-700">Input Text</label>
+        <textarea
+          id="lr-input"
+          rows="10"
+          class="w-full border border-gray-300 rounded-lg p-2.5 h-40"
+          value="David
+Maria
+Kate"
+          placeholder="David
+Maria
+Kate"></textarea>
+      </div>
+
+      <div class="mb-4">
+        <label class="inline-flex items-center">
+          <input type="checkbox" id="lr-skip-empty" class="mr-2" checked />
+          Skip Empty Lines
+        </label>
+      </div>
+
+      <div class="flex gap-4 mb-6">
+        <button
+          id="lr-generate"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full sm:w-auto">
+          <i class="fas fa-random me-2"></i>Generate
+        </button>
+        <button
+          id="lr-clear"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 w-full sm:w-auto">
+          <i class="fas fa-eraser me-2"></i>Clear
+        </button>
+      </div>
+
+      <div class="mb-4">
+        <label class="block mb-1 text-gray-700">Result</label>
+        <textarea
+          rows="10"
+          id="lr-output"
+          class="w-full border border-gray-300 rounded-lg p-2.5 h-40"
+          readonly></textarea>
+      </div>
+    </div>
+
+    <div
+      class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto mt-8 text-gray-800">
+      <h3 class="text-xl font-semibold mb-3">Why is this tool useful?</h3>
+      <p class="mb-4">
+        The Line Randomizer is a simple tool for shuffling lines of text. It’s
+        ideal when creating randomized lists for contests, games, questions, or
+        team task assignments.
+      </p>
+
+      <h4 class="text-lg font-medium mb-2">How does it work?</h4>
+      <p class="mb-4">
+        The tool splits the input by lines, optionally filters out empty lines,
+        shuffles them using a randomized algorithm (Fisher-Yates), and displays
+        the output.
+      </p>
+
+      <h4 class="text-lg font-medium mb-2">Formula:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-4">
+Array.shuffle():
+for i from n - 1 downto 1:
+  j = random integer such that 0 ≤ j ≤ i
+  swap array[i] with array[j]
+      </pre>
+
+      <h4 class="text-lg font-medium mb-2">Example:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto">
+Input:
+Michael
+George
+Patricia
+
+Output:
+Patricia
+Michael
+George
+      </pre>
+    </div>
+
+    <script>
+      function shuffleLines(lines) {
+        for (let i = lines.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [lines[i], lines[j]] = [lines[j], lines[i]];
+        }
+        return lines;
+      }
+
+      document.getElementById("lr-generate").addEventListener("click", () => {
+        const input = document.getElementById("lr-input").value;
+        const skipEmpty = document.getElementById("lr-skip-empty").checked;
+        let lines = input.split("\n");
+        if (skipEmpty) {
+          lines = lines.filter((line) => line.trim() !== "");
+        }
+        const shuffled = shuffleLines(lines);
+        document.getElementById("lr-output").value = shuffled.join("\n");
+      });
+
+      document.getElementById("lr-clear").addEventListener("click", () => {
+        document.getElementById("lr-input").value = "";
+        document.getElementById("lr-output").value = "";
+      });
+    </script>
+  </body>
+</html>

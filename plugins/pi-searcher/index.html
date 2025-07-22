@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- ——— Metadata ——— -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>π Digit Finder</title>
+
+    <meta name="plugin-category" content="Text" />
+    <meta name="plugin-name" content="🔍 π Digit Finder" />
+    <meta
+      name="plugin-description"
+      content="Search for digit sequences or words inside the first billion digits of π." />
+    <meta name="plugin-version" content="1.1.0" />
+    <meta
+      name="plugin-url"
+      content="https://github.com/your‑username/pi-digit-finder" />
+
+    <!-- Flowbite 3.1.2 + FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+
+  <body class="bg-gray-50">
+    <div class="flex h-screen">
+      <!-- ——— Sidebar ——— -->
+      <aside
+        class="w-full max-w-[400px] border-r border-gray-200 py-4 px-6"
+        style="padding-right: calc(var(--spacing) * 8)">
+        <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+          <h2 class="text-xl font-bold mb-4 flex items-center">
+            <i class="fas fa-search me-2"></i>π Search
+          </h2>
+
+          <!-- File chooser -->
+          <div class="mb-4">
+            <label for="pi-file" class="block text-gray-700 mb-1">
+              Pi Digits File (.txt, ≈1 GB)
+            </label>
+            <input
+              id="pi-file"
+              type="file"
+              accept=".txt"
+              class="w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" />
+          </div>
+
+          <!-- Search term -->
+          <div class="mb-4">
+            <label for="search-term" class="block text-gray-700 mb-1"
+              >Sequence or Word</label
+            >
+            <input
+              id="search-term"
+              type="text"
+              placeholder="e.g. 314159  or  HELLO"
+              class="border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+            <p class="text-xs text-gray-500 mt-1">
+              Letters are encoded to base‑26 decimal (A=0 … Z=25).
+            </p>
+          </div>
+
+          <!-- Max matches -->
+          <div class="mb-6">
+            <label for="max-results" class="block text-gray-700 mb-1"
+              >Max Matches (1‑1000)</label
+            >
+            <input
+              id="max-results"
+              type="number"
+              min="1"
+              max="1000"
+              value="20"
+              class="border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+          </div>
+
+          <!-- Buttons -->
+          <button
+            id="search-btn"
+            class="w-full inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-2">
+            <i class="fas fa-play me-2"></i>Start Search
+          </button>
+
+          <button
+            id="cancel-btn"
+            class="w-full inline-flex items-center justify-center px-4 py-2 bg-red-600 text-white font-medium rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 hidden">
+            <i class="fas fa-stop me-2"></i>Cancel Search
+          </button>
+
+          <!-- Progress bar -->
+          <div id="progress-wrapper" class="mt-4 hidden">
+            <div class="mb-1 text-sm font-medium text-gray-700">
+              Progress <span id="progress-percent">0%</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-3">
+              <div
+                id="progress-bar"
+                class="bg-blue-600 h-3 rounded-full"
+                style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ——— Main area ——— -->
+      <main class="flex-grow py-4 pl-8 overflow-y-auto w-full">
+        <!-- Results -->
+        <section id="results-card" class="flex justify-center mt-6 hidden">
+          <div
+            class="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-8">
+            <div class="flex items-center justify-between mb-4">
+              <h5 class="text-xl font-bold leading-none text-gray-900">
+                Matches in π
+              </h5>
+              <span
+                id="match-count"
+                class="text-sm font-medium text-gray-600"></span>
+            </div>
+            <div class="flow-root">
+              <ul
+                id="match-list"
+                role="list"
+                class="divide-y divide-gray-200"></ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Welcome -->
+        <div
+          id="welcome"
+          class="bg-white rounded-lg shadow-md py-8 px-16 text-center max-w-[500px] mx-auto">
+          <i class="fas fa-question-circle fa-4x mb-4 text-blue-600"></i>
+          <h4 class="text-2xl font-bold mb-3">Welcome to π Digit Finder</h4>
+          <p class="text-lg text-gray-700">
+            Load your <em>pi‑billion.txt</em>, type a digit sequence or word,
+            then hit <b>Start Search</b>. Results show each 1‑based index where
+            the pattern begins.
+          </p>
+        </div>
+      </main>
+    </div>
+
+    <!-- JS -->
+    <script src="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

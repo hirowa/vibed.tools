@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="🔌 Energy Consumption Calculator" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="💵 Financial" />
+    <title>Energy Consumption Calculator</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      input[type="text"]::placeholder {
+        color: #a0aec0;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Energy Consumption Calculator</h2>
+      <p class="mb-6 text-gray-700">
+        Calculate estimated electricity consumption and cost based on the power
+        consumption of your devices, and their daily operating time.
+      </p>
+
+      <!-- kWh Cost Input -->
+      <div class="mb-4">
+        <label class="block mb-1 text-gray-700 font-medium"
+          >Estimated 1 kWh Cost (USD)</label
+        >
+        <input
+          id="energy-cost"
+          type="text"
+          class="w-full border border-gray-300 rounded-lg p-2.5"
+          value="0.16" />
+      </div>
+
+      <!-- Appliance List -->
+      <div id="appliance-list" class="space-y-4 mb-4"></div>
+
+      <!-- Add Appliance Button -->
+      <button
+        id="btn-add-appliance"
+        class="mb-6 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+        <i class="fas fa-plus me-2"></i>Add Appliance
+      </button>
+
+      <!-- Results -->
+      <div id="energy-result" class="text-gray-800"></div>
+    </div>
+
+    <!-- Description Section -->
+    <div
+      class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto mt-8 text-gray-800">
+      <h3 class="text-xl font-semibold mb-3">Why use this calculator?</h3>
+      <p class="mb-4">
+        The Energy Consumption Calculator helps you determine how much energy an
+        appliance uses based on its power and average daily usage time. This
+        tool displays the daily, monthly, and annual energy usage and
+        corresponding cost of each appliance and provides total consumption
+        summaries.
+      </p>
+
+      <h4 class="text-lg font-medium mb-2">How does it work?</h4>
+      <ul class="list-disc list-inside mb-4 space-y-1">
+        <li>Enter the estimated cost per kilowatt-hour (kWh).</li>
+        <li>
+          Add each appliance: name, power (W), quantity, and daily usage time
+          (hh:mm).
+        </li>
+        <li>
+          View detailed daily, monthly, and annual energy usage and cost per
+          appliance.
+        </li>
+      </ul>
+
+      <h4 class="text-lg font-medium mb-2">Formula:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-4">
+Energy [kWh/day] = Power [W] × Time [h/day] / 1000
+      </pre>
+
+      <h4 class="text-lg font-medium mb-2">Example:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto">
+TV: 70 W used for 3 hours/day
+Energy = 70 × 3 / 1000 = 0.21 kWh/day
+      </pre>
+
+      <h4 class="text-lg font-medium mb-2">Examples:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto">
+Appliance       | Power | Daily Time | Daily    | Monthly   | Annually
+Laptop          | 60 W  | 03:00      | 0.18 kWh | 5.4 kWh   | 65.7 kWh
+Dishwasher      | 200 W | 01:00      | 0.20 kWh | 6.0 kWh   | 73.0 kWh
+Refrigerator    | 200 W | 24:00      | 4.80 kWh | 144.0 kWh | 1752.0 kWh
+      </pre>
+    </div>
+
+    <script>
+      function parseNumber(val) {
+        return parseFloat(val.replace(/,/g, "")) || 0;
+      }
+
+      function formatNumber(val) {
+        return val.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+      }
+
+      function formatInputCommas(input) {
+        input.value = input.value.replace(/[^\d.]/g, "");
+        const parts = input.value.split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        input.value = parts.join(".");
+      }
+
+      function createApplianceInput() {
+        const container = document.createElement("div");
+        container.className = "bg-gray-100 p-4 rounded-lg space-y-4";
+
+        container.innerHTML = `
+    <div class="flex justify-end">
+      <button type="button" class="remove-appliance text-red-500 hover:text-red-700 px-3 py-1 rounded">
+        <i class="fas fa-trash fa-lg"></i>
+      </button>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label class="block mb-1 text-gray-700">Appliance Name</label>
+        <input type="text" class="appliance-name border border-gray-300 rounded-lg p-2.5 w-full" placeholder="TV" />
+      </div>
+      <div>
+        <label class="block mb-1 text-gray-700">Power (W)</label>
+        <input type="text" class="appliance-power border border-gray-300 rounded-lg p-2.5 w-full" placeholder="70" />
+      </div>
+      <div>
+        <label class="block mb-1 text-gray-700">Quantity</label>
+        <input type="text" class="appliance-quantity border border-gray-300 rounded-lg p-2.5 w-full" placeholder="1" value="1" />
+      </div>
+      <div>
+        <label class="block mb-1 text-gray-700">Daily Use (hh:mm)</label>
+        <input type="text" class="appliance-time border border-gray-300 rounded-lg p-2.5 w-full" placeholder="03:00" value="01:00" />
+      </div>
+    </div>
+  `;
+
+        container.querySelectorAll("input").forEach((input) => {
+          input.addEventListener("blur", () => formatInputCommas(input));
+          input.addEventListener("input", calculateEnergy);
+        });
+
+        container
+          .querySelector(".remove-appliance")
+          .addEventListener("click", () => {
+            container.remove();
+            calculateEnergy();
+          });
+
+        document.getElementById("appliance-list").appendChild(container);
+      }
+
+      function calculateEnergy() {
+        const kWhCost = parseNumber(
+          document.getElementById("energy-cost").value
+        );
+        const appliances = document.querySelectorAll("#appliance-list > div");
+        let totalKWhDay = 0;
+        let html = `<div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
+          <h4 class="text-lg font-semibold text-gray-700 mb-4">Total Consumption</h4><div class="grid grid-cols-1 sm:grid-cols-3 gap-4">`;
+
+        appliances.forEach((appliance) => {
+          const name = appliance.querySelector(".appliance-name").value;
+          const power = parseNumber(
+            appliance.querySelector(".appliance-power").value
+          );
+          const quantity = parseNumber(
+            appliance.querySelector(".appliance-quantity").value
+          );
+          const timeStr = appliance.querySelector(".appliance-time").value;
+          const [hh, mm] = timeStr.split(":").map(Number);
+          const timeHours = (hh || 0) + (mm || 0) / 60;
+          const dailyKWh = (power * timeHours * quantity) / 1000;
+          const monthlyKWh = dailyKWh * 30;
+          const yearlyKWh = dailyKWh * 365;
+          const dailyCost = dailyKWh * kWhCost;
+          const monthlyCost = monthlyKWh * kWhCost;
+          const yearlyCost = yearlyKWh * kWhCost;
+
+          totalKWhDay += dailyKWh;
+
+          html += `
+            <div class="col-span-full sm:col-span-1 bg-white border border-gray-300 rounded p-3 mb-2">
+              <div class="font-semibold text-blue-700 mb-1">${name}</div>
+              <div>Daily: ${formatNumber(dailyKWh)} kWh ($${formatNumber(
+            dailyCost
+          )})</div>
+              <div>Monthly: ${formatNumber(monthlyKWh)} kWh ($${formatNumber(
+            monthlyCost
+          )})</div>
+              <div>Annually: ${formatNumber(yearlyKWh)} kWh ($${formatNumber(
+            yearlyCost
+          )})</div>
+            </div>`;
+        });
+
+        html += `</div><div class="mt-4 text-blue-800 font-medium">
+          <p>Daily Total: ${formatNumber(totalKWhDay)} kWh ($${formatNumber(
+          totalKWhDay * kWhCost
+        )})</p>
+          <p>Monthly Total: ${formatNumber(
+            totalKWhDay * 30
+          )} kWh ($${formatNumber(totalKWhDay * 30 * kWhCost)})</p>
+          <p>Annual Total: ${formatNumber(
+            totalKWhDay * 365
+          )} kWh ($${formatNumber(totalKWhDay * 365 * kWhCost)})</p>
+        </div></div>`;
+
+        document.getElementById("energy-result").innerHTML = html;
+      }
+
+      // Initialization
+      document
+        .getElementById("btn-add-appliance")
+        .addEventListener("click", createApplianceInput);
+      document
+        .getElementById("energy-cost")
+        .addEventListener("input", calculateEnergy);
+      createApplianceInput(); // add initial row
+    </script>
+  </body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="🔢 Combinations Calculator" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="➗ Math" />
+    <title>Combinations Calculator</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Combinations Calculator</h2>
+      <p class="mb-6 text-gray-700">
+        Calculate the number of possible combinations without or with
+        repetition.
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block mb-1 text-gray-700"
+            >Elements in the set (n)</label
+          >
+          <input
+            id="comb-n"
+            type="number"
+            class="w-full border border-gray-300 rounded-lg p-2.5"
+            value="5"
+            placeholder="e.g. 5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Elements to choose (r)</label>
+          <input
+            id="comb-r"
+            type="number"
+            class="w-full border border-gray-300 rounded-lg p-2.5"
+            value="2"
+            placeholder="e.g. 2" />
+        </div>
+      </div>
+
+      <div class="flex gap-4 mb-6">
+        <button
+          onclick="calculateCombinations()"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <i class="fas fa-calculator me-2"></i>Calculate
+        </button>
+        <button
+          onclick="clearCombinationForm()"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+          <i class="fas fa-eraser me-2"></i>Clear
+        </button>
+      </div>
+
+      <div id="comb-result" class="text-gray-800"></div>
+    </div>
+
+    <div
+      class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto mt-8 text-gray-800 text-sm">
+      <h3 class="text-xl font-semibold mb-3">
+        Why use the Combinations Calculator?
+      </h3>
+      <p class="mb-4">
+        This calculator is useful for determining how many different groups can
+        be formed from a larger set, particularly when the order of selection
+        doesn’t matter. It helps with problems in probability, statistics, and
+        real-world planning.
+      </p>
+
+      <h4 class="text-lg font-medium mb-2">How does it work?</h4>
+      <p class="mb-2"><strong>Combinations (without repetition):</strong></p>
+      <pre class="bg-gray-100 text-xs rounded p-3 overflow-auto mb-4">
+C(n, r) = n! / [r! × (n - r)!]
+Example: C(5, 2) = 5! / (2! × 3!) = 10
+      </pre>
+
+      <p class="mb-2"><strong>Combinations with repetition:</strong></p>
+      <pre class="bg-gray-100 text-xs rounded p-3 overflow-auto mb-4">
+C(n + r - 1, r) = (n + r - 1)! / [r! × (n - 1)!]
+Example: C(5 + 2 - 1, 2) = C(6, 2) = 15
+      </pre>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.4.3/math.min.js"></script>
+    <script>
+      function factorial(n) {
+        return math.factorial(n);
+      }
+
+      function formatNumber(n) {
+        return n.toLocaleString("en-US");
+      }
+
+      function calculateCombinations() {
+        const n = parseInt(document.getElementById("comb-n").value, 10);
+        const r = parseInt(document.getElementById("comb-r").value, 10);
+        const resultEl = document.getElementById("comb-result");
+
+        if (isNaN(n) || isNaN(r) || n < 0 || r < 0 || r > n) {
+          resultEl.innerHTML =
+            '<div class="text-red-600 bg-red-50 p-3 rounded">Please enter valid non-negative integers where r ≤ n.</div>';
+          return;
+        }
+
+        const comb = factorial(n) / (factorial(r) * factorial(n - r));
+        const combRep =
+          factorial(n + r - 1) / (factorial(r) * factorial(n - 1));
+
+        resultEl.innerHTML = `
+          <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <h4 class="text-lg font-semibold text-gray-700 mb-4">Result</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Combinations</label>
+                <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">${formatNumber(
+                  comb
+                )}</div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Combinations with Repetition</label>
+                <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">${formatNumber(
+                  combRep
+                )}</div>
+              </div>
+            </div>
+          </div>`;
+      }
+
+      function clearCombinationForm() {
+        document.getElementById("comb-n").value = "";
+        document.getElementById("comb-r").value = "";
+        document.getElementById("comb-result").innerHTML = "";
+      }
+    </script>
+  </body>
+</html>

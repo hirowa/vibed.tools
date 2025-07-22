@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="✍️ Encoder & Decoder Toolkit" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="🔧 Other Calculators" />
+    <title>Encoder & Decoder Toolkit</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <style>
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">✍️ Encoder & Decoder Toolkit</h2>
+      <p class="mb-6 text-gray-700">
+        Select a tool and enter text in either box to encode or decode
+        automatically.
+      </p>
+
+      <div class="mb-4">
+        <label class="block mb-1 text-gray-700">Select Tool</label>
+        <select
+          id="tool-select"
+          class="w-full border border-gray-300 rounded-lg p-2.5">
+          <option value="">-- Choose Method --</option>
+          <option value="base64">Base64</option>
+          <option value="rot13">ROT13</option>
+          <option value="atbash">Atbash</option>
+          <option value="a1z26">A1Z26</option>
+          <option value="binary">Binary</option>
+          <option value="hex">Hex</option>
+          <option value="morse">Morse Code</option>
+          <option value="reverse">Reverse</option>
+          <option value="caesar">Caesar Cipher</option>
+        </select>
+      </div>
+
+      <div id="extra-key-field" class="mb-4 hidden">
+        <label class="block text-gray-700 mb-1">Caesar Shift (Key)</label>
+        <input
+          type="number"
+          id="cipher-key"
+          class="border p-2.5 rounded w-full"
+          value="3" />
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block text-gray-700 mb-1">Original / Input Text</label>
+          <textarea
+            id="input-encode"
+            class="border p-2.5 rounded w-full"
+            rows="5"
+            placeholder="Type to encode..."></textarea>
+        </div>
+        <div>
+          <label class="block text-gray-700 mb-1"
+            >Encoded / Decoded Output</label
+          >
+          <textarea
+            id="input-decode"
+            class="border p-2.5 rounded w-full"
+            rows="5"
+            placeholder="Type to decode..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const rot13 = (str) =>
+        str.replace(/[a-zA-Z]/g, (c) =>
+          String.fromCharCode(
+            (c <= "Z" ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26
+          )
+        );
+      const atbash = (str) =>
+        str.replace(/[a-zA-Z]/g, (c) =>
+          String.fromCharCode(
+            (c <= "Z" ? 90 : 122) - (c.toUpperCase().charCodeAt(0) - 65)
+          )
+        );
+      const a1z26 = (str) =>
+        str.replace(/[a-z]/gi, (c) =>
+          c === " " ? " " : c.toUpperCase().charCodeAt(0) - 64
+        );
+      const fromA1z26 = (txt) =>
+        txt
+          .trim()
+          .split(" ")
+          .map((x) => String.fromCharCode(64 + parseInt(x)))
+          .join("");
+      const toBinary = (txt) =>
+        txt
+          .split("")
+          .map((c) => c.charCodeAt(0).toString(2).padStart(8, "0"))
+          .join(" ");
+      const fromBinary = (bin) =>
+        bin
+          .split(" ")
+          .map((b) => String.fromCharCode(parseInt(b, 2)))
+          .join("");
+      const toHex = (txt) =>
+        txt
+          .split("")
+          .map((c) => c.charCodeAt(0).toString(16).padStart(2, "0"))
+          .join(" ");
+      const fromHex = (hex) =>
+        hex
+          .split(" ")
+          .map((h) => String.fromCharCode(parseInt(h, 16)))
+          .join("");
+      const reverseText = (txt) => txt.split("").reverse().join("");
+      const morseCode = {
+        a: ".-",
+        b: "-...",
+        c: "-.-.",
+        d: "-..",
+        e: ".",
+        f: "..-.",
+        g: "--.",
+        h: "....",
+        i: "..",
+        j: ".---",
+        k: "-.-",
+        l: ".-..",
+        m: "--",
+        n: "-.",
+        o: "---",
+        p: ".--.",
+        q: "--.-",
+        r: ".-.",
+        s: "...",
+        t: "-",
+        u: "..-",
+        v: "...-",
+        w: ".--",
+        x: "-..-",
+        y: "-.--",
+        z: "--..",
+        " ": "/",
+        1: ".----",
+        2: "..---",
+        3: "...--",
+        4: "....-",
+        5: ".....",
+        6: "-....",
+        7: "--...",
+        8: "---..",
+        9: "----.",
+        0: "-----",
+      };
+      const toMorse = (str) =>
+        str
+          .toLowerCase()
+          .split("")
+          .map((c) => morseCode[c] || "")
+          .join(" ");
+      const fromMorse = (str) =>
+        str
+          .split(" ")
+          .map(
+            (code) =>
+              Object.keys(morseCode).find((key) => morseCode[key] === code) ||
+              ""
+          )
+          .join("");
+
+      const inputEncode = document.getElementById("input-encode");
+      const inputDecode = document.getElementById("input-decode");
+      const selectTool = document.getElementById("tool-select");
+      const keyField = document.getElementById("cipher-key");
+
+      function encode(method, text) {
+        switch (method) {
+          case "base64":
+            return btoa(text);
+          case "rot13":
+            return rot13(text);
+          case "atbash":
+            return atbash(text);
+          case "a1z26":
+            return a1z26(text);
+          case "binary":
+            return toBinary(text);
+          case "hex":
+            return toHex(text);
+          case "morse":
+            return toMorse(text);
+          case "reverse":
+            return reverseText(text);
+          case "caesar":
+            const k = parseInt(keyField.value) || 3;
+            return text.replace(/[a-z]/gi, (c) => {
+              const base = c <= "Z" ? 65 : 97;
+              return String.fromCharCode(
+                ((c.charCodeAt(0) - base + k + 26) % 26) + base
+              );
+            });
+          default:
+            return text;
+        }
+      }
+
+      function decode(method, text) {
+        switch (method) {
+          case "base64":
+            try {
+              return atob(text);
+            } catch {
+              return "Invalid base64";
+            }
+          case "rot13":
+            return rot13(text);
+          case "atbash":
+            return atbash(text);
+          case "a1z26":
+            return fromA1z26(text);
+          case "binary":
+            return fromBinary(text);
+          case "hex":
+            return fromHex(text);
+          case "morse":
+            return fromMorse(text);
+          case "reverse":
+            return reverseText(text);
+          case "caesar":
+            const k = parseInt(keyField.value) || 3;
+            return text.replace(/[a-z]/gi, (c) => {
+              const base = c <= "Z" ? 65 : 97;
+              return String.fromCharCode(
+                ((c.charCodeAt(0) - base - k + 26) % 26) + base
+              );
+            });
+          default:
+            return text;
+        }
+      }
+
+      function syncInput(source, target, isEncoding) {
+        const method = selectTool.value;
+        if (!method) return;
+        target.value = isEncoding
+          ? encode(method, source.value)
+          : decode(method, source.value);
+      }
+
+      inputEncode.addEventListener("input", () =>
+        syncInput(inputEncode, inputDecode, true)
+      );
+      inputDecode.addEventListener("input", () =>
+        syncInput(inputDecode, inputEncode, false)
+      );
+      selectTool.addEventListener("change", () => {
+        inputEncode.value = "";
+        inputDecode.value = "";
+        document
+          .getElementById("extra-key-field")
+          .classList.toggle("hidden", selectTool.value !== "caesar");
+      });
+    </script>
+    <div
+      id="tool-description"
+      class="mt-8 bg-yellow-50 border border-yellow-200 rounded-lg p-4 hidden">
+      <h4 class="text-lg font-semibold text-yellow-800 mb-2">
+        Tool Description
+      </h4>
+      <p id="description-text" class="text-yellow-900"></p>
+    </div>
+
+    <script>
+      const descriptions = {
+        base64:
+          "Base64 encodes binary data into a text format using 64 ASCII characters. It's widely used for embedding images, storing credentials, and transmitting data in text-based formats.",
+        rot13:
+          "ROT13 is a letter substitution cipher that replaces a letter with the 13th letter after it in the alphabet. It's useful for hiding spoilers or simple text obfuscation.",
+        atbash:
+          "Atbash cipher flips the alphabet: A ↔ Z, B ↔ Y, etc. It's one of the oldest known ciphers and works the same way for encryption and decryption.",
+        a1z26:
+          "A1Z26 replaces letters with their position in the alphabet (A=1, B=2, ..., Z=26). It's a simple substitution cipher often used in basic puzzles.",
+        binary:
+          "Binary encoding represents characters using 0s and 1s. It’s the fundamental language of computers. This tool converts between text and binary code.",
+        hex: "Hexadecimal (base 16) is commonly used in programming and digital systems. This tool converts text to and from hex representation.",
+        morse:
+          "Morse Code encodes characters as sequences of dots and dashes. It's used in radio communication, emergency signals, and coding games.",
+        reverse:
+          "Reverses the input string character-by-character. It’s a playful way to obfuscate messages and used in basic puzzle solving.",
+        caesar:
+          "The Caesar Cipher shifts letters of the alphabet by a specified key. Named after Julius Caesar, it’s a classical encryption method for simple secrecy.",
+      };
+
+      document
+        .getElementById("tool-select")
+        .addEventListener("change", function () {
+          const tool = this.value;
+          const descBox = document.getElementById("tool-description");
+          const descText = document.getElementById("description-text");
+          if (tool && descriptions[tool]) {
+            descText.textContent = descriptions[tool];
+            descBox.classList.remove("hidden");
+          } else {
+            descBox.classList.add("hidden");
+          }
+        });
+    </script>
+  </body>
+</html>

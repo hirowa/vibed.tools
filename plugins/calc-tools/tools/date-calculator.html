@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="📅 Date Calculator" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="⏱️ Time" />
+    <title>Date Calculator</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Date Calculator</h2>
+      <p class="mb-6 text-gray-700">
+        Add or subtract a number of days, weeks, months, or years to a selected
+        date.
+      </p>
+
+      <!-- Input Fields -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block mb-1 text-gray-700">Select Date</label>
+          <input
+            id="date-base"
+            type="date"
+            class="w-full border border-gray-300 rounded-lg p-2.5"
+            value="2025-06-21" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Method</label>
+          <select
+            id="date-method"
+            class="w-full border border-gray-300 rounded-lg p-2.5">
+            <option value="add">[+] Add Time</option>
+            <option value="subtract">[-] Subtract Time</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid grid-cols-4 gap-4 mb-4">
+        <div>
+          <label class="block mb-1 text-gray-700">Days</label>
+          <input
+            id="date-days"
+            type="number"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Weeks</label>
+          <input
+            id="date-weeks"
+            type="number"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Months</label>
+          <input
+            id="date-months"
+            type="number"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Years</label>
+          <input
+            id="date-years"
+            type="number"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex gap-4 mb-6">
+        <button
+          onclick="calculateDate()"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <i class="fas fa-calculator me-2"></i>Calculate
+        </button>
+        <button
+          onclick="clearDateForm()"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+          <i class="fas fa-eraser me-2"></i>Clear
+        </button>
+      </div>
+
+      <!-- Result -->
+      <div id="date-result" class="text-gray-800"></div>
+    </div>
+
+    <!-- Description Section -->
+    <div
+      class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto mt-8 text-gray-800">
+      <h3 class="text-xl font-semibold mb-3">What is a Date Calculator?</h3>
+      <p class="mb-4">
+        A Date Calculator helps you determine what date it will be after adding
+        or subtracting a certain number of days, weeks, months, or years. It
+        simplifies planning and scheduling by quickly calculating future or past
+        dates.
+      </p>
+
+      <h4 class="text-lg font-medium mb-2">How to use this calculator?</h4>
+      <ul class="list-disc list-inside mb-4 space-y-1">
+        <li>Pick a base date.</li>
+        <li>Select whether to add or subtract time.</li>
+        <li>Enter the number of days, weeks, months, and years.</li>
+        <li>Click "Calculate" to see the new date.</li>
+      </ul>
+
+      <h4 class="text-lg font-medium mb-2">Formula:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-4">
+New Date = Base Date ± (Years + Months + Weeks + Days)
+      </pre>
+
+      <h4 class="text-lg font-medium mb-2">Example:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-2">
+Base Date: 2022-01-01
+Add: 1 year, 2 months, 3 weeks, 4 days
+Result: 2023-03-29
+      </pre>
+    </div>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"
+      crossorigin="anonymous"></script>
+    <script>
+      function calculateDate() {
+        const base = moment(document.getElementById("date-base").value);
+        const method = document.getElementById("date-method").value;
+        const d = parseInt(document.getElementById("date-days").value) || 0;
+        const w = parseInt(document.getElementById("date-weeks").value) || 0;
+        const m = parseInt(document.getElementById("date-months").value) || 0;
+        const y = parseInt(document.getElementById("date-years").value) || 0;
+
+        if (!base.isValid()) {
+          document.getElementById("date-result").innerHTML =
+            '<div class="text-red-600 bg-red-50 p-3 rounded">Invalid base date.</div>';
+          return;
+        }
+
+        let result = base.clone();
+        if (method === "add") {
+          result.add({ days: d + w * 7, months: m, years: y });
+        } else {
+          result.subtract({ days: d + w * 7, months: m, years: y });
+        }
+
+        document.getElementById("date-result").innerHTML = `
+          <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <h4 class="text-lg font-semibold text-gray-700 mb-4">Result</h4>
+            <div class="font-mono text-blue-700 text-lg">${result.format(
+              "dddd, MMMM D, YYYY"
+            )}</div>
+          </div>`;
+      }
+
+      function clearDateForm() {
+        document.getElementById("date-days").value = "";
+        document.getElementById("date-weeks").value = "";
+        document.getElementById("date-months").value = "";
+        document.getElementById("date-years").value = "";
+        document.getElementById("date-result").innerHTML = "";
+      }
+    </script>
+  </body>
+</html>

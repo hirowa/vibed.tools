@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="📺 CPV Calculator (Cost Per View)" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="💵 Financial" />
+    <title>CPV Calculator</title>
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">CPV Calculator (Cost Per View)</h2>
+      <p class="mb-6 text-gray-700">
+        Calculate the Cost Per View based on your campaign’s total cost and
+        number of ad views.
+      </p>
+
+      <!-- Input Fields -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block mb-1 text-gray-700">Total Cost ($)</label>
+          <input
+            id="cpv-cost"
+            type="text"
+            value="10"
+            placeholder="10"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Total Views</label>
+          <input
+            id="cpv-views"
+            type="text"
+            value="200"
+            placeholder="200"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-4 mb-6">
+        <button
+          id="cpv-btn-calc"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <i class="fas fa-calculator me-2"></i>Calculate
+        </button>
+        <button
+          id="cpv-btn-clear"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+          <i class="fas fa-eraser me-2"></i>Clear
+        </button>
+      </div>
+
+      <!-- Result Output -->
+      <div id="cpv-result" class="text-gray-800"></div>
+    </div>
+
+    <!-- Description Section -->
+    <div
+      class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto mt-8 text-gray-800">
+      <h3 class="text-xl font-semibold mb-3">Why use the CPV Calculator?</h3>
+      <p class="mb-4">
+        The CPV (Cost Per View) Calculator helps marketers and advertisers
+        measure the effectiveness of video campaigns by calculating how much
+        they pay per view. This metric is crucial in budgeting, performance
+        analysis, and optimizing ad spend.
+      </p>
+
+      <h4 class="text-lg font-medium mb-2">How does it work?</h4>
+      <ul class="list-disc list-inside mb-4 space-y-1">
+        <li>Enter the total amount spent on a campaign.</li>
+        <li>Input the total number of ad views.</li>
+        <li>Click <strong>Calculate</strong> to get the cost per view.</li>
+      </ul>
+
+      <h4 class="text-lg font-medium mb-2">Formula:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-4">
+CPV = Total Cost ÷ Total Views
+    </pre
+      >
+
+      <h4 class="text-lg font-medium mb-2">Example:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-4">
+Total Cost: $100 | Total Views: 2,500
+CPV = $100 / 2,500 = $0.04
+    </pre
+      >
+
+      <h4 class="text-lg font-medium mb-2">Examples:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-2">
+Total Cost   | Total Views | Cost Per View
+$50          | 250         | $0.20
+$500         | 150         | $3.33
+$15,000      | 100,000     | $0.15
+$1,000       | 127,842     | $0.0078
+    </pre
+      >
+    </div>
+
+    <script>
+      function parseFormattedNumber(value) {
+        return parseFloat(value.replace(/,/g, ""));
+      }
+
+      function formatNumber(value) {
+        return value.toLocaleString("en-US", {
+          minimumFractionDigits: 4,
+          maximumFractionDigits: 4,
+        });
+      }
+
+      function formatInputWithCommas(input) {
+        input.value = input.value.replace(/[^\d.]/g, "");
+        const parts = input.value.split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        input.value = parts.join(".");
+      }
+
+      ["cpv-cost", "cpv-views"].forEach((id) => {
+        const el = document.getElementById(id);
+        el.addEventListener("blur", () => formatInputWithCommas(el));
+      });
+
+      function calculateCPV() {
+        const cost = parseFormattedNumber(
+          document.getElementById("cpv-cost").value
+        );
+        const views = parseFormattedNumber(
+          document.getElementById("cpv-views").value
+        );
+        const resultEl = document.getElementById("cpv-result");
+
+        if (isNaN(cost) || isNaN(views) || cost <= 0 || views <= 0) {
+          resultEl.innerHTML = `<div class="text-red-600 bg-red-50 p-3 rounded">Please enter valid values.</div>`;
+          return;
+        }
+
+        const cpv = cost / views;
+
+        resultEl.innerHTML = `
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+          <h4 class="text-lg font-semibold text-gray-700 mb-4">Result</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">Cost Per View (CPV)</label>
+              <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">$${formatNumber(
+                cpv
+              )}</div>
+            </div>
+          </div>
+        </div>
+      `;
+      }
+
+      function clearCPVForm() {
+        document.getElementById("cpv-cost").value = "";
+        document.getElementById("cpv-views").value = "";
+        document.getElementById("cpv-result").innerHTML = "";
+      }
+
+      document
+        .getElementById("cpv-btn-calc")
+        .addEventListener("click", calculateCPV);
+      document
+        .getElementById("cpv-btn-clear")
+        .addEventListener("click", clearCPVForm);
+    </script>
+  </body>
+</html>

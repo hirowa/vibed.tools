@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="📈 Simple Interest Calculator" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="💵 Financial" />
+    <title>Simple Interest Calculator</title>
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      input[type="text"]::placeholder {
+        color: #a0aec0;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Simple Interest Calculator</h2>
+      <p class="mb-6 text-gray-700">
+        Calculate the interest in a simple way by defining specific principal,
+        interest rate, and period.
+      </p>
+
+      <!-- Input Fields -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block mb-1 text-gray-700">Principal Amount ($)</label>
+          <input
+            id="si-principal"
+            type="text"
+            class="w-full border border-gray-300 rounded-lg p-2.5"
+            placeholder="1,000"
+            value="1,000" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700"
+            >Interest Rate (% per year)</label
+          >
+          <input
+            id="si-rate"
+            type="text"
+            class="w-full border border-gray-300 rounded-lg p-2.5"
+            placeholder="5"
+            value="5" />
+        </div>
+        <div class="sm:col-span-2">
+          <label class="block mb-1 text-gray-700">Period (in years)</label>
+          <input
+            id="si-period"
+            type="text"
+            class="w-full border border-gray-300 rounded-lg p-2.5"
+            placeholder="10"
+            value="10" />
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-4 mb-6">
+        <button
+          id="si-btn-calc"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <i class="fas fa-calculator me-2"></i>Calculate
+        </button>
+        <button
+          id="si-btn-clear"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+          <i class="fas fa-eraser me-2"></i>Clear
+        </button>
+      </div>
+
+      <!-- Result Output -->
+      <div id="si-result" class="text-gray-800"></div>
+    </div>
+
+    <!-- Description Section -->
+    <div
+      class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto mt-8 text-gray-800">
+      <h3 class="text-xl font-semibold mb-3">
+        How to calculate Simple Interest?
+      </h3>
+      <ul class="list-disc list-inside mb-4 space-y-1">
+        <li>Fill in the Principal Amount field.</li>
+        <li>Fill in the Interest Rate field (% per year).</li>
+        <li>Specify the period in years.</li>
+        <li>Click <strong>Calculate</strong> to see the result.</li>
+      </ul>
+
+      <h4 class="text-lg font-medium mb-2">Simple Interest Formula</h4>
+      <p class="mb-2">Interest = Principal × Rate ÷ 100 × Time</p>
+      <ul class="list-disc list-inside mb-4">
+        <li><strong>Principal</strong> = Amount invested or loaned</li>
+        <li><strong>Rate</strong> = Annual interest rate (%)</li>
+        <li><strong>Time</strong> = Period in years</li>
+      </ul>
+
+      <h4 class="text-lg font-medium mb-2">Example:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto">
+Principal: $1,000 | Rate: 5% | Time: 10 years
+Interest = 1,000 × 5 ÷ 100 × 10 = $500
+Total = $1,500
+      </pre>
+    </div>
+
+    <script>
+      function parseFormattedNumber(value) {
+        return parseFloat(value.replace(/,/g, ""));
+      }
+
+      function formatNumber(value) {
+        return value.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+      }
+
+      function formatInputWithCommas(input) {
+        input.value = input.value.replace(/[^\d.]/g, "");
+        const parts = input.value.split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        input.value = parts.join(".");
+      }
+
+      // Add formatting on blur
+      ["si-principal", "si-rate", "si-period"].forEach((id) => {
+        const el = document.getElementById(id);
+        el.addEventListener("blur", () => formatInputWithCommas(el));
+      });
+
+      function calculateSimpleInterest() {
+        const principal = parseFormattedNumber(
+          document.getElementById("si-principal").value
+        );
+        const rate = parseFormattedNumber(
+          document.getElementById("si-rate").value
+        );
+        const time = parseFormattedNumber(
+          document.getElementById("si-period").value
+        );
+        const resultEl = document.getElementById("si-result");
+
+        if (
+          isNaN(principal) ||
+          isNaN(rate) ||
+          isNaN(time) ||
+          principal <= 0 ||
+          rate < 0 ||
+          time <= 0
+        ) {
+          resultEl.innerHTML =
+            '<div class="text-red-600 bg-red-50 p-3 rounded">Please enter valid values.</div>';
+          return;
+        }
+
+        const interest = ((principal * rate) / 100) * time;
+        const total = principal + interest;
+
+        resultEl.innerHTML = `
+          <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <h4 class="text-lg font-semibold text-gray-700 mb-4">Result</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Interest Amount</label>
+                <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">$${formatNumber(
+                  interest
+                )}</div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Total Amount</label>
+                <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">$${formatNumber(
+                  total
+                )}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function clearSIForm() {
+        document.getElementById("si-principal").value = "";
+        document.getElementById("si-rate").value = "";
+        document.getElementById("si-period").value = "";
+        document.getElementById("si-result").innerHTML = "";
+      }
+
+      document
+        .getElementById("si-btn-calc")
+        .addEventListener("click", calculateSimpleInterest);
+      document
+        .getElementById("si-btn-clear")
+        .addEventListener("click", clearSIForm);
+    </script>
+  </body>
+</html>

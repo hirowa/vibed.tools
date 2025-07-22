@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="⏱️ Playback Speed Calculator" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="⏱️ Time" />
+    <title>Playback Speed Calculator</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Playback Speed Calculator</h2>
+      <p class="mb-6 text-gray-700">
+        Calculate how long a video or podcast will take when played at different
+        speeds — and how much time you'll save.
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+        <div>
+          <label class="block mb-1 text-gray-700">Hours</label>
+          <input
+            type="number"
+            id="hours"
+            value="2"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Minutes</label>
+          <input
+            type="number"
+            id="minutes"
+            value="38"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Seconds</label>
+          <input
+            type="number"
+            id="seconds"
+            value="12"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label class="block mb-1 text-gray-700">Playback Speed</label>
+        <input
+          type="number"
+          id="speed"
+          step="0.01"
+          value="1.25"
+          class="w-full border border-gray-300 rounded-lg p-2.5" />
+      </div>
+
+      <div class="flex gap-4 mb-6">
+        <button
+          onclick="calculate()"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <i class="fas fa-calculator me-2"></i>Calculate
+        </button>
+        <button
+          onclick="clearForm()"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+          <i class="fas fa-eraser me-2"></i>Clear
+        </button>
+      </div>
+
+      <div id="result" class="text-gray-800"></div>
+    </div>
+
+    <!-- Description -->
+    <div
+      class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto mt-8 text-gray-800">
+      <h3 class="text-xl font-semibold mb-3">
+        What is the Playback Speed Calculator?
+      </h3>
+      <p class="mb-4">
+        The <strong>Playback Speed Calculator</strong> helps you estimate the
+        duration of a video or podcast when watched at various playback speeds.
+        It’s especially useful for learners, professionals, and time-conscious
+        users looking to optimize their media consumption.
+      </p>
+
+      <h4 class="text-lg font-medium mb-2">How does it work?</h4>
+      <ul class="list-disc list-inside mb-4 space-y-1">
+        <li>
+          Enter the original length of the content (hours, minutes, seconds).
+        </li>
+        <li>Input the playback speed (e.g., 1.25x, 1.5x).</li>
+        <li>The tool calculates the adjusted duration and time saved.</li>
+      </ul>
+
+      <h4 class="text-lg font-medium mb-2">Formula:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-2">
+Adjusted Time (seconds) = Total Seconds / Playback Speed
+Example:
+60 min = 3600 seconds
+Playback speed = 1.5x
+Adjusted time = 3600 / 1.5 = 2400 seconds → 40 minutes
+      </pre>
+    </div>
+
+    <script>
+      function formatTime(sec) {
+        const hrs = Math.floor(sec / 3600);
+        const mins = Math.floor((sec % 3600) / 60);
+        const secs = Math.floor(sec % 60);
+        return `${hrs.toString().padStart(2, "0")}:${mins
+          .toString()
+          .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+      }
+
+      function calculate() {
+        const h = parseInt(document.getElementById("hours").value) || 0;
+        const m = parseInt(document.getElementById("minutes").value) || 0;
+        const s = parseInt(document.getElementById("seconds").value) || 0;
+        const speed = parseFloat(document.getElementById("speed").value) || 1;
+
+        const original = h * 3600 + m * 60 + s;
+        const adjusted = original / speed;
+        const saved = original - adjusted;
+
+        document.getElementById("result").innerHTML = `
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+          <h4 class="text-lg font-semibold text-gray-700 mb-4">Result</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">Adjusted Time</label>
+              <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">${formatTime(
+                adjusted
+              )}</div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">Time Saved</label>
+              <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">${formatTime(
+                saved
+              )}</div>
+            </div>
+          </div>
+        </div>`;
+      }
+
+      function clearForm() {
+        ["hours", "minutes", "seconds"].forEach(
+          (id) => (document.getElementById(id).value = "")
+        );
+        document.getElementById("speed").value = 1.25;
+        document.getElementById("result").innerHTML = "";
+      }
+    </script>
+  </body>
+</html>

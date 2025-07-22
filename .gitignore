@@ -1,3 +1,5 @@
 **/assets/**
 .clineignore
 llm-elo-generator
+pi-billion.txt
+puzzles-generator

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="⏱️ Age Calculator" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="⏱️ Time" />
+    <title>Age Calculator</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Age Calculator</h2>
+      <p class="mb-6 text-gray-700">
+        Calculate your age in seconds, minutes, hours, days, and more.
+      </p>
+
+      <!-- Input -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block mb-1 text-gray-700">Date of Birth</label>
+          <input
+            id="birth-date"
+            type="date"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Age At Date</label>
+          <input
+            id="as-of-date"
+            type="date"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex gap-4 mb-6">
+        <button
+          onclick="calculateAge()"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <i class="fas fa-calculator me-2"></i>Calculate
+        </button>
+        <button
+          onclick="clearAgeForm()"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+          <i class="fas fa-eraser me-2"></i>Clear
+        </button>
+      </div>
+
+      <!-- Result -->
+      <div id="age-result" class="text-gray-800"></div>
+    </div>
+
+    <!-- Description -->
+    <div
+      class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto mt-8 text-gray-800">
+      <h3 class="text-xl font-semibold mb-3">Why use this calculator?</h3>
+      <p class="mb-4">
+        The <strong>Age Calculator</strong> is useful for determining your exact
+        age or the age of others in different units like years, days, or even
+        seconds. It is ideal for legal, educational, or medical purposes where
+        precise age calculation is required.
+      </p>
+
+      <h4 class="text-lg font-medium mb-2">How does it work?</h4>
+      <ul class="list-disc list-inside mb-4 space-y-1">
+        <li>Pick your date of birth and a target date.</li>
+        <li>The calculator computes the difference in all major time units.</li>
+        <li>It also shows how many days remain until your next birthday.</li>
+      </ul>
+
+      <h4 class="text-lg font-medium mb-2">Formula:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-4">
+Age in Days = Target Date - Date of Birth (in days)
+Other Units = Days converted to Seconds, Minutes, Hours, Weeks, Months
+      </pre>
+
+      <h4 class="text-lg font-medium mb-2">Example:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto">
+Date of Birth: 1990-04-01
+Age At Date: 2022-04-14
+Result: 32 years, 13 days
+      </pre>
+    </div>
+
+    <script>
+      function formatNumber(n) {
+        return n.toLocaleString("en-US");
+      }
+
+      function calculateAge() {
+        const bDate = new Date(document.getElementById("birth-date").value);
+        const aDate = new Date(
+          document.getElementById("as-of-date").value || new Date()
+        );
+        if (isNaN(bDate.getTime()) || isNaN(aDate.getTime()) || bDate > aDate) {
+          document.getElementById("age-result").innerHTML =
+            '<div class="text-red-600 bg-red-50 p-3 rounded">Please enter valid dates.</div>';
+          return;
+        }
+
+        const msInDay = 1000 * 60 * 60 * 24;
+        const diffMs = aDate - bDate;
+        const diffDays = Math.floor(diffMs / msInDay);
+        const diffYears = aDate.getFullYear() - bDate.getFullYear();
+        const diffMonths = diffYears * 12 + aDate.getMonth() - bDate.getMonth();
+
+        const nextBirthday = new Date(
+          aDate.getFullYear(),
+          bDate.getMonth(),
+          bDate.getDate()
+        );
+        if (nextBirthday < aDate)
+          nextBirthday.setFullYear(aDate.getFullYear() + 1);
+        const daysToNextBirthday = Math.ceil((nextBirthday - aDate) / msInDay);
+
+        const html = `
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+          <h4 class="text-lg font-semibold text-gray-700 mb-4">Result</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div><b>Total Age:</b><br/>${formatNumber(
+              diffYears
+            )} years, ${formatNumber(diffMonths % 12)} months, ${formatNumber(
+          diffDays % 30
+        )} days</div>
+            <div><b>Days to Next Birthday:</b><br/>${formatNumber(
+              daysToNextBirthday
+            )}</div>
+            <div><b>Seconds:</b><br/>${formatNumber(
+              Math.floor(diffMs / 1000)
+            )}</div>
+            <div><b>Minutes:</b><br/>${formatNumber(
+              Math.floor(diffMs / (1000 * 60))
+            )}</div>
+            <div><b>Hours:</b><br/>${formatNumber(
+              Math.floor(diffMs / (1000 * 60 * 60))
+            )}</div>
+            <div><b>Days:</b><br/>${formatNumber(diffDays)}</div>
+            <div><b>Weeks:</b><br/>${formatNumber(
+              Math.floor(diffDays / 7)
+            )}</div>
+            <div><b>Months:</b><br/>${formatNumber(diffMonths)}</div>
+          </div>
+        </div>`;
+        document.getElementById("age-result").innerHTML = html;
+      }
+
+      function clearAgeForm() {
+        document.getElementById("birth-date").value = "";
+        document.getElementById("as-of-date").value = "";
+        document.getElementById("age-result").innerHTML = "";
+      }
+    </script>
+  </body>
+</html>

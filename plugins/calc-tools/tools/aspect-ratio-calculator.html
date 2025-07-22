@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="📐 Aspect Ratio Calculator" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="➗ Math" />
+    <title>Aspect Ratio Calculator</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Aspect Ratio Calculator</h2>
+      <p class="mb-6 text-gray-700">
+        Instantly calculate and convert aspect ratios for any project. Whether
+        resizing images, editing videos, or designing, our calculator ensures
+        pixel-perfect dimensions.
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block mb-1 text-gray-700">Ratio Width</label>
+          <input
+            id="ratio-width"
+            type="number"
+            value="16"
+            placeholder="16"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Ratio Height</label>
+          <input
+            id="ratio-height"
+            type="number"
+            value="9"
+            placeholder="9"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Pixel Width</label>
+          <input
+            id="pixel-width"
+            type="number"
+            value="1280"
+            placeholder="1280"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Pixel Height</label>
+          <input
+            id="pixel-height"
+            type="number"
+            value="720"
+            placeholder="720"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+      </div>
+
+      <div
+        id="preview-box"
+        style="
+          margin: 2rem auto;
+          background: linear-gradient(135deg, #93c5fd, #3b82f6);
+          border: 3px solid #2563eb;
+          border-radius: 0.75rem;
+          color: white;
+          font-weight: 600;
+          font-size: 1rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+          min-width: 24px;
+          min-height: 12px;
+          width: 800px;
+          height: 450px;
+          transition: width 0.3s ease, height 0.3s ease;
+        ">
+        16:9 Preview
+      </div>
+    </div>
+
+    <script>
+      const rw = document.getElementById("ratio-width");
+      const rh = document.getElementById("ratio-height");
+      const pw = document.getElementById("pixel-width");
+      const ph = document.getElementById("pixel-height");
+      const preview = document.getElementById("preview-box");
+
+      function updatePreview() {
+        const rW = parseFloat(rw.value);
+        const rH = parseFloat(rh.value);
+        if (rW > 0 && rH > 0) {
+          const scale = Math.min(320 / rW, 180 / rH);
+          const w = Math.max(rW * scale, 120);
+          const h = Math.max(rH * scale, 80);
+          preview.style.width = w + "px";
+          preview.style.height = h + "px";
+          preview.textContent = `${rW}:${rH} Preview`;
+        }
+      }
+
+      function updateHeightFromWidth() {
+        const ratioW = parseFloat(rw.value);
+        const ratioH = parseFloat(rh.value);
+        const pixW = parseFloat(pw.value);
+        if (ratioW > 0 && ratioH > 0 && pixW > 0) {
+          ph.value = Math.round((pixW * ratioH) / ratioW);
+          updatePreview();
+        }
+      }
+
+      function updateWidthFromHeight() {
+        const ratioW = parseFloat(rw.value);
+        const ratioH = parseFloat(rh.value);
+        const pixH = parseFloat(ph.value);
+        if (ratioW > 0 && ratioH > 0 && pixH > 0) {
+          pw.value = Math.round((pixH * ratioW) / ratioH);
+          updatePreview();
+        }
+      }
+
+      function addListeners() {
+        rw.addEventListener("input", updateHeightFromWidth);
+        rh.addEventListener("input", updateHeightFromWidth);
+        pw.addEventListener("input", updateHeightFromWidth);
+        ph.addEventListener("input", updateWidthFromHeight);
+      }
+
+      addListeners();
+      updatePreview();
+    </script>
+  </body>
+</html>

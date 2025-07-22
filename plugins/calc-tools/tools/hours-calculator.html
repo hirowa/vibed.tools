@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="⏱️ Hours Calculator" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="⏱️ Time" />
+    <title>Hours Calculator</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Hours Calculator</h2>
+      <p class="mb-6 text-gray-700">
+        Calculate the time difference between two times, minus an optional
+        break.
+      </p>
+
+      <!-- Time Inputs -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block mb-1 text-gray-700">Start Time</label>
+          <input
+            type="time"
+            id="start-time"
+            value="07:00"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">End Time</label>
+          <input
+            type="time"
+            id="end-time"
+            value="10:00"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+      </div>
+
+      <!-- Break Time -->
+      <div class="mb-6">
+        <label class="block mb-1 text-gray-700">Break Time (minutes)</label>
+        <input
+          type="number"
+          id="break"
+          class="w-full border border-gray-300 rounded-lg p-2.5"
+          placeholder="0"
+          min="0" />
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex gap-4 mb-6">
+        <button
+          id="btn-calc"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <i class="fas fa-calculator me-2"></i>Calculate
+        </button>
+        <button
+          id="btn-clear"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+          <i class="fas fa-eraser me-2"></i>Clear
+        </button>
+      </div>
+
+      <!-- Result -->
+      <div id="result" class="text-gray-800"></div>
+    </div>
+
+    <!-- Description -->
+    <div
+      class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto mt-8 text-gray-800">
+      <h3 class="text-xl font-semibold mb-3">Why use the Hours Calculator?</h3>
+      <p class="mb-4">
+        This calculator is useful for tracking working hours, scheduling tasks,
+        or calculating time spent between two events. It supports subtracting a
+        break duration and gives results in multiple formats.
+      </p>
+
+      <h4 class="text-lg font-medium mb-2">How it works</h4>
+      <ul class="list-disc list-inside mb-4 space-y-1">
+        <li>Enter the start and end time.</li>
+        <li>Optionally enter a break duration (in minutes).</li>
+        <li>
+          Click <strong>Calculate</strong> to see total time, decimal hours, and
+          minutes.
+        </li>
+      </ul>
+
+      <h4 class="text-lg font-medium mb-2">Formula</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-4">
+Total Time = End Time − Start Time − Break (in minutes)
+Decimal Hours = Total Minutes ÷ 60
+    </pre
+      >
+
+      <h4 class="text-lg font-medium mb-2">Example:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto">
+Start: 09:00   End: 17:00   Break: 45 min
+Raw Duration = 8h × 60 = 480 min
+Adjusted Time = 480 − 45 = 435 min = 7.25 hours
+    </pre
+      >
+    </div>
+
+    <script>
+      function formatTime(minutes) {
+        const h = Math.floor(minutes / 60);
+        const m = minutes % 60;
+        return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+      }
+
+      function formatDecimal(minutes) {
+        return (minutes / 60).toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+      }
+
+      document.getElementById("btn-calc").addEventListener("click", () => {
+        const start = document.getElementById("start-time").value;
+        const end = document.getElementById("end-time").value;
+        const breakMin = parseInt(document.getElementById("break").value) || 0;
+        const result = document.getElementById("result");
+
+        if (!start || !end) {
+          result.innerHTML =
+            '<div class="text-red-600 bg-red-50 p-3 rounded">Please enter valid times.</div>';
+          return;
+        }
+
+        const [startH, startM] = start.split(":").map(Number);
+        const [endH, endM] = end.split(":").map(Number);
+        let startMinutes = startH * 60 + startM;
+        let endMinutes = endH * 60 + endM;
+
+        if (endMinutes < startMinutes) endMinutes += 24 * 60; // overnight case
+
+        let duration = endMinutes - startMinutes - breakMin;
+        if (duration < 0) duration = 0;
+
+        result.innerHTML = `
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+          <h4 class="text-lg font-semibold text-gray-700 mb-2">Result</h4>
+          <div><b>Total Time (hh:mm):</b> ${formatTime(duration)}</div>
+          <div><b>In hours (decimal):</b> ${formatDecimal(duration)} hours</div>
+          <div><b>In minutes:</b> ${duration.toLocaleString()} minutes</div>
+        </div>
+      `;
+      });
+
+      document.getElementById("btn-clear").addEventListener("click", () => {
+        document.getElementById("start-time").value = "";
+        document.getElementById("end-time").value = "";
+        document.getElementById("break").value = "";
+        document.getElementById("result").innerHTML = "";
+      });
+    </script>
+  </body>
+</html>

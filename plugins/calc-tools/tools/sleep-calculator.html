@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="🛌 Sleep Calculator" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="⏱️ Time" />
+    <title>Sleep Calculator</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <style>
+      .sleep-box {
+        background: #f3f4f6;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 p-6 text-gray-800">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Sleep Calculator</h2>
+      <p class="mb-6 text-gray-700">
+        Calculate what time you should fall asleep to wake up refreshed based on
+        90-minute sleep cycles.
+      </p>
+
+      <div class="mb-4">
+        <label class="block mb-1 text-gray-700">Wake-up Time</label>
+        <input
+          type="time"
+          id="sleep-time"
+          value="07:00"
+          class="w-full border border-gray-300 rounded-lg p-2.5" />
+      </div>
+
+      <div class="flex gap-4 mb-6">
+        <button
+          onclick="calculateSleepTimes()"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <i class="fas fa-calculator me-2"></i>Calculate
+        </button>
+        <button
+          onclick="clearSleepForm()"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+          <i class="fas fa-eraser me-2"></i>Clear
+        </button>
+      </div>
+
+      <div
+        id="sleep-results"
+        class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+    </div>
+
+    <div
+      class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto mt-8 text-gray-800">
+      <h3 class="text-xl font-semibold mb-3">Why use the Sleep Calculator?</h3>
+      <p class="mb-4">
+        This calculator helps you find the best times to fall asleep based on
+        90-minute sleep cycles, aiming for 5–6 full cycles for optimal rest.
+      </p>
+
+      <h4 class="text-lg font-medium mb-2">How does it work?</h4>
+      <ul class="list-disc list-inside mb-4 space-y-1">
+        <li>Choose your desired wake-up time.</li>
+        <li>
+          It subtracts blocks of 90 minutes plus 15 minutes for falling asleep.
+        </li>
+        <li>Shows you the best times to go to sleep to wake refreshed.</li>
+      </ul>
+
+      <h4 class="text-lg font-medium mb-2">Formula + Example:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-4">
+Sleep Time = Wake Time - (Sleep Cycles × 90 min) - 15 min
+
+Example:
+Wake Time = 07:00
+Sleep Cycles = 5
+Sleep Time = 07:00 - (5 × 90 min) - 15 min = 23:15
+      </pre>
+    </div>
+
+    <script>
+      function calculateSleepTimes() {
+        const input = document.getElementById("sleep-time").value;
+        if (!input) return;
+
+        const [hourStr, minuteStr] = input.split(":");
+        const totalMinutes = parseInt(hourStr) * 60 + parseInt(minuteStr);
+        const results = [];
+
+        for (let cycles = 6; cycles >= 1; cycles--) {
+          const sleepMinutes = totalMinutes - cycles * 90 - 15;
+          let t = (sleepMinutes + 1440) % 1440;
+          const h = Math.floor(t / 60);
+          const m = t % 60;
+          const ampm = h >= 12 ? "PM" : "AM";
+          const hour12 = h % 12 === 0 ? 12 : h % 12;
+          const timeStr = `${hour12.toString().padStart(2, "0")}:${m
+            .toString()
+            .padStart(2, "0")} ${ampm}`;
+          results.push({
+            time: timeStr,
+            cycles,
+            hours: (cycles * 1.5).toFixed(1),
+          });
+        }
+
+        const container = document.getElementById("sleep-results");
+        container.innerHTML = results
+          .map(
+            (r) =>
+              `<div class="sleep-box"><div class="font-bold text-lg mb-1">${r.time}</div><div>Sleep Cycles: ${r.cycles}</div><div>Hours of Sleep: ${r.hours}</div></div>`
+          )
+          .join("");
+      }
+
+      function clearSleepForm() {
+        document.getElementById("sleep-time").value = "";
+        document.getElementById("sleep-results").innerHTML = "";
+      }
+    </script>
+  </body>
+</html>

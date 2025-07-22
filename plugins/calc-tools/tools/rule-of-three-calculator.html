@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="➗ Rule of Three Calculator" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="➗ Math" />
+    <title>Rule of Three Calculator</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Rule of Three Calculator</h2>
+      <p class="mb-6 text-gray-700">
+        Solve proportions quickly by calculating the unknown fourth value.
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block mb-1 text-gray-700">Value A</label>
+          <input
+            id="rot-a"
+            type="text"
+            class="w-full border border-gray-300 rounded-lg p-2.5"
+            value="1,000"
+            placeholder="1,000" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Value B</label>
+          <input
+            id="rot-b"
+            type="text"
+            class="w-full border border-gray-300 rounded-lg p-2.5"
+            value="500"
+            placeholder="500" />
+        </div>
+        <div class="sm:col-span-2">
+          <label class="block mb-1 text-gray-700">Value X</label>
+          <input
+            id="rot-x"
+            type="text"
+            class="w-full border border-gray-300 rounded-lg p-2.5"
+            value="2,000"
+            placeholder="2,000" />
+        </div>
+      </div>
+
+      <div class="flex gap-4 mb-6">
+        <button
+          id="rot-btn-calc"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <i class="fas fa-calculator me-2"></i>Calculate
+        </button>
+        <button
+          id="rot-btn-clear"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+          <i class="fas fa-eraser me-2"></i>Clear
+        </button>
+      </div>
+
+      <div id="rot-result" class="text-gray-800"></div>
+    </div>
+
+    <div
+      class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto mt-8 text-gray-800">
+      <h3 class="text-xl font-semibold mb-3">What is the Rule of Three?</h3>
+      <p class="mb-4">
+        The Rule of Three is a mathematical method for finding a fourth value
+        when three are known, using a proportion. If
+        <strong>A : B = X : Y</strong>, the unknown <strong>Y</strong> can be
+        solved by: <strong>Y = (B × X) / A</strong>.
+      </p>
+
+      <h4 class="text-lg font-medium mb-2">
+        How does the Rule of Three Calculator work?
+      </h4>
+      <ul class="list-disc list-inside mb-4 space-y-1">
+        <li>Enter known values A, B, and X.</li>
+        <li>
+          Click <strong>Calculate</strong> to compute the unknown value Y.
+        </li>
+      </ul>
+
+      <h4 class="text-lg font-medium mb-2">Formula:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-4">
+Y = (B × X) ÷ A
+      </pre>
+
+      <h4 class="text-lg font-medium mb-2">Example:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-4">
+If 2 bedrooms require 8 litres of paint, how many litres are needed for 5 bedrooms?
+
+A = 2, B = 8, X = 5
+Y = (8 × 5) ÷ 2 = 20
+      </pre>
+    </div>
+
+    <script>
+      function parseFormattedNumber(val) {
+        return parseFloat(val.replace(/,/g, ""));
+      }
+
+      function formatNumber(val) {
+        return val.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+      }
+
+      function formatInput(input) {
+        input.value = input.value.replace(/[^\d.]/g, "");
+        const parts = input.value.split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        input.value = parts.join(".");
+      }
+
+      ["rot-a", "rot-b", "rot-x"].forEach((id) => {
+        const el = document.getElementById(id);
+        el.addEventListener("blur", () => formatInput(el));
+      });
+
+      function calculateRuleOfThree() {
+        const a = parseFormattedNumber(document.getElementById("rot-a").value);
+        const b = parseFormattedNumber(document.getElementById("rot-b").value);
+        const x = parseFormattedNumber(document.getElementById("rot-x").value);
+        const resultEl = document.getElementById("rot-result");
+
+        if (isNaN(a) || isNaN(b) || isNaN(x) || a === 0) {
+          resultEl.innerHTML =
+            '<div class="text-red-600 bg-red-50 p-3 rounded">Please enter valid values (A must not be 0).</div>';
+          return;
+        }
+
+        const y = (b * x) / a;
+
+        resultEl.innerHTML = `
+          <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <h4 class="text-lg font-semibold text-gray-700 mb-4">Result</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="sm:col-span-2">
+                <label class="block text-sm font-medium text-gray-600 mb-1">Value Y</label>
+                <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">${formatNumber(
+                  y
+                )}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function clearROTForm() {
+        document.getElementById("rot-a").value = "";
+        document.getElementById("rot-b").value = "";
+        document.getElementById("rot-x").value = "";
+        document.getElementById("rot-result").innerHTML = "";
+      }
+
+      document
+        .getElementById("rot-btn-calc")
+        .addEventListener("click", calculateRuleOfThree);
+      document
+        .getElementById("rot-btn-clear")
+        .addEventListener("click", clearROTForm);
+    </script>
+  </body>
+</html>

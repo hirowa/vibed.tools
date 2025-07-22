@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="⏬ Download Time Calculator" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="⏱️ Time" />
+    <title>Download Time Calculator</title>
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Download Time Calculator</h2>
+      <p class="mb-6 text-gray-700">
+        Calculate the average time to download a file of the given size.
+      </p>
+
+      <!-- Input Fields -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block mb-1 text-gray-700">File size</label>
+          <input
+            id="dtc-size"
+            type="number"
+            value="2"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Size unit</label>
+          <select
+            id="dtc-size-unit"
+            class="w-full border border-gray-300 rounded-lg p-2.5">
+            <option value="1">Bytes</option>
+            <option value="1000">Kilobytes (KB)</option>
+            <option value="1000000">Megabytes (MB)</option>
+            <option value="1000000000" selected>Gigabytes (GB)</option>
+            <option value="1000000000000">Terabytes (TB)</option>
+            <option value="1000000000000000">Petabytes (PB)</option>
+            <option value="1000000000000000000">Exabytes (EB)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Download speed</label>
+          <input
+            id="dtc-speed"
+            type="number"
+            value="50"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Speed unit</label>
+          <select
+            id="dtc-speed-unit"
+            class="w-full border border-gray-300 rounded-lg p-2.5">
+            <option value="1">bit/s</option>
+            <option value="1000">Kbit/s</option>
+            <option value="1000000" selected>Mbit/s</option>
+            <option value="1000000000">Gbit/s</option>
+            <option value="1000000000000">Tbit/s</option>
+            <option value="1000000000000000">Pbit/s</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-4 mb-6">
+        <button
+          id="dtc-btn-calc"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <i class="fas fa-calculator me-2"></i>Calculate
+        </button>
+        <button
+          id="dtc-btn-clear"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+          <i class="fas fa-eraser me-2"></i>Clear
+        </button>
+      </div>
+
+      <!-- Result Output -->
+      <div id="dtc-result" class="text-gray-800"></div>
+    </div>
+    <!-- Description Section -->
+    <div
+      class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto mt-8 text-gray-800">
+      <h3 class="text-xl font-semibold mb-3">
+        How does the Download Time Calculator work?
+      </h3>
+      <p class="mb-4">
+        The download time calculator allows you to estimate how long it will
+        take to download a file based on the file size and your average internet
+        speed.
+      </p>
+
+      <h4 class="text-lg font-medium mb-2">How to use it:</h4>
+      <ul class="list-disc list-inside mb-4 space-y-1">
+        <li>Enter the file size (e.g. 2 Gigabytes).</li>
+        <li>Select the correct size unit (e.g. MB, GB, etc.).</li>
+        <li>Enter your average download speed (e.g. 50 Mbit/s).</li>
+        <li>Select the speed unit (e.g. Mbit/s, Gbit/s, etc.).</li>
+        <li>
+          Click <strong>Calculate</strong> to see the estimated download time.
+        </li>
+      </ul>
+
+      <h4 class="text-lg font-medium mb-2">How the formula works:</h4>
+      <p class="mb-2">To calculate the download time:</p>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-4">
+Download Time (seconds) = (File Size in Bytes × 8) ÷ Download Speed in bit/s
+  </pre
+      >
+      <p class="mb-4">
+        Then the time is converted into a more readable format like hours,
+        minutes, or your selected unit.
+      </p>
+
+      <h4 class="text-lg font-medium mb-2">Example:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-2">
+File Size: 250 MB = 250 × 1,000,000 = 250,000,000 Bytes
+Download Speed: 50 Mbit/s = 50 × 1,000,000 = 50,000,000 bit/s
+Time (seconds) = (250,000,000 × 8) ÷ 50,000,000 = 40 seconds
+  </pre
+      >
+    </div>
+    <script>
+      function formatTime(seconds) {
+        const h = Math.floor(seconds / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = Math.floor(seconds % 60);
+        return `${h.toString().padStart(2, "0")}:${m
+          .toString()
+          .padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+      }
+
+      function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+
+      function updateConvertedTime(seconds) {
+        const unit = document.getElementById("dtc-unit-select");
+        const output = document.getElementById("dtc-converted");
+        if (!unit || !output) return;
+
+        let val = 0;
+        let label = "";
+
+        switch (unit.value) {
+          case "seconds":
+            val = seconds;
+            label = "seconds";
+            break;
+          case "minutes":
+            val = seconds / 60;
+            label = "minutes";
+            break;
+          case "hours":
+            val = seconds / 3600;
+            label = "hours";
+            break;
+          case "days":
+            val = seconds / 86400;
+            label = "days";
+            break;
+          case "weeks":
+            val = seconds / (86400 * 7);
+            label = "weeks";
+            break;
+          case "months":
+            val = seconds / (86400 * 30.4375);
+            label = "months";
+            break;
+          case "years":
+            val = seconds / (86400 * 365.25);
+            label = "years";
+            break;
+        }
+
+        output.textContent = `${numberWithCommas(val.toFixed(2))} ${label}`;
+      }
+
+      function calculateDownloadTime() {
+        const size = parseFloat(document.getElementById("dtc-size").value);
+        const sizeUnit = parseFloat(
+          document.getElementById("dtc-size-unit").value
+        );
+        const speed = parseFloat(document.getElementById("dtc-speed").value);
+        const speedUnit = parseFloat(
+          document.getElementById("dtc-speed-unit").value
+        );
+        const resultEl = document.getElementById("dtc-result");
+
+        if (isNaN(size) || isNaN(speed) || size <= 0 || speed <= 0) {
+          resultEl.innerHTML = `<div class="text-red-600 bg-red-50 p-3 rounded">Please enter valid values.</div>`;
+          return;
+        }
+
+        const sizeBytes = size * sizeUnit;
+        const sizeBits = sizeBytes * 8;
+        const speedBits = speed * speedUnit;
+        const totalSeconds = sizeBits / speedBits;
+        const timeFormatted = formatTime(totalSeconds);
+
+        resultEl.innerHTML = `
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+          <h4 class="text-lg font-semibold text-gray-700 mb-4">Download Time</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">Formatted (hh:mm:ss)</label>
+              <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">${timeFormatted}</div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">Other Time Unit</label>
+              <div class="flex flex-wrap items-center gap-2">
+                <select id="dtc-unit-select" class="border border-gray-300 rounded text-sm py-2 px-3 w-48">
+                  <option value="seconds">Seconds</option>
+                  <option value="minutes" selected>Minutes</option>
+                  <option value="hours">Hours</option>
+                  <option value="days">Days</option>
+                  <option value="weeks">Weeks</option>
+                  <option value="months">Months</option>
+                  <option value="years">Years</option>
+                </select>
+                <span id="dtc-converted" class="text-gray-800 text-sm font-medium whitespace-nowrap"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+        // Wait until #dtc-converted is in DOM
+        setTimeout(() => {
+          updateConvertedTime(totalSeconds);
+          document
+            .getElementById("dtc-unit-select")
+            .addEventListener("change", () => {
+              updateConvertedTime(totalSeconds);
+            });
+        }, 0);
+      }
+
+      function clearDownloadForm() {
+        document.getElementById("dtc-size").value = "";
+        document.getElementById("dtc-speed").value = "";
+        document.getElementById("dtc-result").innerHTML = "";
+      }
+
+      // Safe init
+      (function initWhenReady() {
+        const calcBtn = document.getElementById("dtc-btn-calc");
+        const clearBtn = document.getElementById("dtc-btn-clear");
+        if (!calcBtn || !clearBtn) {
+          return setTimeout(initWhenReady, 50);
+        }
+
+        calcBtn.addEventListener("click", calculateDownloadTime);
+        clearBtn.addEventListener("click", clearDownloadForm);
+      })();
+    </script>
+  </body>
+</html>

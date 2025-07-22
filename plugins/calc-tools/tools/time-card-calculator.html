@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="🕒 Time Card Calculator" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="⏱️ Time" />
+    <title>Time Card Calculator</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-5xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Time Card Calculator</h2>
+      <p class="mb-6 text-gray-700">
+        Enter your weekly hours to calculate total working time and estimated
+        income, with breaks in minutes.
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        <div>
+          <label class="block mb-1 text-gray-700">Hourly Rate</label>
+          <input
+            id="tc-rate"
+            type="number"
+            value="25"
+            placeholder="25"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Currency</label>
+          <select
+            id="tc-currency"
+            class="w-full border border-gray-300 rounded-lg p-2.5">
+            <option value="$" selected>$</option>
+            <option value="€">€</option>
+            <option value="£">£</option>
+            <option value="₹">₹</option>
+            <option value="₱">₱</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="tc-entries" class="space-y-4 mb-6"></div>
+
+      <div class="flex gap-4">
+        <button
+          id="tc-btn-calc"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          Calculate
+        </button>
+        <button
+          id="tc-btn-clear"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+          Clear
+        </button>
+      </div>
+
+      <div id="tc-result" class="mt-6 text-gray-800"></div>
+
+      <div class="mt-12 text-gray-800">
+        <h3 class="text-xl font-semibold mb-2">Description</h3>
+        <p class="mb-2">
+          The Time Card Calculator helps you track weekly working hours and
+          calculate earnings based on your hourly rate. It also estimates annual
+          totals to aid in budgeting or payroll planning.
+        </p>
+        <p class="mb-2">
+          Simply enter your start and end time for each weekday, specify any
+          break duration in minutes, and input your hourly wage. The calculator
+          updates instantly to show:
+        </p>
+        <ul class="list-disc pl-6 mb-2">
+          <li>Total time worked and pay for each day</li>
+          <li>Total weekly time and income</li>
+          <li>
+            Estimated annual time (in months:days:hours:minutes) and earnings
+          </li>
+        </ul>
+        <p>
+          <strong>Example:</strong> If you work from 9:00 AM to 5:00 PM with a
+          60-minute break, you'll log 8 hours of work. At $25/hour, that's $200
+          per day. Weekly and annual totals are calculated from there.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      const days = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ];
+
+      function createEntryRow(day, index) {
+        return `
+        <div class="grid grid-cols-5 gap-4 items-center">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">${day}</label>
+            <div class="mt-1 text-blue-600 font-mono text-sm" id="daily-${index}">00:00 ($0.00)</div>
+          </div>
+          <div>
+            <label for="start-${index}" class="block text-sm font-medium text-gray-600">Start Time</label>
+            <input type="time" id="start-${index}" class="w-full border border-gray-300 rounded-lg p-2.5" value="09:00"/>
+          </div>
+          <div>
+            <label for="end-${index}" class="block text-sm font-medium text-gray-600">End Time</label>
+            <input type="time" id="end-${index}" class="w-full border border-gray-300 rounded-lg p-2.5" value="17:00"/>
+          </div>
+          <div>
+            <label for="break-${index}" class="block text-sm font-medium text-gray-600">Break (min)</label>
+            <input type="number" min="0" id="break-${index}" placeholder="Break" class="w-full border border-gray-300 rounded-lg p-2.5" value="60"/>
+          </div>
+        </div>`;
+      }
+
+      document.getElementById("tc-entries").innerHTML = days
+        .map((d, i) => createEntryRow(d, i))
+        .join("");
+
+      function timeToDecimal(t) {
+        const [h, m] = t.split(":").map(Number);
+        return h + m / 60;
+      }
+
+      function formatHours(decimal) {
+        const h = Math.floor(decimal);
+        const m = Math.round((decimal - h) * 60);
+        return `${h.toString().padStart(2, "0")}:${m
+          .toString()
+          .padStart(2, "0")}`;
+      }
+
+      function formatCurrency(amount) {
+        return amount.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+      }
+
+      function formatAnnualTime(totalHours) {
+        const totalMinutes = Math.floor(totalHours * 60);
+        const months = Math.floor(totalMinutes / 43800);
+        const days = Math.floor((totalMinutes % 43800) / 1440);
+        const hours = Math.floor((totalMinutes % 1440) / 60);
+        const minutes = totalMinutes % 60;
+        return `${months.toString().padStart(2, "0")}:${days
+          .toString()
+          .padStart(2, "0")}:${hours.toString().padStart(2, "0")}:${minutes
+          .toString()
+          .padStart(2, "0")}`;
+      }
+
+      document.getElementById("tc-btn-calc").addEventListener("click", () => {
+        let totalHours = 0;
+        let totalPay = 0;
+        const rate = parseFloat(document.getElementById("tc-rate").value);
+        const currency = document.getElementById("tc-currency").value;
+
+        for (let i = 0; i < 7; i++) {
+          const startVal = document.getElementById(`start-${i}`).value;
+          const endVal = document.getElementById(`end-${i}`).value;
+          const breakVal =
+            parseFloat(document.getElementById(`break-${i}`).value) || 0;
+
+          if (startVal && endVal) {
+            const start = timeToDecimal(startVal);
+            const end = timeToDecimal(endVal);
+            const workTime = Math.max(0, end - start - breakVal / 60);
+            const pay = workTime * (isNaN(rate) ? 0 : rate);
+            totalHours += workTime;
+            totalPay += pay;
+            document.getElementById(`daily-${i}`).textContent = `${formatHours(
+              workTime
+            )} (${currency}${formatCurrency(pay)})`;
+          }
+        }
+
+        const annualHours = totalHours * 52;
+        const annualPay = totalPay * 52;
+
+        document.getElementById("tc-result").innerHTML = `
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mt-4">
+          <h4 class="text-lg font-semibold text-gray-700 mb-4">Total</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <div><label class="block text-sm font-medium text-gray-600 mb-1">Weekly Time</label>
+              <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">${formatHours(
+                totalHours
+              )}</div>
+            </div>
+            <div><label class="block text-sm font-medium text-gray-600 mb-1">Weekly Pay</label>
+              <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">${currency}${formatCurrency(
+          totalPay
+        )}</div>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div><label class="block text-sm font-medium text-gray-600 mb-1">Annual Time (MM:DD:HH:MM)</label>
+              <div class="bg-white border border-gray-300 rounded p-2 font-mono text-green-600">${formatAnnualTime(
+                annualHours
+              )}</div>
+            </div>
+            <div><label class="block text-sm font-medium text-gray-600 mb-1">Annual Pay</label>
+              <div class="bg-white border border-gray-300 rounded p-2 font-mono text-green-600">${currency}${formatCurrency(
+          annualPay
+        )}</div>
+            </div>
+          </div>
+        </div>`;
+      });
+
+      document.getElementById("tc-btn-clear").addEventListener("click", () => {
+        for (let i = 0; i < 7; i++) {
+          document.getElementById(`start-${i}`).value = "09:00";
+          document.getElementById(`end-${i}`).value = "17:00";
+          document.getElementById(`break-${i}`).value = "60";
+          document.getElementById(`daily-${i}`).textContent = "00:00 ($0.00)";
+        }
+        document.getElementById("tc-rate").value = "";
+        document.getElementById("tc-result").innerHTML = "";
+      });
+    </script>
+  </body>
+</html>

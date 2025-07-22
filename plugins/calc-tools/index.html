@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculators & Text Tools</title>
+
+    <meta name="plugin-category" content="Text" />
+    <meta name="plugin-name" content="🧮 Calculators & Text Tools" />
+    <meta
+      name="plugin-description"
+      content="Modular plugin for various calculators, generators and text utilities." />
+    <meta name="plugin-version" content="1.1" />
+    <meta
+      name="plugin-url"
+      content="https://github.com/hirowa/vibed.tools/tree/main/plugins/calc-tools" />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50">
+    <div class="flex h-screen">
+      <!-- Sidebar -->
+      <aside class="w-full max-w-[400px] border-r border-gray-200 py-4 px-6">
+        <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+          <h2 class="text-xl font-bold mb-4 flex items-center">
+            <i class="fas fa-sliders-h me-2"></i>Tool Selector
+          </h2>
+
+          <!-- Type Selector -->
+          <div class="mb-4">
+            <label for="tool-type" class="block text-gray-700 mb-1">Type</label>
+            <select
+              id="tool-type"
+              class="w-full border border-gray-300 text-base rounded-lg p-2.5"></select>
+          </div>
+
+          <!-- Category Selector -->
+          <div id="category-container" class="mb-4">
+            <label for="tool-category" class="block text-gray-700 mb-1"
+              >Category</label
+            >
+            <select
+              id="tool-category"
+              class="w-full border border-gray-300 text-base rounded-lg p-2.5"></select>
+          </div>
+
+          <!-- Item Selector -->
+          <div class="mb-6">
+            <label for="tool-item" class="block text-gray-700 mb-1">Item</label>
+            <select
+              id="tool-item"
+              class="w-full border border-gray-300 text-base rounded-lg p-2.5"></select>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Area -->
+      <main class="flex-grow py-4 pl-8 overflow-y-auto w-full">
+        <section id="tool-content" class="max-w-4xl mx-auto"></section>
+
+        <!-- Welcome -->
+        <div
+          id="initial-message"
+          class="bg-white rounded-lg shadow-md py-8 px-16 text-center max-w-[500px] mx-auto">
+          <i class="fas fa-wrench fa-4x mb-4 text-blue-600"></i>
+          <h4 class="text-2xl font-bold mb-3">Welcome to Tools Hub</h4>
+          <p class="text-lg text-gray-700">
+            Select a tool type, category (if applicable), and item to get
+            started!
+          </p>
+        </div>
+      </main>
+    </div>
+
+    <script src="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

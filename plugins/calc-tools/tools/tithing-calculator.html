@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="🙏 Tithing Calculator" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="💵 Financial" />
+    <title>Tithing Calculator</title>
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Tithing Calculator</h2>
+      <p class="mb-6 text-gray-700">
+        Calculate your tithe based on the entered income in the selected period
+        and tithe rate.
+      </p>
+
+      <!-- Input Fields -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block mb-1 text-gray-700">Your income ($)</label>
+          <input
+            id="tithe-income"
+            type="text"
+            placeholder="2,000"
+            value="2,000"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Income Period</label>
+          <select
+            id="tithe-period"
+            class="w-full border border-gray-300 rounded-lg p-2.5">
+            <option value="1" data-freq="monthly">Once a Month</option>
+            <option value="1" data-freq="twice-month">Twice a Month</option>
+            <option value="1" data-freq="weekly">Every Week</option>
+            <option value="1" data-freq="biweekly" selected>
+              Every Other Week
+            </option>
+            <option value="1" data-freq="quarterly">Every Quarter</option>
+            <option value="1" data-freq="yearly">Every Year</option>
+          </select>
+        </div>
+        <div class="sm:col-span-2">
+          <label class="block mb-1 text-gray-700">Tithe Rate (%)</label>
+          <input
+            id="tithe-rate"
+            type="text"
+            placeholder="10"
+            value="10"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-4 mb-6">
+        <button
+          id="tithe-btn-calc"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <i class="fas fa-calculator me-2"></i>Calculate
+        </button>
+        <button
+          id="tithe-btn-clear"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+          <i class="fas fa-eraser me-2"></i>Clear
+        </button>
+      </div>
+
+      <!-- Result Output -->
+      <div id="tithe-result" class="text-gray-800"></div>
+    </div>
+
+    <!-- Description Section -->
+    <div
+      class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto mt-8 text-gray-800">
+      <h3 class="text-xl font-semibold mb-3">How to calculate your tithe?</h3>
+      <p class="mb-4">
+        Tithing calculator allows you to calculate 10% (or more or less) of your
+        earnings over a given period of time. This calculator can be useful in
+        calculating the contribution to religious organizations or some other
+        form of taxes.
+      </p>
+
+      <h4 class="text-lg font-medium mb-2">How to use this calculator?</h4>
+      <ul class="list-disc list-inside mb-4 space-y-1">
+        <li>Enter your income (e.g. $2000).</li>
+        <li>Select your income period (e.g. Once a Month).</li>
+        <li>Enter your tithe rate (usually 10%).</li>
+        <li>View your tithe amount broken down into various intervals.</li>
+      </ul>
+
+      <h4 class="text-lg font-medium mb-2">Tithe Calculation Example:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-2">
+Tithe (10%) of $2000
+$2000 / 10 = $200
+    </pre
+      >
+      <p class="text-sm text-gray-600">
+        This calculator uses an average month length of 30.437 days and an
+        average year of 365.25 days.
+      </p>
+    </div>
+
+    <script>
+      function parseFormattedNumber(value) {
+        return parseFloat(value.replace(/,/g, ""));
+      }
+
+      function formatNumber(value) {
+        return value.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+      }
+
+      function formatInputWithCommas(input) {
+        input.value = input.value.replace(/[^\d.]/g, "");
+        const parts = input.value.split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        input.value = parts.join(".");
+      }
+
+      ["tithe-income", "tithe-rate"].forEach((id) => {
+        const el = document.getElementById(id);
+        el.addEventListener("blur", () => formatInputWithCommas(el));
+      });
+
+      function calculateTithe() {
+        const income = parseFormattedNumber(
+          document.getElementById("tithe-income").value
+        );
+        const rate = parseFormattedNumber(
+          document.getElementById("tithe-rate").value
+        );
+        const period = document.getElementById("tithe-period").value;
+        const resultEl = document.getElementById("tithe-result");
+
+        if (isNaN(income) || isNaN(rate) || income <= 0 || rate < 0) {
+          resultEl.innerHTML =
+            '<div class="text-red-600 bg-red-50 p-3 rounded">Please enter valid values.</div>';
+          return;
+        }
+
+        // Define how many times the income period occurs per year
+        const periodPerYearMap = {
+          monthly: 12,
+          "twice-month": 24,
+          weekly: 52.1786,
+          biweekly: 26.089,
+          quarterly: 4,
+          yearly: 1,
+        };
+
+        const selectedFreq = document
+          .getElementById("tithe-period")
+          .selectedOptions[0].getAttribute("data-freq");
+        const freqPerYear = periodPerYearMap[selectedFreq];
+        const annualIncome = income * freqPerYear;
+        const annualTithe = annualIncome * (rate / 100);
+
+        // Calculate tithe per time unit
+        const titheMonthly = annualTithe / 12;
+        const titheTwiceMonth = annualTithe / 24;
+        const titheWeekly = annualTithe / 52.1786;
+        const titheBiweekly = annualTithe / 26.089;
+        const titheQuarterly = annualTithe / 4;
+        const titheYearly = annualTithe;
+
+        resultEl.innerHTML = `
+    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+      <h4 class="text-lg font-semibold text-gray-700 mb-4">Your Tithe</h4>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-600 mb-1">Once a Month</label>
+          <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">$${formatNumber(
+            titheMonthly
+          )}</div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-600 mb-1">Twice a Month</label>
+          <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">$${formatNumber(
+            titheTwiceMonth
+          )}</div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-600 mb-1">Every Week</label>
+          <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">$${formatNumber(
+            titheWeekly
+          )}</div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-600 mb-1">Every Other Week</label>
+          <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">$${formatNumber(
+            titheBiweekly
+          )}</div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-600 mb-1">Every Quarter</label>
+          <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">$${formatNumber(
+            titheQuarterly
+          )}</div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-600 mb-1">Every Year</label>
+          <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">$${formatNumber(
+            titheYearly
+          )}</div>
+        </div>
+      </div>
+    </div>
+  `;
+      }
+
+      function clearTitheForm() {
+        document.getElementById("tithe-income").value = "";
+        document.getElementById("tithe-rate").value = "10";
+        document.getElementById("tithe-result").innerHTML = "";
+      }
+
+      document
+        .getElementById("tithe-btn-calc")
+        .addEventListener("click", calculateTithe);
+      document
+        .getElementById("tithe-btn-clear")
+        .addEventListener("click", clearTitheForm);
+    </script>
+  </body>
+</html>

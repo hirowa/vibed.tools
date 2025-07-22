@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="💼 Commission Calculator" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="💵 Financial" />
+    <title>Commission Calculator</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Commission Calculator</h2>
+      <p class="mb-6 text-gray-700">
+        Calculate the commission amount, commission percentage, or sale price
+        before commission.
+      </p>
+
+      <div class="mb-4">
+        <label class="block mb-1 text-gray-700">Calculation Method</label>
+        <select
+          id="method"
+          class="w-full border border-gray-300 rounded-lg p-2.5">
+          <option value="amount">Commission Amount</option>
+          <option value="percent">Commission Percent</option>
+          <option value="price">Price Before Commission</option>
+        </select>
+      </div>
+
+      <div id="inputs" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div id="input-sale">
+          <label class="block mb-1 text-gray-700">Sale Price ($)</label>
+          <input
+            id="sale"
+            type="text"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div id="input-commission-percent">
+          <label class="block mb-1 text-gray-700">Commission (%)</label>
+          <input
+            id="commission-percent"
+            type="text"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div id="input-commission-amount" class="hidden">
+          <label class="block mb-1 text-gray-700">Commission Amount ($)</label>
+          <input
+            id="commission-amount"
+            type="text"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+      </div>
+
+      <div class="flex gap-4 mb-6">
+        <button
+          id="btn-calc"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <i class="fas fa-calculator me-2"></i>Calculate
+        </button>
+        <button
+          id="btn-clear"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+          <i class="fas fa-eraser me-2"></i>Clear
+        </button>
+      </div>
+
+      <div id="result" class="text-gray-800"></div>
+    </div>
+
+    <div
+      class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto mt-8 text-gray-800">
+      <h3 class="text-xl font-semibold mb-3">
+        Why use the Commission Calculator?
+      </h3>
+      <p class="mb-4">
+        This calculator is essential for sales professionals, freelancers, or
+        businesses that rely on commission-based revenue. It helps you quickly
+        determine your earnings or pricing needs based on commission structures.
+        Whether you want to calculate how much you’ll earn, determine what rate
+        you’re being charged, or reverse-calculate a price before commission,
+        this tool is your solution.
+      </p>
+
+      <h4 class="text-lg font-medium mb-2">How does it work?</h4>
+      <ul class="list-disc list-inside mb-4 space-y-1">
+        <li>
+          Select what you want to calculate: commission amount, percentage, or
+          original price.
+        </li>
+        <li>Enter the known values in the form.</li>
+        <li>Click <strong>Calculate</strong> to view the result.</li>
+      </ul>
+
+      <h4 class="text-lg font-medium mb-2">Formula:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-4">
+Commission Amount = Sale Price × (Commission % ÷ 100)
+Commission Percent = Commission Amount ÷ Sale Price × 100
+Price Before Commission = Commission Amount ÷ (Commission % ÷ 100)
+      </pre>
+
+      <h4 class="text-lg font-medium mb-2">Example:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-4">
+Sale Price: $2,000 | Commission: 8%
+Commission Amount = 2,000 × (8 ÷ 100) = $160
+
+Commission Amount: $300 | Sale Price: $3,000
+Commission Percent = 300 ÷ 3,000 × 100 = 10%
+
+Commission Amount: $250 | Commission: 5%
+Price Before Commission = 250 ÷ (5 ÷ 100) = $5,000
+      </pre>
+    </div>
+
+    <script>
+      function parseNum(val) {
+        return parseFloat(val.replace(/,/g, "")) || 0;
+      }
+
+      function formatNum(val) {
+        return val.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+      }
+
+      function formatInput(input) {
+        input.value = input.value.replace(/[^\d.]/g, "");
+        const parts = input.value.split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        input.value = parts.join(".");
+      }
+
+      ["sale", "commission-percent", "commission-amount"].forEach((id) => {
+        const el = document.getElementById(id);
+        el.addEventListener("blur", () => formatInput(el));
+      });
+
+      document.getElementById("method").addEventListener("change", function () {
+        const method = this.value;
+        document.getElementById("input-sale").classList.remove("hidden");
+        document
+          .getElementById("input-commission-percent")
+          .classList.remove("hidden");
+        document
+          .getElementById("input-commission-amount")
+          .classList.add("hidden");
+
+        if (method === "percent") {
+          document
+            .getElementById("input-commission-percent")
+            .classList.add("hidden");
+          document
+            .getElementById("input-commission-amount")
+            .classList.remove("hidden");
+        } else if (method === "price") {
+          document.getElementById("input-sale").classList.add("hidden");
+          document
+            .getElementById("input-commission-amount")
+            .classList.remove("hidden");
+        }
+      });
+
+      document.getElementById("btn-calc").addEventListener("click", () => {
+        const method = document.getElementById("method").value;
+        const sale = parseNum(document.getElementById("sale").value);
+        const percent = parseNum(
+          document.getElementById("commission-percent").value
+        );
+        const amount = parseNum(
+          document.getElementById("commission-amount").value
+        );
+        const result = document.getElementById("result");
+
+        let html = "";
+
+        if (method === "amount" && sale > 0 && percent > 0) {
+          const commission = sale * (percent / 100);
+          html = `Commission Amount: $${formatNum(commission)}`;
+        } else if (method === "percent" && sale > 0 && amount > 0) {
+          const rate = (amount / sale) * 100;
+          html = `Commission Percent: ${formatNum(rate)}%`;
+        } else if (method === "price" && amount > 0 && percent > 0) {
+          const priceBefore = amount / (percent / 100);
+          html = `Price Before Commission: $${formatNum(priceBefore)}`;
+        } else {
+          html =
+            '<div class="text-red-600 bg-red-50 p-3 rounded">Please enter valid values.</div>';
+        }
+
+        result.innerHTML = `<div class="bg-gray-50 border border-gray-200 rounded-lg p-4"><h4 class="text-lg font-semibold text-gray-700 mb-2">Result</h4><p class="text-blue-700 font-mono">${html}</p></div>`;
+      });
+
+      document.getElementById("btn-clear").addEventListener("click", () => {
+        ["sale", "commission-percent", "commission-amount"].forEach(
+          (id) => (document.getElementById(id).value = "")
+        );
+        document.getElementById("result").innerHTML = "";
+      });
+    </script>
+  </body>
+</html>

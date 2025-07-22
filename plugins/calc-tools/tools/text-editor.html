@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="✍️ Text Editor" />
+    <meta name="plugin-type" content="✍️ Text Tools" />
+    <title>Text Editor</title>
+    <link
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css"
+      rel="stylesheet" />
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Text Editor</h2>
+
+      <textarea
+        id="text-input"
+        oninput="updateStats()"
+        rows="10"
+        class="w-full border border-gray-300 rounded-lg p-3 mb-4"
+        placeholder="Enter your text here...">
+This   is    a    Sample    TEXT.
+
+Another   LINE.
+
+This   is    a    Sample    TEXT.</textarea
+      >
+
+      <div id="text-stats" class="mb-4 text-sm text-gray-700 font-medium">
+        🔢 Characters: 0 | 📝 Words: 0 | 📚 Sentences: 0 | 📄 Paragraphs: 0
+      </div>
+
+      <div class="grid grid-cols-4 gap-2 mb-4">
+        <button
+          onclick="transformText('remove-empty')"
+          class="btn bg-red-800 hover:bg-red-900">
+          🧼 Remove Empty Lines
+        </button>
+        <button
+          onclick="transformText('remove-all-spaces')"
+          class="btn bg-red-800 hover:bg-red-900">
+          ❌ Remove All Spaces
+        </button>
+        <button
+          onclick="transformText('single-space')"
+          class="btn bg-green-800 hover:bg-green-900">
+          🔄 Normalize Spaces
+        </button>
+        <button
+          onclick="transformText('lower')"
+          class="btn bg-blue-800 hover:bg-blue-900">
+          🔡 To lowercase
+        </button>
+        <button
+          onclick="transformText('remove-vowels')"
+          class="btn bg-red-800 hover:bg-red-900">
+          🥵 Remove Vowels
+        </button>
+        <button
+          onclick="transformText('remove-consonants')"
+          class="btn bg-red-800 hover:bg-red-900">
+          🥶 Remove Consonants
+        </button>
+        <button
+          onclick="transformText('strip-html')"
+          class="btn bg-green-800 hover:bg-green-900">
+          🧽 Strip HTML
+        </button>
+
+        <button
+          onclick="transformText('upper')"
+          class="btn bg-blue-800 hover:bg-blue-900">
+          🔠 To UPPERCASE
+        </button>
+
+        <button
+          onclick="transformText('remove-symbols')"
+          class="btn bg-red-800 hover:bg-red-900">
+          🚫 Remove Symbols
+        </button>
+        <button
+          onclick="transformText('remove-duplicate')"
+          class="btn bg-red-800 hover:bg-red-900">
+          📉 Remove Duplicates
+        </button>
+
+        <button
+          onclick="transformText('clear')"
+          class="btn bg-green-800 hover:bg-green-900">
+          🧹 Clear Text
+        </button>
+
+        <button
+          onclick="transformText('proper')"
+          class="btn bg-blue-800 hover:bg-blue-900">
+          📚 To Proper Case
+        </button>
+      </div>
+    </div>
+
+    <div
+      class="bg-white mt-8 p-6 max-w-3xl mx-auto rounded-lg shadow text-gray-800">
+      <h3 class="text-xl font-semibold mb-3">What is the Text Editor Tool?</h3>
+      <p class="mb-4">
+        This tool lets you perform various operations on any block of text. It's
+        great for content writers, developers, and anyone needing to clean up,
+        reformat, or transform text data efficiently.
+      </p>
+
+      <h4 class="text-lg font-medium mb-2">Why use it?</h4>
+      <ul class="list-disc list-inside mb-4 space-y-1">
+        <li>Convert between uppercase, lowercase, and Proper Case</li>
+        <li>Remove vowels, consonants, or symbols for content filtering</li>
+        <li>Eliminate duplicate or empty lines from copy-pasted data</li>
+        <li>Strip HTML for clean, readable content</li>
+        <li>
+          Live statistics on text length, word count, sentences, and paragraphs
+        </li>
+      </ul>
+
+      <h4 class="text-lg font-medium mb-2">How does it work?</h4>
+      <ul class="list-disc list-inside mb-4 space-y-1">
+        <li>
+          <strong>Normalize:</strong> Replaces multiple consecutive spaces with
+          a single space
+        </li>
+        <li>
+          <strong>Proper Case:</strong> Capitalizes the first letter of each
+          word
+        </li>
+        <li>
+          <strong>Remove Empty Lines:</strong> Removes only extra blank lines
+          (preserves single empty lines)
+        </li>
+        <li>
+          <strong>Strip HTML:</strong> Removes all HTML tags from the text
+        </li>
+      </ul>
+
+      <h4 class="text-lg font-medium mb-2">Example:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto">
+Input:
+"This   is    a    Sample    TEXT.
+
+Another   LINE.
+
+This   is    a    Sample    TEXT."
+
+🧼 Remove Empty Lines →
+"This   is    a    Sample    TEXT.
+Another   LINE.
+This   is    a    Sample    TEXT."
+
+📚 To Proper Case →
+"This Is A Sample Text.
+Another Line.
+This Is A Sample Text."
+    </pre
+      >
+    </div>
+
+    <style>
+      .btn {
+        padding: 0.5rem;
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: white;
+        transition: background-color 0.2s ease;
+      }
+    </style>
+
+    <script>
+      function transformText(action) {
+        const el = document.getElementById("text-input");
+        let text = el.value;
+
+        switch (action) {
+          case "remove-all-spaces":
+            text = text.replace(/[ ]+/g, "");
+            break;
+          case "single-space":
+            text = text.replace(/([^\S\r\n]{2,})/g, " ");
+            break;
+          case "upper":
+            text = text.toUpperCase();
+            break;
+          case "lower":
+            text = text.toLowerCase();
+            break;
+          case "proper":
+            text = text.replace(
+              /\b\w+/g,
+              (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
+            );
+            break;
+          case "remove-empty":
+            text = text
+              .split("\n")
+              .filter((line) => line.trim() !== "")
+              .join("\n");
+            break;
+          case "remove-duplicate":
+            const seen = new Set();
+            text = text
+              .split("\n")
+              .filter((line) => {
+                if (seen.has(line)) return false;
+                seen.add(line);
+                return true;
+              })
+              .join("\n");
+            break;
+
+          case "remove-vowels":
+            text = text.replace(/[aeiouAEIOU]/g, "");
+            break;
+          case "remove-consonants":
+            text = text.replace(
+              /[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]/g,
+              ""
+            );
+            break;
+          case "remove-symbols":
+            text = text.replace(/[^a-zA-Z0-9\\s\\n]/g, "");
+            break;
+          case "strip-html":
+            text = text.replace(/<[^>]*>/g, "");
+            break;
+          case "clear":
+            text = "";
+            break;
+        }
+
+        el.value = text;
+        updateStats();
+      }
+
+      function updateStats() {
+        const el = document.getElementById("text-input");
+        const stats = document.getElementById("text-stats");
+        const text = el.value;
+
+        const charCount = text.length;
+        const wordCount = (text.match(/\b\w+\b/g) || []).length;
+        const sentenceCount = (text.match(/[.!?]+/g) || []).length;
+        const paragraphCount = text
+          .trim()
+          .split(/\n\s*\n+/)
+          .filter((p) => p.trim().length > 0).length;
+
+        stats.textContent =
+          `🔢 Characters: ${charCount.toLocaleString("en-US")} | ` +
+          `📝 Words: ${wordCount.toLocaleString("en-US")} | ` +
+          `📚 Sentences: ${sentenceCount.toLocaleString("en-US")} | ` +
+          `📄 Paragraphs: ${paragraphCount.toLocaleString("en-US")}`;
+      }
+
+      window.onload = updateStats;
+    </script>
+  </body>
+</html>

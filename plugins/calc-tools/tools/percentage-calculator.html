@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="📊 Percentage Calculator" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="➗ Math" />
+    <title>Percentage Calculator</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto space-y-10">
+      <h2 class="text-2xl font-bold mb-4">Percentage Calculator</h2>
+      <p class="mb-6 text-gray-700">
+        Quickly solve common percentage operations using this tool.
+      </p>
+
+      <!-- 1. X% of Y -->
+      <div>
+        <h3 class="font-semibold mb-2">What is X% of Y?</h3>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <input
+            id="pc-x"
+            type="number"
+            placeholder="X%"
+            value="25"
+            class="flex-1 border p-2 rounded w-full" />
+          <span class="self-center hidden sm:inline">of</span>
+          <input
+            id="pc-y"
+            type="number"
+            placeholder="Y"
+            value="200"
+            class="flex-1 border p-2 rounded w-full" />
+          <button
+            id="pc-calc1"
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full sm:w-auto">
+            Calculate
+          </button>
+        </div>
+        <div id="pc-result1" class="mt-3"></div>
+      </div>
+
+      <!-- 2. What percent is X of Y -->
+      <div>
+        <h3 class="font-semibold mb-2">What percent is X of Y?</h3>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <input
+            id="pc-x2"
+            type="number"
+            placeholder="X"
+            value="50"
+            class="flex-1 border p-2 rounded w-full" />
+          <span class="self-center hidden sm:inline">is what % of</span>
+          <input
+            id="pc-y2"
+            type="number"
+            placeholder="Y"
+            value="200"
+            class="flex-1 border p-2 rounded w-full" />
+          <button
+            id="pc-calc2"
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full sm:w-auto">
+            Calculate
+          </button>
+        </div>
+        <div id="pc-result2" class="mt-3"></div>
+      </div>
+
+      <!-- 3. Increase/Decrease -->
+      <div>
+        <h3 class="font-semibold mb-2">Percentage Increase/Decrease</h3>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <input
+            id="pc-from"
+            type="number"
+            placeholder="From"
+            value="100"
+            class="flex-1 border p-2 rounded w-full" />
+          <input
+            id="pc-to"
+            type="number"
+            placeholder="To"
+            value="150"
+            class="flex-1 border p-2 rounded w-full" />
+          <button
+            id="pc-calc3"
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full sm:w-auto">
+            Calculate
+          </button>
+        </div>
+        <div id="pc-result3" class="mt-3"></div>
+      </div>
+
+      <!-- 4. Add/Subtract Percentage -->
+      <div>
+        <h3 class="font-semibold mb-2">Add or Subtract a Percentage</h3>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <input
+            id="pc-base"
+            type="number"
+            placeholder="Base Value"
+            value="100"
+            class="flex-1 border p-2 rounded w-full" />
+          <input
+            id="pc-percent"
+            type="number"
+            placeholder="%"
+            value="15"
+            class="flex-1 border p-2 rounded w-full" />
+          <select id="pc-mode" class="flex-1 border p-2 rounded w-full">
+            <option value="add">Add</option>
+            <option value="subtract">Subtract</option>
+          </select>
+          <button
+            id="pc-calc4"
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full sm:w-auto">
+            Calculate
+          </button>
+        </div>
+        <div id="pc-result4" class="mt-3"></div>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div
+      class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto mt-10 text-gray-800">
+      <h3 class="text-xl font-semibold mb-3">Formulas & Examples</h3>
+      <ul class="list-disc list-inside mb-4">
+        <li><strong>X% of Y:</strong> (X ÷ 100) × Y</li>
+        <li><strong>X is what % of Y:</strong> (X ÷ Y) × 100</li>
+        <li><strong>Percentage Change:</strong> ((New - Old) ÷ Old) × 100</li>
+        <li>
+          <strong>Adjusted Value:</strong> Base × [1 ± (Percentage ÷ 100)]
+        </li>
+      </ul>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto">
+Example: What is 25% of 200?
+= (25 ÷ 100) × 200 = 50
+
+What percent is 50 of 200?
+= (50 ÷ 200) × 100 = 25%
+
+From 100 to 150 is:
+= ((150 - 100) ÷ 100) × 100 = 50%
+
+Adding 15% to 100:
+= 100 × 1.15 = 115
+      </pre>
+    </div>
+
+    <script>
+      const format = (n) =>
+        Number(n).toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+
+      const show = (id, label, val, suffix = "") => {
+        document.getElementById(id).innerHTML = `
+          <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <h4 class="text-lg font-semibold text-gray-700 mb-2">${label}</h4>
+            <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">${format(
+              val
+            )}${suffix}</div>
+          </div>`;
+      };
+
+      document.getElementById("pc-calc1").onclick = () => {
+        const x = parseFloat(document.getElementById("pc-x").value);
+        const y = parseFloat(document.getElementById("pc-y").value);
+        if (!isNaN(x) && !isNaN(y)) show("pc-result1", "Result", (x / 100) * y);
+      };
+
+      document.getElementById("pc-calc2").onclick = () => {
+        const x = parseFloat(document.getElementById("pc-x2").value);
+        const y = parseFloat(document.getElementById("pc-y2").value);
+        if (!isNaN(x) && !isNaN(y) && y !== 0)
+          show("pc-result2", "Result", (x / y) * 100, "%");
+      };
+
+      document.getElementById("pc-calc3").onclick = () => {
+        const from = parseFloat(document.getElementById("pc-from").value);
+        const to = parseFloat(document.getElementById("pc-to").value);
+        if (!isNaN(from) && !isNaN(to) && from !== 0)
+          show("pc-result3", "Change", ((to - from) / from) * 100, "%");
+      };
+
+      document.getElementById("pc-calc4").onclick = () => {
+        const base = parseFloat(document.getElementById("pc-base").value);
+        const percent = parseFloat(document.getElementById("pc-percent").value);
+        const mode = document.getElementById("pc-mode").value;
+        if (!isNaN(base) && !isNaN(percent)) {
+          const adjusted =
+            base * (mode === "add" ? 1 + percent / 100 : 1 - percent / 100);
+          show("pc-result4", "Result", adjusted);
+        }
+      };
+    </script>
+  </body>
+</html>

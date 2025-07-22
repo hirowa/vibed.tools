@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="⚖️ BMI Calculator" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="🔧 Other Calculators" />
+    <title>BMI Calculator</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">BMI Calculator</h2>
+      <p class="mb-6 text-gray-700">
+        Calculate your BMI and determine your health category.
+      </p>
+
+      <div class="mb-4">
+        <label class="block mb-2 text-gray-700">Select Units</label>
+        <div class="flex items-center gap-4">
+          <label class="inline-flex items-center">
+            <input
+              type="radio"
+              name="units"
+              value="us"
+              checked
+              class="mr-2 unit-radio" />
+            US Units
+          </label>
+          <label class="inline-flex items-center">
+            <input
+              type="radio"
+              name="units"
+              value="metric"
+              class="mr-2 unit-radio" />
+            Metric Units
+          </label>
+        </div>
+      </div>
+
+      <div id="us-fields" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block mb-1 text-gray-700">Height</label>
+          <div class="flex gap-2">
+            <input
+              id="feet"
+              type="number"
+              placeholder="Feet"
+              class="w-full border border-gray-300 rounded-lg p-2.5" />
+            <input
+              id="inches"
+              type="number"
+              placeholder="Inches"
+              class="w-full border border-gray-300 rounded-lg p-2.5" />
+          </div>
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Weight (lbs)</label>
+          <input
+            id="pounds"
+            type="number"
+            placeholder="Pounds"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+      </div>
+
+      <div
+        id="metric-fields"
+        class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 hidden">
+        <div>
+          <label class="block mb-1 text-gray-700">Height (cm)</label>
+          <input
+            id="height-cm"
+            type="number"
+            placeholder="170"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Weight (kg)</label>
+          <input
+            id="weight-kg"
+            type="number"
+            placeholder="72"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+      </div>
+
+      <div class="flex gap-4 mb-6">
+        <button
+          id="calc"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <i class="fas fa-calculator me-2"></i>Calculate
+        </button>
+        <button
+          id="clear"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+          <i class="fas fa-eraser me-2"></i>Clear
+        </button>
+      </div>
+
+      <div id="bmi-result" class="text-gray-800"></div>
+    </div>
+    <div
+      class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto mt-8 text-gray-800 text-sm">
+      <h3 class="text-lg font-semibold mb-3">Why use the BMI Calculator?</h3>
+      <p class="mb-4">
+        The Body Mass Index (BMI) Calculator helps assess whether a person has a
+        healthy weight for their height. It’s a quick and reliable screening
+        tool for identifying weight categories that may lead to health problems.
+      </p>
+
+      <h4 class="font-medium mb-2">How does it work?</h4>
+      <ul class="list-disc list-inside mb-4 space-y-1">
+        <li>Select your preferred unit system (US or Metric).</li>
+        <li>Enter your height and weight accordingly.</li>
+        <li>
+          Click <strong>Calculate</strong> to see your BMI and its category.
+        </li>
+      </ul>
+
+      <h4 class="font-medium mb-2">Formula:</h4>
+      <pre class="bg-gray-100 rounded p-3 overflow-auto text-xs mb-3">
+Metric: BMI = weight (kg) / [height (m)]²
+US:     BMI = [weight (lb) / height (in)²] × 703
+  </pre
+      >
+
+      <h4 class="font-medium mb-2">Example:</h4>
+      <pre class="bg-gray-100 rounded p-3 overflow-auto text-xs">
+Metric: 72 kg, 1.70 m =&gt; BMI = 72 / (1.70²) = 24.91
+US:     150 lb, 5'8" (68 in) =&gt; BMI = (150 / 68²) × 703 = 22.81
+  </pre
+      >
+    </div>
+
+    <script>
+      function toggleFields() {
+        const unit = document.querySelector(
+          'input[name="units"]:checked'
+        ).value;
+        document
+          .getElementById("us-fields")
+          .classList.toggle("hidden", unit !== "us");
+        document
+          .getElementById("metric-fields")
+          .classList.toggle("hidden", unit !== "metric");
+      }
+
+      document.querySelectorAll(".unit-radio").forEach((el) => {
+        el.addEventListener("change", toggleFields);
+      });
+
+      function calculateBMI() {
+        const unit = document.querySelector(
+          'input[name="units"]:checked'
+        ).value;
+        const resultEl = document.getElementById("bmi-result");
+        let bmi = 0,
+          category = "";
+
+        if (unit === "us") {
+          const feet = parseFloat(document.getElementById("feet").value) || 0;
+          const inches =
+            parseFloat(document.getElementById("inches").value) || 0;
+          const weight = parseFloat(document.getElementById("pounds").value);
+          const totalInches = feet * 12 + inches;
+
+          if (totalInches > 0 && weight > 0) {
+            bmi = (weight / totalInches ** 2) * 703;
+          }
+        } else {
+          const heightCm = parseFloat(
+            document.getElementById("height-cm").value
+          );
+          const weightKg = parseFloat(
+            document.getElementById("weight-kg").value
+          );
+          const heightM = heightCm / 100;
+
+          if (heightM > 0 && weightKg > 0) {
+            bmi = weightKg / heightM ** 2;
+          }
+        }
+
+        if (isNaN(bmi) || bmi <= 0) {
+          resultEl.innerHTML =
+            '<div class="text-red-600">Please enter valid height and weight.</div>';
+          return;
+        }
+
+        bmi = parseFloat(bmi.toFixed(2));
+        if (bmi < 16) category = "Underweight (Severe Thinness)";
+        else if (bmi < 17) category = "Underweight (Moderate Thinness)";
+        else if (bmi < 18.5) category = "Underweight (Mild Thinness)";
+        else if (bmi < 25) category = "Normal";
+        else if (bmi < 30) category = "Overweight";
+        else if (bmi < 35) category = "Obese Class I";
+        else if (bmi < 40) category = "Obese Class II";
+        else category = "Obese Class III";
+
+        resultEl.innerHTML = `
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+          <h4 class="text-lg font-semibold text-gray-700 mb-2">Result</h4>
+          <p class="mb-1"><strong>BMI:</strong> ${bmi}</p>
+          <p><strong>Category:</strong> ${category}</p>
+        </div>
+      `;
+      }
+
+      function clearForm() {
+        ["feet", "inches", "pounds", "height-cm", "weight-kg"].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) el.value = "";
+        });
+        document.getElementById("bmi-result").innerHTML = "";
+      }
+
+      document.getElementById("calc").addEventListener("click", calculateBMI);
+      document.getElementById("clear").addEventListener("click", clearForm);
+      toggleFields(); // Initialize
+    </script>
+  </body>
+</html>

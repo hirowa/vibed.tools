@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="📜 Roman Numeral Converter" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="➗ Math" />
+    <title>Roman Numeral Converter</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Roman Numeral Converter</h2>
+      <p class="mb-6 text-gray-700">
+        Convert a Roman numeral to a decimal value or a decimal value to a Roman
+        numeral.
+      </p>
+
+      <div class="mb-4">
+        <label class="block mb-1 text-gray-700">Method</label>
+        <select
+          id="conversion-type"
+          class="w-full border border-gray-300 rounded-lg p-2.5"
+          onchange="toggleFields()">
+          <option value="roman-to-decimal">Roman to Decimal</option>
+          <option value="decimal-to-roman">Decimal to Roman</option>
+        </select>
+      </div>
+
+      <div class="mb-4" id="roman-input-group">
+        <label class="block mb-1 text-gray-700">Roman Numeral</label>
+        <input
+          type="text"
+          id="roman"
+          class="w-full border border-gray-300 rounded-lg p-2.5"
+          placeholder="MCMXC"
+          value="MCMXC" />
+      </div>
+
+      <div class="mb-4 hidden" id="decimal-input-group">
+        <label class="block mb-1 text-gray-700">Decimal Number</label>
+        <input
+          type="number"
+          id="decimal"
+          min="1"
+          max="3999999"
+          class="w-full border border-gray-300 rounded-lg p-2.5"
+          placeholder="1990"
+          value="2594" />
+      </div>
+
+      <div class="flex gap-4 mb-6">
+        <button
+          onclick="convert()"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <i class="fas fa-sync me-2"></i>Convert
+        </button>
+        <button
+          onclick="clearFields()"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+          <i class="fas fa-eraser me-2"></i>Clear
+        </button>
+      </div>
+
+      <div id="result-section" class="text-gray-800">
+        <div class="font-semibold mb-2">Result:</div>
+        <div id="result" class="font-mono text-blue-600"></div>
+      </div>
+    </div>
+
+    <div
+      class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto mt-8 text-gray-800 text-sm">
+      <h3 class="text-lg font-semibold mb-2">
+        Why use the Roman Numeral Converter?
+      </h3>
+      <p class="mb-3">
+        Roman numerals are a classical number system used in ancient Rome,
+        composed of letters like I, V, X, L, C, D, and M. This converter helps
+        translate Roman numerals to decimal numbers and vice versa, especially
+        useful for historians, students, or people working with ancient texts.
+      </p>
+
+      <h4 class="font-medium">How does it work?</h4>
+      <ul class="list-disc list-inside mb-3">
+        <li>Select the conversion method.</li>
+        <li>Enter either a Roman numeral or a decimal number.</li>
+        <li>Click "Convert" to get the result.</li>
+      </ul>
+
+      <h4 class="font-medium">Formula & Rules:</h4>
+      <pre class="bg-gray-100 rounded p-3 overflow-auto text-xs mb-3">
+Roman to Decimal: Evaluate each Roman symbol from left to right.
+If a smaller numeral precedes a larger, subtract it; otherwise, add it.
+
+Example: MCMXC
+= M (1000) + CM (900) + XC (90)
+= 1990
+
+Decimal to Roman: Map from largest to smallest Roman symbols.
+
+Example: 2594
+= MM (2000) + D (500) + XC (90) + IV (4)
+= MMDXCIV
+    </pre
+      >
+    </div>
+
+    <script>
+      function toggleFields() {
+        const method = document.getElementById("conversion-type").value;
+        document
+          .getElementById("roman-input-group")
+          .classList.toggle("hidden", method !== "roman-to-decimal");
+        document
+          .getElementById("decimal-input-group")
+          .classList.toggle("hidden", method !== "decimal-to-roman");
+        document.getElementById("result").textContent = "";
+      }
+
+      function clearFields() {
+        document.getElementById("roman").value = "";
+        document.getElementById("decimal").value = "";
+        document.getElementById("result").textContent = "";
+      }
+
+      function convert() {
+        const method = document.getElementById("conversion-type").value;
+        const result = document.getElementById("result");
+        if (method === "roman-to-decimal") {
+          const roman = document.getElementById("roman").value.toUpperCase();
+          result.textContent = romanToDecimal(roman);
+        } else {
+          const decimal = parseInt(document.getElementById("decimal").value);
+          result.textContent = decimalToRoman(decimal);
+        }
+      }
+
+      function romanToDecimal(roman) {
+        const values = { I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000 };
+        let sum = 0,
+          prev = 0;
+        for (let i = roman.length - 1; i >= 0; i--) {
+          const curr = values[roman[i]] || 0;
+          sum += curr < prev ? -curr : curr;
+          prev = curr;
+        }
+        return sum;
+      }
+
+      function decimalToRoman(num) {
+        const map = [
+          { val: 1000, sym: "M" },
+          { val: 900, sym: "CM" },
+          { val: 500, sym: "D" },
+          { val: 400, sym: "CD" },
+          { val: 100, sym: "C" },
+          { val: 90, sym: "XC" },
+          { val: 50, sym: "L" },
+          { val: 40, sym: "XL" },
+          { val: 10, sym: "X" },
+          { val: 9, sym: "IX" },
+          { val: 5, sym: "V" },
+          { val: 4, sym: "IV" },
+          { val: 1, sym: "I" },
+        ];
+        let result = "";
+        for (let { val, sym } of map) {
+          while (num >= val) {
+            result += sym;
+            num -= val;
+          }
+        }
+        return result;
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="⏱️ Time Calculator" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="⏱️ Time" />
+    <title>Time Calculator</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Time Calculator</h2>
+      <p class="mb-6 text-gray-700">
+        Use these tools to compute durations between dates or shift time by a
+        specific amount.
+      </p>
+
+      <!-- Calculator 1 -->
+      <h3 class="text-xl font-semibold mb-3">Time Between Two Dates</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block mb-1 text-gray-700">Start Time</label>
+          <input
+            id="t1-start"
+            type="time"
+            value="08:00"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Start Date</label>
+          <input
+            id="t1-start-date"
+            type="date"
+            value="2025-06-21"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">End Time</label>
+          <input
+            id="t1-end"
+            type="time"
+            value="09:30"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">End Date</label>
+          <input
+            id="t1-end-date"
+            type="date"
+            value="2025-06-22"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+      </div>
+      <div class="flex gap-4 mb-6">
+        <button
+          onclick="calcTimeDiff()"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          Calculate
+        </button>
+        <button
+          onclick="clearTimeDiff()"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+          Clear
+        </button>
+      </div>
+      <div id="result1" class="text-gray-800 mb-10"></div>
+
+      <!-- Calculator 2 -->
+      <h3 class="text-xl font-semibold mb-3">
+        Add or Subtract Time from a Date
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block mb-1 text-gray-700">Base Time</label>
+          <input
+            id="t3-time"
+            type="time"
+            value="00:00"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Base Date</label>
+          <input
+            id="t3-date"
+            type="date"
+            value="2025-06-21"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+      </div>
+
+      <!-- Horizontal 5-column layout -->
+      <div class="grid grid-cols-5 gap-4 mb-4">
+        <div>
+          <label class="block mb-1 text-gray-700">Days</label>
+          <input
+            id="t3-days"
+            type="number"
+            value="3"
+            class="border border-gray-300 rounded-lg p-2.5 w-full" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Hours</label>
+          <input
+            id="t3-hours"
+            type="number"
+            value="8"
+            class="border border-gray-300 rounded-lg p-2.5 w-full" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Minutes</label>
+          <input
+            id="t3-mins"
+            type="number"
+            value="24"
+            class="border border-gray-300 rounded-lg p-2.5 w-full" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Seconds</label>
+          <input
+            id="t3-secs"
+            type="number"
+            value="41"
+            class="border border-gray-300 rounded-lg p-2.5 w-full" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Method</label>
+          <select
+            id="t3-method"
+            class="border border-gray-300 rounded-lg p-2.5 w-full">
+            <option value="add">[+] Add time</option>
+            <option value="sub">[-] Subtract time</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex gap-4 mb-6">
+        <button
+          onclick="shiftDateTime()"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          Calculate
+        </button>
+      </div>
+      <div id="result3" class="text-gray-800 mb-10"></div>
+
+      <!-- Descriptions -->
+      <div class="mt-6 p-6 text-gray-800 text-sm">
+        <h3 class="text-lg font-semibold mb-2">Why use the Time Calculator?</h3>
+        <p class="mb-3">
+          This calculator helps you measure elapsed time between two moments or
+          shift time forward/backward by specific units. It’s helpful for time
+          management, planning, or timestamp calculations.
+        </p>
+        <h4 class="font-medium">How does it work?</h4>
+        <ul class="list-disc list-inside mb-3">
+          <li>
+            <strong>Time Between Two Dates</strong> — Shows the difference in
+            days, hours, and minutes.
+          </li>
+          <li>
+            <strong>Add/Subtract Time</strong> — Shifts the selected base
+            date/time using d/h/m/s inputs and shows the resulting timestamp.
+          </li>
+        </ul>
+        <h4 class="font-medium">Examples:</h4>
+        <pre class="bg-gray-100 rounded p-3 overflow-auto text-xs mb-3">
+Start: 2025-06-21 08:00  
+End:   2025-06-22 09:30  
+→ Difference: 1 [days], 01:30
+
+Base: 2025-06-21 00:00  
+Add: 2d 5h 10m  
+→ Result: Monday, June 23, 2025 at 05:10 AM
+      </pre
+        >
+      </div>
+    </div>
+
+    <script>
+      function formatTwoDigits(n) {
+        return String(n).padStart(2, "0");
+      }
+
+      function calcTimeDiff() {
+        const sDate = new Date(
+          document.getElementById("t1-start-date").value +
+            "T" +
+            document.getElementById("t1-start").value
+        );
+        const eDate = new Date(
+          document.getElementById("t1-end-date").value +
+            "T" +
+            document.getElementById("t1-end").value
+        );
+        const ms = eDate - sDate;
+        const resultEl = document.getElementById("result1");
+
+        if (ms < 0) {
+          resultEl.innerHTML =
+            '<div class="text-red-600 bg-red-50 p-3 rounded">End time must be after start time</div>';
+          return;
+        }
+
+        const totalSeconds = Math.floor(ms / 1000);
+        const totalMinutes = Math.floor(totalSeconds / 60);
+        const totalHours = Math.floor(totalMinutes / 60);
+        const totalDays = Math.floor(totalHours / 24);
+
+        let years = Math.floor(totalDays / 365);
+        let remainingDays = totalDays % 365;
+        let months = Math.floor(remainingDays / 30);
+        let days = remainingDays % 30;
+
+        const leftoverMs =
+          ms - (years * 365 + months * 30 + days) * 24 * 60 * 60 * 1000;
+        const h = Math.floor(leftoverMs / (1000 * 60 * 60));
+        const m = Math.floor((leftoverMs % (1000 * 60 * 60)) / (1000 * 60));
+
+        const seconds = Math.floor(ms / 1000);
+        const minutes = Math.floor(ms / (1000 * 60));
+        const hours = Math.floor(ms / (1000 * 60 * 60));
+        const weeks = totalDays / 7;
+        const monthsTotal = totalDays / 30.4375;
+        const yearsTotal = totalDays / 365.25;
+
+        resultEl.innerHTML = `
+  <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+    <h4 class="text-lg font-semibold text-gray-700 mb-4">Result</h4>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">Time Difference</label>
+        <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">
+          ${years} [years], ${months} [months], ${days} [days], ${h} [hours], ${m} [minutes]
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">Days Between</label>
+        <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">
+          ${totalDays.toLocaleString()}
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">Seconds</label>
+        <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">
+          ${seconds.toLocaleString()}
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">Minutes</label>
+        <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">
+          ${minutes.toLocaleString()}
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">Hours</label>
+        <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">
+          ${hours.toLocaleString()}
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">Weeks</label>
+        <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">
+          ${weeks.toFixed(2)}
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">Months</label>
+        <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">
+          ${monthsTotal.toFixed(2)}
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">Years</label>
+        <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">
+          ${yearsTotal.toFixed(4)}
+        </div>
+      </div>
+    </div>
+  </div>`;
+      }
+    </script>
+  </body>
+</html>

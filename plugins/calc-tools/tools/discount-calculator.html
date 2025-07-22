@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="🏷️ Discount Calculator" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="💵 Financial" />
+    <title>Discount Calculator</title>
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Discount Calculator</h2>
+      <p class="mb-6 text-gray-700">
+        Calculate the discounted price of products based on the entered data and
+        selected discount type.
+      </p>
+
+      <!-- Discount Type Selector -->
+      <div class="mb-4">
+        <label class="block mb-1 text-gray-700">Discount Type</label>
+        <select
+          id="method"
+          class="w-full border border-gray-300 rounded-lg p-2.5"
+          oninput="changeFields()">
+          <option value="1">% discount</option>
+          <option value="3">% discount for second item</option>
+          <option value="4">% discount for third item</option>
+          <option value="2">Price discount</option>
+          <option value="5">Double % discount</option>
+          <option value="6">Triple % discount</option>
+          <option value="7">2 for 1</option>
+          <option value="8">3 for 2</option>
+        </select>
+      </div>
+
+      <!-- Dynamic Fields -->
+      <div
+        id="input-fields"
+        class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4"></div>
+
+      <!-- Buttons -->
+      <div class="flex gap-4 mb-6">
+        <button
+          onclick="calculateDiscount()"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <i class="fas fa-calculator me-2"></i>Calculate
+        </button>
+        <button
+          onclick="clearForm()"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+          <i class="fas fa-eraser me-2"></i>Clear
+        </button>
+      </div>
+
+      <!-- Result -->
+      <div id="result" class="text-gray-800"></div>
+    </div>
+
+    <!-- Description Section -->
+    <div
+      class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto mt-8 text-gray-800">
+      <h3 class="text-xl font-semibold mb-3">
+        What is the Discount Calculator?
+      </h3>
+      <p class="mb-4">
+        The <strong>Discount Calculator</strong> helps individuals, marketers,
+        and business owners quickly calculate final prices, total savings, and
+        discounts using a wide range of discount types. It’s ideal for comparing
+        promotional offers, stacking discounts, and understanding the real value
+        behind sale pricing strategies.
+      </p>
+
+      <h4 class="text-lg font-medium mb-2">Why use this calculator?</h4>
+      <ul class="list-disc list-inside mb-4 space-y-1">
+        <li>Estimate savings before making a purchase</li>
+        <li>Test different promotional pricing strategies</li>
+        <li>Prevent pricing errors when combining multiple discounts</li>
+        <li>Make informed purchasing or selling decisions</li>
+      </ul>
+
+      <h4 class="text-lg font-medium mb-2">How does it work?</h4>
+      <p class="mb-4">
+        Based on the selected discount type and your inputs (price, discount
+        rates, quantity, etc.), the calculator applies predefined formulas to
+        determine the:
+      </p>
+      <ul class="list-disc list-inside mb-4 space-y-1">
+        <li><strong>Original Price</strong> (before any discounts)</li>
+        <li><strong>Total Discount</strong> (how much is saved)</li>
+        <li><strong>Final Price</strong> (what you actually pay)</li>
+      </ul>
+
+      <h4 class="text-lg font-medium mb-2">Available Discount Types:</h4>
+      <table class="w-full text-sm border border-gray-300 mb-4">
+        <thead>
+          <tr class="bg-gray-100 text-left">
+            <th class="border border-gray-300 px-3 py-2">Type</th>
+            <th class="border border-gray-300 px-3 py-2">Description</th>
+            <th class="border border-gray-300 px-3 py-2">Typical Use Case</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white">
+          <tr>
+            <td class="border px-3 py-2">% Discount</td>
+            <td class="border px-3 py-2">
+              Applies a flat percentage off a single product.
+            </td>
+            <td class="border px-3 py-2">Holiday sales, promo codes</td>
+          </tr>
+          <tr class="bg-gray-50">
+            <td class="border px-3 py-2">Price Discount</td>
+            <td class="border px-3 py-2">
+              Reduces price by a fixed amount in currency.
+            </td>
+            <td class="border px-3 py-2">Cash vouchers, loyalty discounts</td>
+          </tr>
+          <tr>
+            <td class="border px-3 py-2">% Discount for Second Item</td>
+            <td class="border px-3 py-2">
+              Applies % off the second product in the cart.
+            </td>
+            <td class="border px-3 py-2">Buy one, get second 50% off</td>
+          </tr>
+          <tr class="bg-gray-50">
+            <td class="border px-3 py-2">% Discount for Third Item</td>
+            <td class="border px-3 py-2">
+              Applies % off the third item purchased.
+            </td>
+            <td class="border px-3 py-2">Bulk/volume-based deals</td>
+          </tr>
+          <tr>
+            <td class="border px-3 py-2">Double % Discount</td>
+            <td class="border px-3 py-2">
+              Applies two successive percentage discounts.
+            </td>
+            <td class="border px-3 py-2">Stacked coupon codes</td>
+          </tr>
+          <tr class="bg-gray-50">
+            <td class="border px-3 py-2">Triple % Discount</td>
+            <td class="border px-3 py-2">
+              Applies three percentage discounts in sequence.
+            </td>
+            <td class="border px-3 py-2">
+              Loyalty + seasonal + extra promo stacking
+            </td>
+          </tr>
+          <tr>
+            <td class="border px-3 py-2">2 for 1</td>
+            <td class="border px-3 py-2">
+              Buy one item, get one of equal value free.
+            </td>
+            <td class="border px-3 py-2">BOGO (Buy One Get One)</td>
+          </tr>
+          <tr class="bg-gray-50">
+            <td class="border px-3 py-2">3 for 2</td>
+            <td class="border px-3 py-2">
+              Buy three items, get the cheapest free.
+            </td>
+            <td class="border px-3 py-2">Retail and supermarket bundles</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4 class="text-lg font-medium mb-2">Example Formula:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-2">
+% Discount = Price - (Price × Discount ÷ 100)
+Example: $150 with 20% off = $150 - ($150 × 0.2) = $120
+  </pre
+      >
+    </div>
+
+    <script>
+      function parseNumber(val) {
+        return parseFloat(val.replace(/,/g, "")) || 0;
+      }
+
+      function formatNumber(val) {
+        return val.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+      }
+
+      function formatInput(input) {
+        input.value = input.value.replace(/[^\d.]/g, "");
+        const parts = input.value.split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        input.value = parts.join(".");
+      }
+
+      function changeFields() {
+        const method = document.getElementById("method").value;
+        const fields = document.getElementById("input-fields");
+        fields.innerHTML = "";
+
+        const createInput = (id, label) => `
+      <div>
+        <label class="block mb-1 text-gray-700">${label}</label>
+        <input id="${id}" type="text" class="w-full border border-gray-300 rounded-lg p-2.5" onblur="formatInput(this)" />
+      </div>`;
+
+        switch (method) {
+          case "1": // % discount
+            fields.innerHTML =
+              createInput("price", "Price ($)") +
+              createInput("discount", "Discount (%)");
+            break;
+          case "2": // Price discount
+            fields.innerHTML =
+              createInput("price", "Price ($)") +
+              createInput("discount", "Discount ($)");
+            break;
+          case "3": // % discount on 2nd
+            fields.innerHTML =
+              createInput("price1", "First product price ($)") +
+              createInput("price2", "Second product price ($)") +
+              createInput("discount", "Discount (%)");
+            break;
+          case "4": // % discount on 3rd
+            fields.innerHTML =
+              createInput("price1", "First product price ($)") +
+              createInput("price2", "Second product price ($)") +
+              createInput("price3", "Third product price ($)") +
+              createInput("discount", "Discount (%)");
+            break;
+          case "5": // Double %
+            fields.innerHTML =
+              createInput("price", "Price ($)") +
+              createInput("discount1", "First discount (%)") +
+              createInput("discount2", "Second discount (%)");
+            break;
+          case "6": // Triple %
+            fields.innerHTML =
+              createInput("price", "Price ($)") +
+              createInput("discount1", "First discount (%)") +
+              createInput("discount2", "Second discount (%)") +
+              createInput("discount3", "Third discount (%)");
+            break;
+          case "7": // 2 for 1
+            fields.innerHTML =
+              createInput("unitPrice", "Unit Price ($)") +
+              createInput("quantity", "Quantity");
+            break;
+          case "8": // 3 for 2
+            fields.innerHTML =
+              createInput("price1", "First product price ($)") +
+              createInput("price2", "Second product price ($)") +
+              createInput("price3", "Third product price ($)");
+            break;
+        }
+      }
+
+      function calculateDiscount() {
+        const method = document.getElementById("method").value;
+        const result = document.getElementById("result");
+
+        const val = (id) => {
+          const el = document.getElementById(id);
+          return el ? parseNumber(el.value) : 0;
+        };
+
+        let original = 0,
+          discountAmount = 0,
+          finalPrice = 0;
+
+        if (method === "1") {
+          const price = val("price");
+          const discount = val("discount");
+          discountAmount = price * (discount / 100);
+          finalPrice = price - discountAmount;
+          original = price;
+        } else if (method === "2") {
+          const price = val("price");
+          discountAmount = val("discount");
+          finalPrice = price - discountAmount;
+          original = price;
+        } else if (method === "3") {
+          const p1 = val("price1"),
+            p2 = val("price2"),
+            disc = val("discount");
+          discountAmount = (p2 * disc) / 100;
+          original = p1 + p2;
+          finalPrice = original - discountAmount;
+        } else if (method === "4") {
+          const p1 = val("price1"),
+            p2 = val("price2"),
+            p3 = val("price3"),
+            disc = val("discount");
+          discountAmount = (p3 * disc) / 100;
+          original = p1 + p2 + p3;
+          finalPrice = original - discountAmount;
+        } else if (method === "5") {
+          const price = val("price");
+          const d1 = val("discount1"),
+            d2 = val("discount2");
+          finalPrice = price * (1 - d1 / 100) * (1 - d2 / 100);
+          discountAmount = price - finalPrice;
+          original = price;
+        } else if (method === "6") {
+          const price = val("price");
+          const d1 = val("discount1"),
+            d2 = val("discount2"),
+            d3 = val("discount3");
+          finalPrice = price * (1 - d1 / 100) * (1 - d2 / 100) * (1 - d3 / 100);
+          discountAmount = price - finalPrice;
+          original = price;
+        } else if (method === "7") {
+          const price = val("unitPrice"),
+            qty = val("quantity");
+          const free = Math.floor(qty / 2);
+          original = qty * price;
+          finalPrice = (qty - free) * price;
+          discountAmount = original - finalPrice;
+        } else if (method === "8") {
+          const p1 = val("price1"),
+            p2 = val("price2"),
+            p3 = val("price3");
+          const prices = [p1, p2, p3].sort((a, b) => a - b);
+          original = p1 + p2 + p3;
+          discountAmount = prices[0];
+          finalPrice = original - discountAmount;
+        }
+
+        result.innerHTML = `
+      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+        <h4 class="text-lg font-semibold text-gray-700 mb-4">Result</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-600 mb-1">Old Price</label>
+            <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">$${formatNumber(
+              original
+            )}</div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-600 mb-1">Calculated Discount</label>
+            <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">$${formatNumber(
+              discountAmount
+            )}</div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-600 mb-1">Calculated Price</label>
+            <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">$${formatNumber(
+              finalPrice
+            )}</div>
+          </div>
+        </div>
+      </div>`;
+      }
+
+      function clearForm() {
+        document.getElementById("result").innerHTML = "";
+        changeFields();
+      }
+
+      window.onload = changeFields;
+    </script>
+  </body>
+</html>

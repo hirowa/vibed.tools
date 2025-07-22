@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="📈 Markup Calculator" />
+    <meta name="plugin-type" content="🧮 Calculator" />
+    <meta name="plugin-category" content="💵 Financial" />
+    <title>Markup Calculator</title>
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Markup Calculator</h2>
+      <p class="mb-6 text-gray-700">
+        Calculate the markup based on your input.
+      </p>
+
+      <!-- Input Fields -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block mb-1 text-gray-700">Cost ($)</label>
+          <input
+            id="markup-cost"
+            type="text"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">Markup (%)</label>
+          <input
+            id="markup-percent"
+            type="text"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-4 mb-6">
+        <button
+          id="markup-btn-calc"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <i class="fas fa-calculator me-2"></i>Calculate
+        </button>
+        <button
+          id="markup-btn-clear"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">
+          <i class="fas fa-eraser me-2"></i>Clear
+        </button>
+      </div>
+
+      <!-- Result Output -->
+      <div id="markup-result" class="text-gray-800"></div>
+    </div>
+
+    <!-- Description Section -->
+    <div
+      class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto mt-8 text-gray-800">
+      <h3 class="text-xl font-semibold mb-3">Why use the Markup Calculator?</h3>
+      <p class="mb-4">
+        Markup represents the percentage difference between the cost and the
+        revenue of a product. This calculator helps you find out how much profit
+        you are making, and can assist in pricing strategies to achieve target
+        profits.
+      </p>
+
+      <h4 class="text-lg font-medium mb-2">How does it work?</h4>
+      <ul class="list-disc list-inside mb-4 space-y-1">
+        <li>
+          Fill in the Cost and Markup fields to calculate Revenue and Profit.
+        </li>
+      </ul>
+
+      <h4 class="text-lg font-medium mb-2">Formula:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-4">
+Markup (%) = 100 × (Revenue - Cost) / Cost
+      </pre>
+
+      <h4 class="text-lg font-medium mb-2">Example:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-4">
+Cost: $50 | Markup: 50%
+Revenue = $50 × (1 + 50 / 100) = $75
+Profit = $75 - $50 = $25
+      </pre>
+
+      <h4 class="text-lg font-medium mb-2">Examples:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto">
+Cost     | Markup  | Revenue | Profit
+$200     | 15%     | $230    | $30
+$450     | 50%     | $675    | $225
+$12      | 100%    | $24     | $12
+$15      | 200%    | $45     | $30
+      </pre>
+    </div>
+
+    <script>
+      function parseFormattedNumber(val) {
+        return parseFloat(val.replace(/,/g, ""));
+      }
+
+      function formatNumber(val) {
+        return val.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+      }
+
+      function formatInput(input) {
+        input.value = input.value.replace(/[^\d.]/g, "");
+        const parts = input.value.split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        input.value = parts.join(".");
+      }
+
+      ["markup-cost", "markup-percent"].forEach((id) => {
+        const el = document.getElementById(id);
+        el.addEventListener("blur", () => formatInput(el));
+      });
+
+      function calculateMarkup() {
+        const cost = parseFormattedNumber(
+          document.getElementById("markup-cost").value
+        );
+        const percent = parseFormattedNumber(
+          document.getElementById("markup-percent").value
+        );
+        const resultEl = document.getElementById("markup-result");
+
+        if (isNaN(cost) || isNaN(percent) || cost <= 0 || percent < 0) {
+          resultEl.innerHTML =
+            '<div class="text-red-600 bg-red-50 p-3 rounded">Please enter valid Cost and Markup %.</div>';
+          return;
+        }
+
+        const revenue = cost * (1 + percent / 100);
+        const profit = revenue - cost;
+
+        resultEl.innerHTML = `
+          <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <h4 class="text-lg font-semibold text-gray-700 mb-4">Result</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Revenue</label>
+                <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">$${formatNumber(
+                  revenue
+                )}</div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Profit</label>
+                <div class="bg-white border border-gray-300 rounded p-2 font-mono text-blue-600">$${formatNumber(
+                  profit
+                )}</div>
+              </div>
+            </div>
+          </div>`;
+      }
+
+      function clearMarkupForm() {
+        document.getElementById("markup-cost").value = "";
+        document.getElementById("markup-percent").value = "";
+        document.getElementById("markup-result").innerHTML = "";
+      }
+
+      document
+        .getElementById("markup-btn-calc")
+        .addEventListener("click", calculateMarkup);
+      document
+        .getElementById("markup-btn-clear")
+        .addEventListener("click", clearMarkupForm);
+    </script>
+  </body>
+</html>

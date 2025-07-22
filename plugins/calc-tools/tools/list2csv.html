@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="plugin-name" content="📋 List to CSV Converter" />
+    <meta name="plugin-type" content="✍️ Text Tools" />
+    <meta name="plugin-category" content="🔧 Other Calculators" />
+    <title>List to CSV Converter</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/flowbite@3.1.2/dist/flowbite.min.css" />
+    <style>
+      .hidden {
+        display: none;
+      }
+      .textarea-box {
+        font-family: monospace;
+        height: 180px;
+      }
+      .copy-btn {
+        margin-top: 0.5rem;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">📋 List to CSV Converter</h2>
+      <p class="mb-6 text-gray-700">
+        Type or paste a list to convert it into CSV or vice versa automatically.
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block mb-1 text-gray-700">List Input</label>
+          <textarea
+            id="list-input"
+            rows="10"
+            class="border border-gray-300 rounded-lg p-2.5 w-full textarea-box"
+            placeholder="Apple&#10;Banana&#10;Orange"></textarea>
+          <button
+            onclick="copyText('list-input')"
+            class="copy-btn bg-gray-200 hover:bg-gray-300 text-sm px-3 py-1 rounded">
+            Copy
+          </button>
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-700">CSV Output</label>
+          <textarea
+            id="csv-output"
+            rows="10"
+            class="border border-gray-300 rounded-lg p-2.5 w-full textarea-box"
+            placeholder="Apple, Banana, Orange"></textarea>
+          <button
+            onclick="copyText('csv-output')"
+            class="copy-btn bg-gray-200 hover:bg-gray-300 text-sm px-3 py-1 rounded">
+            Copy
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+        <div>
+          <label class="block mb-1 text-gray-700">Delimiter</label>
+          <input
+            type="text"
+            id="delimiter"
+            class="border border-gray-300 rounded-lg p-2.5 w-full"
+            value=", "
+            placeholder="," />
+        </div>
+        <div class="flex items-end">
+          <button
+            onclick="clearFields()"
+            class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 w-full">
+            Clear
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto mt-8 text-gray-800">
+      <h3 class="text-xl font-semibold mb-3">
+        Why use the List to CSV Converter?
+      </h3>
+      <p class="mb-4">
+        The <strong>List to CSV Converter</strong> is a handy utility that
+        transforms plain vertical lists into comma-separated values (CSV), and
+        vice versa. This is especially useful for data formatting, spreadsheet
+        imports, programming inputs, and managing text data between
+        applications.
+      </p>
+
+      <h4 class="text-lg font-medium mb-2">How does it work?</h4>
+      <ul class="list-disc list-inside mb-4 space-y-1">
+        <li>
+          Enter or paste a list into the left box — each item on a new line.
+        </li>
+        <li>
+          It will instantly convert to a CSV format in the right box, based on
+          the selected delimiter.
+        </li>
+        <li>
+          Editing the CSV will automatically update the list format as well.
+        </li>
+        <li>Copy buttons allow quick copying of either format.</li>
+      </ul>
+
+      <h4 class="text-lg font-medium mb-2">Formula:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-4">
+CSV = Item1 + Delimiter + Item2 + ... + ItemN
+  </pre
+      >
+
+      <h4 class="text-lg font-medium mb-2">Example:</h4>
+      <pre class="bg-gray-100 text-sm rounded p-3 overflow-auto mb-4">
+Input List:
+Apple
+Banana
+Orange
+
+Output CSV:
+Apple, Banana, Orange
+  </pre
+      >
+
+      <h4 class="text-lg font-medium mb-2">Use Cases:</h4>
+      <ul class="list-disc list-inside mb-2 space-y-1">
+        <li>Preparing lists for spreadsheets (Excel, Google Sheets)</li>
+        <li>Creating data entries for databases or APIs</li>
+        <li>Quickly formatting tags, keywords, or item arrays</li>
+      </ul>
+    </div>
+
+    <script>
+      const listInput = document.getElementById("list-input");
+      const csvOutput = document.getElementById("csv-output");
+      const delimiterInput = document.getElementById("delimiter");
+
+      let isUpdating = false;
+
+      function listToCSV(text, delimiter) {
+        const lines = text.split(/\r?\n/).filter(Boolean);
+        return lines.join(delimiter);
+      }
+
+      function csvToList(text, delimiter) {
+        return text
+          .split(delimiter)
+          .map((x) => x.trim())
+          .filter(Boolean)
+          .join("\n");
+      }
+
+      listInput.addEventListener("input", () => {
+        if (isUpdating) return;
+        isUpdating = true;
+        const delimiter = delimiterInput.value || ",";
+        csvOutput.value = listToCSV(listInput.value, delimiter);
+        isUpdating = false;
+      });
+
+      csvOutput.addEventListener("input", () => {
+        if (isUpdating) return;
+        isUpdating = true;
+        const delimiter = delimiterInput.value || ",";
+        listInput.value = csvToList(csvOutput.value, delimiter);
+        isUpdating = false;
+      });
+
+      function copyText(id) {
+        const el = document.getElementById(id);
+        el.select();
+        document.execCommand("copy");
+      }
+
+      function clearFields() {
+        listInput.value = "";
+        csvOutput.value = "";
+      }
+    </script>
+  </body>
+</html>
