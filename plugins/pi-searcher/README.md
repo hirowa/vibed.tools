@@ -1,4 +1,5 @@
 ## π Digit Finder
+<img width="1561" height="563" alt="image" src="https://github.com/user-attachments/assets/0627787e-f840-4629-9e23-825d94102f1d" />
 
 **π Digit Finder** is a high-performance browser tool designed to search for digit sequences or encoded words within the first billion digits of π. Built for speed and simplicity, it streams large `.txt` files in chunks and performs fast substring matching using the KMP algorithm. It supports searching for both raw numbers and base-26 encoded words, making it a powerful tool for π enthusiasts, educators, and number pattern researchers.
 
