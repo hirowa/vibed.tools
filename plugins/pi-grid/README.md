@@ -1,4 +1,5 @@
 ## π Grid Visualizer
+<img width="1582" height="860" alt="image" src="https://github.com/user-attachments/assets/d55d2204-51d5-47bc-97a0-fb7d0202a537" />
 
 **π Grid Visualizer** is an interactive browser-based tool that renders a grid of digits from π and visually highlights a specific sequence or word within the grid. Designed for educational or curiosity-driven exploration of the digits of π, it allows users to search for number sequences or encoded words and position them precisely within a customizable grid layout.
 
