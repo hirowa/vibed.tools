@@ -1,4 +1,5 @@
 ## 🧮 Calculators & Text Tools
+<img width="1549" height="910" alt="image" src="https://github.com/user-attachments/assets/034fad3a-dca7-4c53-8b64-ea64b767afc3" />
 
 **🧮 Calculators & Text Tools** is a modular plugin designed to provide a centralized interface for accessing a wide variety of utility tools, including calculators, text processors, and content generators. With a clean, responsive UI and dynamic tool selection, it offers users a flexible and user-friendly way to work with different categories of utilities in one place.
 
